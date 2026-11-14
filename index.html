@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AstFlix - Watch Movies Online</title>
+<meta name="description" content="AstFlix - Watch Trending, Hollywood, Bollywood, Punjabi, Pakistani Movies Online Free">
+<meta name="theme-color" content="#0b0b0f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AstFlix">
+<link rel="apple-touch-icon" href="https://placehold.co/192x192/e50914/ffffff?text=A">
+<link rel="icon" href="https://placehold.co/192x192/e50914/ffffff?text=A">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+body{background:#0b0b0f;color:#fff;padding-bottom:85px}
+.top{padding:10px;display:flex;gap:10px;align-items:center;position:sticky;top:0;background:#0b0b0f;z-index:99}
+.logo{font-size:22px;font-weight:900;color:#e50914;white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.logo span{color:#fff}
+.searchBox{flex:1;background:#1c1c22;border-radius:10px;padding:11px;display:flex;gap:8px;align-items:center}
+.searchBox input{flex:1;background:none;border:none;color:#fff;outline:none;font-size:15px}
+.searchBtn{color:#00d26a;font-weight:900;border:none;background:none;font-size:16px}
+.installBtn{background:#00d26a;color:#000;border:none;padding:9px 12px;border-radius:10px;font-weight:900;font-size:13px;white-space:nowrap}
+.installBtn.hidden{display:none}
+.tabs{display:flex;gap:20px;padding:10px 15px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px}
+.tabs button.active{color:#fff;border-bottom:3px solid #e50914}
+.hero{position:relative;height:250px;overflow:hidden;background:linear-gradient(135deg,#e50914,#111);cursor:pointer}
+.hero img{width:100%;height:100%;object-fit:cover}
+.heroText{position:absolute;left:12px;top:18px;right:12px;font-size:32px;font-weight:900;color:#fff;text-shadow:0 3px 12px #000;line-height:36px;text-transform:uppercase;max-height:75px;overflow:hidden}
+.heroSub{position:absolute;left:12px;top:98px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
+.heroBottom{position:absolute;bottom:0;left:0;right:0;display:flex;gap:8px;overflow-x:auto;padding:8px;background:linear-gradient(transparent,rgba(0,0,0,.95))}
+.mini{min-width:260px;background:rgba(30,30,35,.95);border-radius:12px;padding:8px;display:flex;gap:8px;align-items:center}
+.mini img{width:45px;height:62px;object-fit:cover;border-radius:6px;background:#444}
+.mini b{font-size:15px}.mini span{font-size:12px;color:#aaa}
+.dl{margin-left:auto;background:#00d26a;color:#000;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
+h3{padding:14px 15px 8px;display:flex;justify-content:space-between;font-size:19px}
+h3 span{color:#888;font-size:16px;cursor:pointer}
+.row{display:flex;gap:10px;overflow-x:auto;padding:0 12px}
+.card{min-width:155px;width:155px}
+.card img{width:155px;height:215px;object-fit:cover;border-radius:10px;background:#333;cursor:pointer}
+.card p{font-size:14px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.catRow{display:flex;gap:10px;overflow-x:auto;padding:0 12px}
+.cat{min-width:140px;height:68px;border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:none;color:#fff;background:#222}
+.cat b{position:relative;z-index:1;font-size:18px}
+.cat.active{outline:3px solid #e50914}
+select{width:100%;background:#222;color:#fff;border:none;padding:7px;border-radius:7px;margin-top:5px}
+.btns{display:flex;gap:5px;margin-top:5px}
+.watch{flex:1;background:#e50914;color:#fff;border:none;padding:8px;border-radius:7px;font-weight:900}
+.down{flex:1;background:#333;color:#fff;border:none;padding:8px;border-radius:7px}
+nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:999}
+nav button{text-align:center;font-size:12px;color:#888;background:none;border:none;position:relative}
+nav button.active{color:#00d26a}
+.hot{background:red;color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;position:absolute;top:-8px;right:-5px}
+#player{position:fixed;inset:0;background:#000;z-index:1000;display:none;flex-direction:column}
+#player video{width:100%;flex:1;background:#000}
+#player .topBar{padding:12px;display:flex;justify-content:space-between;align-items:center}
+#player .topBar button{background:#e50914;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:900}
+#fbStatus{padding:6px 15px;font-size:12px;color:#00d26a}
+#installBar{display:none;background:#00d26a;color:#000;padding:10px 12px;justify-content:space-between;align-items:center;font-weight:900;font-size:14px}
+#installBar button{background:#000;color:#fff;border:none;padding:8px 14px;border-radius:8px;font-weight:900}
+/* ===== ADMIN PANEL - STYLISH ===== */
+.adminModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:2000;overflow-y:auto;padding:18px}
+.adminModal.open{display:block}
+.adminClose{position:fixed;top:14px;right:16px;background:#e50914;color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2001}
+.adminCard{background:#1c1c22;border:1px solid #333;border-radius:16px;padding:18px;max-width:480px;margin:50px auto 20px}
+.adminCard h2{font-size:22px}
+.adminCard p{font-size:13px;color:#aaa;margin:6px 0 14px;line-height:1.5}
+.adminCard label{font-size:12px;color:#aaa;display:block;margin-top:10px}
+.adminCard input,.adminCard select{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;margin-top:5px;outline:none;font-size:14px}
+.adminBtn{width:100%;background:#e50914;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:900;font-size:15px;margin-top:14px;cursor:pointer}
+.adminBtn.green{background:#00d26a;color:#000}
+.adminBtn.gray{background:#333}
+.adminItem{display:flex;gap:10px;align-items:center;background:#111;padding:10px;border-radius:10px;margin:8px 0;border:1px solid #222}
+.adminItem img{width:45px;height:65px;object-fit:cover;border-radius:6px;background:#333}
+.adminItem div{flex:1}
+.adminItem button{background:#ff3333;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+.adminSuccess{background:#0a5c2e;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
+.adminError{background:#5c0a0a;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
+</style>
+  <script data-cfasync="false" src="https://aarems.org/1/82686f2d701c08f42e3a67cdd6f06788"></script>
+<script data-cfasync="false" src="https://bancadeltempoidea.org/14/995af07dee600512dab7cd3ff4abdac9"></script>
+</head>
+<body>
+
+<div id="installBar">📱 AstFlix App Install Karo - Fast Chalega <button onclick="installApp()">Install</button></div>
+
+<div class="top">
+<div class="logo" id="mainLogo">🎬 Ast<span>Flix</span></div>
+<div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
+<button class="searchBtn" onclick="doSearch(document.getElementById('search').value)">Search</button>
+<button id="installBtn" class="installBtn" onclick="installApp()">⬇ Install</button>
+</div>
+
+<div id="fbStatus">● Firebase se connect ho raha hai...</div>
+
+<div class="tabs">
+<button class="active" onclick="setTab(this,'All')">Trending</button>
+<button onclick="setTab(this,'Movie')">Movie</button>
+<button onclick="setTab(this,'Nollywood')">Nollywood</button>
+<button onclick="setTab(this,'TV')">TV</button>
+<button onclick="setTab(this,'Hollywood')">Hollywood</button>
+<button onclick="setTab(this,'Bollywood')">Bollywood</button>
+<button onclick="setTab(this,'Punjabi')">Punjabi</button>
+<button onclick="setTab(this,'Pakistani')">Pakistani</button>
+<button onclick="setTab(this,'Western')">Western</button>
+<button onclick="setTab(this,'Anime')">Anime</button>
+</div>
+
+<div class="hero" onclick="playMovie(0)">
+<img id="heroImg" src="">
+<div class="heroText" id="heroName">REACHER</div>
+<div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
+<div class="heroBottom" id="heroMini"></div>
+</div>
+
+<h3 id="sectionTitle">Nollywood Movie <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
+<div class="row" id="nolly"></div>
+
+<h3>Categories</h3>
+<div class="catRow">
+<button class="cat active" onclick="setCat(this,'All')"><b>All</b></button>
+<button class="cat" onclick="setCat(this,'Hollywood')"><b>Hollywood</b></button>
+<button class="cat" onclick="setCat(this,'Bollywood')"><b>Bollywood</b></button>
+<button class="cat" onclick="setCat(this,'Punjabi')"><b>Punjabi</b></button>
+<button class="cat" onclick="setCat(this,'Pakistani')"><b>Pakistani</b></button>
+<button class="cat" onclick="setCat(this,'Western')"><b>Western</b></button>
+<button class="cat" onclick="setCat(this,'Nollywood')"><b>Nollywood</b></button>
+</div>
+
+<h3>Trending Movies <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
+<div class="row" id="movies"></div>
+
+<nav>
+<button class="active" onclick="goHome(this)">🏠<br>Home</button>
+<button onclick="alert('NovelHub jaldi aa raha hai!')">📖<span class="hot">HOT</span><br>NovelHub</button>
+<button onclick="alert('Downloads me abhi kuch nahi hai')">⬇<br>Downloads</button>
+<button onclick="alert('AstFlix Profile')">👤<br>Me</button>
+</nav>
+
+<div id="player">
+<div class="topBar"><b id="playTitle">Playing...</b><button onclick="closePlayer()">✕ Close</button></div>
+<video id="video" controls autoplay src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"></video>
+</div>
+
+<!-- ===== ADMIN LOGIN MODAL ===== -->
+<div class="adminModal" id="loginModal">
+<button class="adminClose" onclick="closeAdmin('loginModal')">✕</button>
+<div class="adminCard">
+<h2>👑 AstFlix Admin</h2>
+<p>Only Owner Can Login.<br>Sirf Admin ki Gmail se khulega.</p>
+<label>Admin Gmail</label>
+<input type="email" id="adminEmail" placeholder="astkhanii15@gmail.com" value="astkhanii15@gmail.com">
+<label>Admin Password</label>
+<input type="password" id="adminPassword" placeholder="••••••••">
+<div class="adminError" id="loginError"></div>
+<button class="adminBtn" onclick="adminLogin()">Login as Admin</button>
+<p style="text-align:center;margin-top:12px;color:#666">🔒 Secure Login - Firebase Auth</p>
+</div>
+</div>
+
+<!-- ===== ADMIN PANEL MODAL ===== -->
+<div class="adminModal" id="adminModal">
+<button class="adminClose" onclick="closeAdmin('adminModal')">✕</button>
+<div class="adminCard">
+<h2>👑 Admin Panel</h2>
+<p>Welcome, <b id="adminUserLabel" style="color:#00d26a">Admin</b><br>Yahan se Movie Add / Delete karo.</p>
+<div class="adminSuccess" id="adminMsg">✅ Movie Add Ho Gayi!</div>
+<label>Movie / Series Name *</label>
+<input id="f_name" placeholder="Jatt & Juliet">
+<label>Poster Image Link</label>
+<input id="f_img" placeholder="https://... poster link">
+<label>Hero Image Link</label>
+<input id="f_hero" placeholder="https://... hero link (khali choro to poster hi lagega)">
+<label>Year</label>
+<input id="f_year" placeholder="2024">
+<label>Type</label>
+<select id="f_type"><option>Movie</option><option>Comedy</option><option>Action</option><option>Drama</option><option>Animation</option><option>TV</option></select>
+<label>Category</label>
+<select id="f_cat"><option>Punjabi</option><option>Pakistani</option><option>Bollywood</option><option>Hollywood</option><option>Nollywood</option><option>Western</option><option>Anime</option></select>
+<label>Video Link (MP4) *</label>
+<input id="f_video" placeholder="https://... .mp4">
+<button class="adminBtn green" onclick="addMovieAdmin()">+ Add Movie</button>
+<button class="adminBtn gray" onclick="adminLogout()">Logout</button>
+</div>
+<div class="adminCard">
+<h2 style="font-size:18px">All Movies - Delete</h2>
+<p id="adminCount">Loading...</p>
+<div id="adminList"></div>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+// ===== PWA =====
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault(); deferredPrompt = e;
+  document.getElementById('installBtn').classList.remove('hidden');
+  document.getElementById('installBar').style.display = 'flex';
+});
+function installApp(){
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(function(res){
+      if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); }
+      deferredPrompt = null;
+    });
+  } else { alert('Chrome me 3 dot (⋮) dabao > Add to Home screen / Install App dabao, AstFlix install ho jayega!'); }
+}
+window.addEventListener('appinstalled', function(){
+  document.getElementById('installBar').style.display='none';
+  document.getElementById('installBtn').classList.add('hidden');
+});
+try{
+  var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"https://placehold.co/192x192/e50914/ffffff?text=A", sizes:"192x192", type:"image/png"}, {src:"https://placehold.co/512x512/e50914/ffffff?text=A", sizes:"512x512", type:"image/png"}]};
+  var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
+  var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link);
+  if('serviceWorker' in navigator){
+    var swCode = "self.addEventListener('fetch', function(e){})";
+    var swBlob = new Blob([swCode], {type:'text/javascript'});
+    navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(function(){});
+  }
+}catch(e){}
+
+// ===== MOVIES =====
+function getImg(name, color){
+  var c = color || "e50914";
+  return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name);
+}
+function getHeroImg(color){
+  var c = color || "111111";
+  return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20";
+}
+let allMovies = [
+  {name:"Reacher", img:getImg("REACHER","111111"), hero:getHeroImg("111111"), year:"2022", type:"Action", cat:"Nollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"},
+  {name:"Minions & More", img:getImg("Minions","FF9900"), hero:getHeroImg("FF9900"), year:"2026", type:"Animation", cat:"Hollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"},
+  {name:"Colours of Fire", img:getImg("Colours of Fire","CC0000"), hero:getHeroImg("CC0000"), year:"2025", type:"Drama", cat:"Nollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"},
+  {name:"Jatt & Juliet", img:getImg("Jatt & Juliet","006400"), hero:getHeroImg("006400"), year:"2024", type:"Comedy", cat:"Punjabi", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"},
+  {name:"Pushpa 2", img:getImg("Pushpa 2","800080"), hero:getHeroImg("800080"), year:"2024", type:"Action", cat:"Bollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"},
+  {name:"Kabhi Main Kabhi Tum", img:getImg("Kabhi Main","0000AA"), hero:getHeroImg("0000AA"), year:"2024", type:"Drama", cat:"Pakistani", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"},
+];
+function showMovies(list){
+  if(!list.length){ document.getElementById('movies').innerHTML="<p style='padding:10px'>Is category me abhi koi movie nahi hai</p>"; document.getElementById('nolly').innerHTML=""; return; }
+  let heroMovie = list[0];
+  document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
+  document.getElementById('heroName').innerText = heroMovie.name;
+  document.getElementById('heroSub').innerText = "🔥 NEW • " + heroMovie.year + " • " + heroMovie.type;
+  document.getElementById('heroMini').innerHTML = list.slice(0,2).map(m=>`<div class="mini" onclick="event.stopPropagation();playMovie(${allMovies.indexOf(m)})"><img src="${m.img}"><div><b>${m.name}</b><br><span>📺 | ${m.year} | ${m.type}</span></div><div class="dl">⬇</div></div>`).join('');
+  function card(d){
+    let idx = allMovies.indexOf(d);
+    return `<div class="card"><img onclick="playMovie(${idx})" src="${d.img}"><p>${d.name}</p><select><option>720p HD</option><option>1080p HD</option></select><div class="btns"><button class="watch" onclick="playMovie(${idx})">▶ Watch</button><button class="down" onclick="alert('${d.name} Download ho raha hai...')">⬇</button></div></div>`
+  }
+  document.getElementById('nolly').innerHTML = list.map(card).join('');
+  document.getElementById('movies').innerHTML = list.map(card).join('');
+  document.getElementById('sectionTitle').innerHTML = list[0].cat + " Movie <span onclick=\"setTab(document.querySelectorAll('.tabs button')[0],'All')\">All ></span>";
+}
+function setTab(btn, tab){
+  document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(tab=='All') showMovies(allMovies);
+  else if(tab=='Movie') showMovies(allMovies.filter(x=>x.type!='TV'));
+  else if(tab=='TV') showMovies(allMovies.filter(x=>x.type=='TV'));
+  else showMovies(allMovies.filter(x=>x.cat==tab));
+}
+function setCat(btn, cat){
+  document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(cat=='All') showMovies(allMovies);
+  else showMovies(allMovies.filter(x=>x.cat==cat));
+  document.querySelectorAll('.tabs button').forEach(b=>{ b.classList.remove('active'); if(b.innerText==cat) b.classList.add('active'); });
+}
+function doSearch(q){
+  q = q.toLowerCase();
+  if(!q) { showMovies(allMovies); return; }
+  showMovies(allMovies.filter(x=>x.name.toLowerCase().includes(q) || x.cat.toLowerCase().includes(q)));
+}
+function playMovie(i){
+  let m = allMovies[i]; if(!m) return;
+  document.getElementById('playTitle').innerText = "▶ " + m.name;
+  let v = document.getElementById('video'); v.src = m.video;
+  document.getElementById('player').style.display = 'flex'; v.play();
+}
+function closePlayer(){ let v=document.getElementById('video'); v.pause(); document.getElementById('player').style.display='none'; }
+function goHome(btn){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
+  document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'});
+}
+showMovies(allMovies);
+
+// ===== FIREBASE + ADMIN - GMAIL AUTH =====
+const ADMIN_EMAIL = "astkhanii15@gmail.com";
+var db = null;
+var auth = null;
+try{
+  var firebaseConfig = {
+    apiKey: "AIzaSyDUbSELRxQolLC55kl75UVU9gtUuMHC4vs",
+    authDomain: "my-drama-app-5036c.firebaseapp.com",
+    projectId: "my-drama-app-5036c",
+    storageBucket: "my-drama-app-5036c.firebasestorage.app",
+    messagingSenderId: "547655779548",
+    appId: "1:547655779548:web:762577b510dc6095bb6019",
+    measurementId: "G-MLL3XWVC4G"
+  };
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+  auth = firebase.auth();
+  // Agar pehle se login hai to yaad rakhe
+  auth.onAuthStateChanged(function(user){
+    if(user && user.email === ADMIN_EMAIL){
+      document.getElementById('adminUserLabel').innerText = user.email;
+    }
+  });
+  setTimeout(function(){
+    var el = document.getElementById('fbStatus');
+    if(el.innerText.includes("ho raha hai")){
+      el.innerText = "● Firebase se jawab nahi aaya, Local wali chal rahi hai - Rules check karo";
+      el.style.color = "#ffaa00";
+    }
+  }, 5000);
+  db.collection("movies").get().then(function(snap){
+    if(!snap.empty){
+      var fbMovies = [];
+      snap.forEach(function(d){
+        var m = d.data(); m._id = d.id;
+        if(!m.img) m.img = getImg(m.name, "111111");
+        if(!m.hero) m.hero = getHeroImg("111111");
+        fbMovies.push(m);
+      });
+      allMovies = fbMovies;
+      showMovies(allMovies);
+      document.getElementById('fbStatus').innerText = "● Firebase Connected - " + fbMovies.length + " Movies Firebase se aayi";
+      document.getElementById('fbStatus').style.color = "#00d26a";
+    } else {
+      document.getElementById('fbStatus').innerText = "● Firebase Connected - Lekin Firestore me koi movie nahi, Local wali chal rahi hai";
+    }
+  }).catch(function(e){
+    document.getElementById('fbStatus').innerText = "● Firebase Error: " + e.message + " - Local wali chal rahi hai";
+    document.getElementById('fbStatus').style.color = "#ff5555";
+  });
+}catch(e){
+  document.getElementById('fbStatus').innerText = "● Firebase Connect nahi hua, Local wali chal rahi hai";
+}
+
+// Logo 5 Tap = Admin Login
+let tapCount = 0, tapTimer = null;
+document.getElementById('mainLogo').addEventListener('click', function(){
+  tapCount++; clearTimeout(tapTimer);
+  tapTimer = setTimeout(function(){ tapCount=0; }, 1500);
+  if(tapCount>=5){
+    tapCount=0;
+    // Agar pehle se login hai to seedha Panel kholo
+    if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){
+      openAdminPanel();
+    } else {
+      document.getElementById('loginModal').classList.add('open');
+    }
+  }
+});
+function closeAdmin(id){ document.getElementById(id).classList.remove('open'); }
+function openAdminPanel(){
+  document.getElementById('loginModal').classList.remove('open');
+  document.getElementById('adminModal').classList.add('open');
+  loadAdminList();
+}
+async function adminLogin(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const pass = document.getElementById('adminPassword').value;
+  const errBox = document.getElementById('loginError');
+  errBox.style.display='none';
+  if(email !== ADMIN_EMAIL){
+    errBox.innerText = "❌ Ye Gmail Admin nahi hai! Sirf astkhanii15@gmail.com chalegi.";
+    errBox.style.display='block'; return;
+  }
+  if(!pass){ errBox.innerText="Password dalo!"; errBox.style.display='block'; return; }
+  try{
+    const cred = await auth.signInWithEmailAndPassword(email, pass);
+    if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); throw new Error("Not Admin"); }
+    document.getElementById('adminUserLabel').innerText = cred.user.email;
+    document.getElementById('adminPassword').value='';
+    openAdminPanel();
+  }catch(e){
+    errBox.innerText = "❌ Login Fail: " + (e.message || "Galat Gmail / Password");
+    errBox.style.display='block';
+  }
+}
+async function adminLogout(){
+  try{ await auth.signOut(); }catch(e){}
+  closeAdmin('adminModal');
+  alert('Logout ho gaya!');
+}
+async function loadAdminList(){
+  if(!db) return;
+  try{
+    const snap = await db.collection("movies").get();
+    const list = [];
+    snap.forEach(d=>{ let m=d.data(); m._id=d.id; list.push(m); });
+    document.getElementById('adminCount').innerText = "Total: " + list.length + " movies";
+    document.getElementById('adminList').innerHTML = list.map(m=>`
+      <div class="adminItem"><img src="${m.img||''}"><div><b>${m.name}</b><br><small>${m.cat} • ${m.year} • ${m.type}</small></div><button onclick="deleteMovieAdmin('${m._id}','${m.name}')">Delete</button></div>
+    `).join('') || '<p style="opacity:.6">Koi movie nahi.</p>';
+  }catch(e){
+    document.getElementById('adminList').innerHTML = '<p style="color:#ff5555">List nahi aayi: '+e.message+'</p>';
+  }
+}
+async function addMovieAdmin(){
+  if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; }
+  const data = {
+    name: document.getElementById('f_name').value.trim(),
+    img: document.getElementById('f_img').value.trim(),
+    hero: document.getElementById('f_hero').value.trim(),
+    year: document.getElementById('f_year').value.trim(),
+    type: document.getElementById('f_type').value,
+    cat: document.getElementById('f_cat').value,
+    video: document.getElementById('f_video').value.trim()
+  };
+  if(!data.name || !data.video){ alert('Naam aur Video Link zaroori hai!'); return; }
+  if(!data.img) data.img = getImg(data.name,"e50914");
+  if(!data.hero) data.hero = data.img;
+  try{
+    await db.collection("movies").add(data);
+    document.getElementById('adminMsg').style.display='block';
+    setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000);
+    ['f_name','f_img','f_hero','f_year','f_video'].forEach(id=>document.getElementById(id).value='');
+    // Reload movies
+    const snap = await db.collection("movies").get();
+    const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); });
+    allMovies = fbMovies; showMovies(allMovies);
+    loadAdminList();
+  }catch(e){ alert('Add Fail: '+e.message); }
+}
+async function deleteMovieAdmin(id, name){
+  if(!confirm(name + ' - Pakka Delete karni hai?')) return;
+  try{
+    await db.collection("movies").doc(id).delete();
+    const snap = await db.collection("movies").get();
+    const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); });
+    allMovies = fbMovies; showMovies(allMovies);
+    loadAdminList();
+  }catch(e){ alert('Delete Fail: '+e.message); }
+}
+</script>
+</body>
+</html>
