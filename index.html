@@ -95,13 +95,12 @@ nav button.active{color:#00d26a}
 </head>
 <body>
 
-<div id="installBar">📱 AstFlix App Install Karo - Fast Chalega <button onclick="installApp()">Install</button></div>
-
+<div id="installBar"> AstFlix App Download Karo - Fast Chalega <a href="astflix.apk" download style="background:#fff; color:#000; padding:5px 12px; border-radius:8px; font-weight:bold; text-decoration:none;">Download APK</a></div>
 <div class="top">
 <div class="logo" id="mainLogo"><img src="logo.png" onerror="this.style.display='none'"> Ast<span>Flix</span></div>
 <div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
 <button class="searchBtn" onclick="doSearch(document.getElementById('search').value)">Search</button>
-<button id="installBtn" class="installBtn" onclick="installApp()">⬇ Install</button>
+<a href="astflix.apk" download id="installBtn" class="installBtn" style="text-decoration:none; text-align:center;">Download APK</a>
 </div>
 
 <div class="tabs">
