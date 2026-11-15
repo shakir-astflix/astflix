@@ -10,13 +10,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AstFlix">
-<link rel="apple-touch-icon" href="logo.png
-<link rel="icon" href="logo.png
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="icon" href="logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .top{padding:10px;display:flex;gap:10px;align-items:center;position:sticky;top:0;background:#0b0b0f;z-index:99}
-.logo{font-size:22px;font-weight:900;color:#e50914;white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+.logo{font-size:22px;font-weight:900;color:#e50914;white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:6px}
+.logo img{width:30px;height:30px;object-fit:contain;border-radius:6px}
 .logo span{color:#fff}
 .searchBox{flex:1;background:#1c1c22;border-radius:10px;padding:11px;display:flex;gap:8px;align-items:center}
 .searchBox input{flex:1;background:none;border:none;color:#fff;outline:none;font-size:15px}
@@ -28,10 +29,11 @@ body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px}
 .tabs button.active{color:#fff;border-bottom:3px solid #e50914}
 .hero{position:relative;height:250px;overflow:hidden;background:linear-gradient(135deg,#e50914,#111);cursor:pointer}
-.hero img{width:100%;height:100%;object-fit:cover}
-.heroText{position:absolute;left:12px;top:18px;right:12px;font-size:32px;font-weight:900;color:#fff;text-shadow:0 3px 12px #000;line-height:36px;text-transform:uppercase;max-height:75px;overflow:hidden}
-.heroSub{position:absolute;left:12px;top:98px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
-.heroBtns{position:absolute;left:12px;top:130px;display:flex;gap:8px}
+.hero img#heroImg{width:100%;height:100%;object-fit:cover}
+.hero img.heroLogo{position:absolute;left:12px;top:12px;width:70px;height:70px;object-fit:contain;z-index:3}
+.heroText{position:absolute;left:12px;top:88px;right:12px;font-size:32px;font-weight:900;color:#fff;text-shadow:0 3px 12px #000;line-height:36px;text-transform:uppercase;max-height:75px;overflow:hidden}
+.heroSub{position:absolute;left:12px;top:168px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
+.heroBtns{position:absolute;left:12px;top:195px;display:flex;gap:8px}
 .heroBtns button{border:none;padding:9px 16px;border-radius:20px;font-weight:900;font-size:13px;cursor:pointer}
 .heroPlay{background:#fff;color:#000}
 .heroTrailer{background:rgba(0,0,0,.7);color:#fff;border:1px solid #fff !important}
@@ -96,7 +98,7 @@ nav button.active{color:#00d26a}
 <div id="installBar">📱 AstFlix App Install Karo - Fast Chalega <button onclick="installApp()">Install</button></div>
 
 <div class="top">
-<div class="logo" id="mainLogo"><img src="logo.png" style="height:30px;width:auto"></div>
+<div class="logo" id="mainLogo"><img src="logo.png" onerror="this.style.display='none'"> Ast<span>Flix</span></div>
 <div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
 <button class="searchBtn" onclick="doSearch(document.getElementById('search').value)">Search</button>
 <button id="installBtn" class="installBtn" onclick="installApp()">⬇ Install</button>
@@ -117,7 +119,8 @@ nav button.active{color:#00d26a}
 </div>
 
 <div class="hero" onclick="playMovie(0)">
-<img id="heroImg" src="">
+<img id="heroImg" src="" onerror="this.style.display='none'">
+<img src="logo.png" class="heroLogo" onerror="this.style.display='none'">
 <div class="heroText" id="heroName">ASTFLIX</div>
 <div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
 <div class="heroBtns" id="heroBtns"></div>
@@ -219,8 +222,8 @@ window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); 
 function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
 window.addEventListener('appinstalled', function(){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); });
 try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"logo.png", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
-function getImg(name, color){ var c = color || "e50914"; return "logo.png"; }
-function getHeroImg(color){ var c = color || "111111"; return "logo.png"; }
+function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
+function getHeroImg(color){ var c = color || "111111"; return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20"; }
 function isComingSoon(m){
   if(!m) return false;
   if(m.status === 'coming') return true;
@@ -236,7 +239,6 @@ function getReleaseText(m){
   let d = new Date(m.releaseDate);
   return "📅 Release: " + d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
 }
-// LOCAL MOVIES HATA DIYE - AB SIRF FIREBASE SE AAYENGI
 let allMovies = [];
 function getYoutubeEmbed(url){
   if(!url) return "";
