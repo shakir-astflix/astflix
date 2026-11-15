@@ -340,5 +340,14 @@ async function releaseMovieAdmin(id, name){
 async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release'].forEach(id=>document.getElementById(id).value=''); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
+<script>
+// Agar App me khula hai to Download button chupao - SIRF YE ADD KIYA HAI
+if(window.location.search.includes('app=1') || navigator.userAgent.includes('AppsGeyser')){
+  var b1 = document.getElementById('installBtn');
+  if(b1) b1.style.display = 'none';
+  var b2 = document.getElementById('installBar');
+  if(b2) b2.style.display = 'none';
+}
+</script>
 </body>
 </html>
