@@ -10,8 +10,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AstFlix">
-<link rel="apple-touch-icon" href="https://placehold.co/192x192/e50914/ffffff?text=A">
-<link rel="icon" href="https://placehold.co/192x192/e50914/ffffff?text=A">
+<link rel="apple-touch-icon" href="logo.png
+<link rel="icon" href="logo.png
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 body{background:#0b0b0f;color:#fff;padding-bottom:85px}
@@ -96,7 +96,7 @@ nav button.active{color:#00d26a}
 <div id="installBar">📱 AstFlix App Install Karo - Fast Chalega <button onclick="installApp()">Install</button></div>
 
 <div class="top">
-<div class="logo" id="mainLogo">🎬 Ast<span>Flix</span></div>
+<div class="logo" id="mainLogo"><img src="logo.png" style="height:30px;width:auto"></div>
 <div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
 <button class="searchBtn" onclick="doSearch(document.getElementById('search').value)">Search</button>
 <button id="installBtn" class="installBtn" onclick="installApp()">⬇ Install</button>
@@ -218,9 +218,9 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').classList.remove('hidden'); document.getElementById('installBar').style.display = 'flex'; });
 function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
 window.addEventListener('appinstalled', function(){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); });
-try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"https://placehold.co/192x192/e50914/ffffff?text=A", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
-function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
-function getHeroImg(color){ var c = color || "111111"; return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20"; }
+try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"logo.png", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
+function getImg(name, color){ var c = color || "e50914"; return "logo.png"; }
+function getHeroImg(color){ var c = color || "111111"; return "logo.png"; }
 function isComingSoon(m){
   if(!m) return false;
   if(m.status === 'coming') return true;
