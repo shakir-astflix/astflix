@@ -326,5 +326,18 @@ function closeAdmin(){
   if(m){ m.style.display = 'none'; }
 }
 </script>
+  <div id="adminModal">
+<div class="adminCard">
+<button class="adminClose" onclick="document.getElementById('adminModal').style.display='none'">X</button>
+<h2>Admin Panel</h2>
+<input id="adminEmail" placeholder="Admin Gmail likho">
+<input id="adminPass" type="password" placeholder="Password likho">
+<button onclick="adminLogin()">Login</button>
+<button onclick="adminLogout()">Logout</button>
+<hr>
+<button onclick="addMovieAdmin()">+ Add Movie</button>
+<div id="adminList"></div>
+</div>
+  </div>
 </body>
 </html>
