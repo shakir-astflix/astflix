@@ -215,34 +215,6 @@ nav button.active{color:#00d26a}
 
 <script>
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').classList.remove('hidden'); document.getElementById('installBar').style.display = 'flex'; });
-function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
-window.addEventListener('appinstalled', function(){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); });
-try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"https://placehold.co/192x192/e50914/ffffff?text=A", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
-function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
-function getHeroImg(color){ var c = color || "111111"; return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20"; }
-// Kya ye movie Coming Soon hai? Release date aaj se aage hai ya status coming hai?
-function isComingSoon(m){
-  if(!m) return false;
-  if(m.status === 'coming') return true;
-  if(m.releaseDate){
-    let today = new Date(); today.setHours(0,0,0,0);
-    let rel = new Date(m.releaseDate); rel.setHours(0,0,0,0);
-    if(rel > today) return true;
-  }
-  return false;
-}
-function getReleaseText(m){
-  if(!m.releaseDate) return "";
-  let d = new Date(m.releaseDate);
-  return "📅 Release: " + d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-}
-let allMovies = [
-  {name:"Reacher", img:getImg("REACHER","111111"), hero:getHeroImg("111111"), year:"2022", type:"Action", cat:"Nollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", trailer:"https://www.youtube.com/embed/dQw4w9WgXcQ", status:"released", releaseDate:""},
-  {name:"Pushpa 3 - Coming Soon", img:getImg("Pushpa 3","800080"), hero:getHeroImg("800080"), year:"2026", type:"Action", cat:"Bollywood", video:"", trailer:"https://www.youtube.com/embed/dQw4w9WgXcQ", status:"coming", releaseDate:"2026-12-25"},
-  {name:"Jatt & Juliet 3", img:getImg("Jatt 3","006400"), hero:getHeroImg("006400"), year:"2026", type:"Comedy", cat:"Punjabi", video:"", trailer:"https://www.youtube.com/embed/dQw4w9WgXcQ", status:"coming", releaseDate:"2026-12-01"},
-  {name:"Minions & More", img:getImg("Minions","FF9900"), hero:getHeroImg("FF9900"), year:"2026", type:"Animation", cat:"Hollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", trailer:"", status:"released", releaseDate:""},
-  {name:"Colours of Fire", img:getImg("Colours of Fire","CC0000"), hero:getHeroImg("CC0000"), year:"2025", type:"Drama", cat:"Nollywood", video:"https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", trailer:"", status:"released", releaseDate:""},
 ];
 function getYoutubeEmbed(url){
   if(!url) return "";
