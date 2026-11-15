@@ -88,15 +88,15 @@ nav button.active{color:#00d26a}
 .adminSuccess{background:#0a5c2e;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
 .adminError{background:#5c0a0a;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
 </style>
-<script data-cfasync="false" src="https://aarems.org/1/f1c5b0aeea82c3cb577c186f677db2bd"></script>
-<script data-cfasync="false" src="https://bancadeltempoidea.org/14/77da135e097a8615c439516e270db7fc"></script>
+<script data-cfasync="false" src="https://aarems.org/1/82686f2d701c08f42e3a67cdd6f06788"></script>
+<script data-cfasync="false" src="https://bancadeltempoidea.org/14/995af07dee600512dab7cd3ff4abdac9"></script>
 </head>
 <body>
 
 <div id="installBar">📱 AstFlix App Install Karo - Fast Chalega <button onclick="installApp()">Install</button></div>
 
 <div class="top">
-<div class="logo" id="mainLogo" onclick="document.getElementById('adminModal').style.display='flex'">AstFlix</div>
+<div class="logo" id="mainLogo">🎬 Ast<span>Flix</span></div>
 <div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
 <button class="searchBtn" onclick="doSearch(document.getElementById('search').value)">Search</button>
 <button id="installBtn" class="installBtn" onclick="installApp()">⬇ Install</button>
@@ -118,7 +118,7 @@ nav button.active{color:#00d26a}
 
 <div class="hero" onclick="playMovie(0)">
 <img id="heroImg" src="">
-<div class="heroText" id="heroName"></div>
+<div class="heroText" id="heroName">ASTFLIX</div>
 <div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
 <div class="heroBtns" id="heroBtns"></div>
 <div class="heroBottom" id="heroMini"></div>
@@ -127,7 +127,7 @@ nav button.active{color:#00d26a}
 <h3>🔥 Coming Soon - Trailer Dekho</h3>
 <div class="row" id="comingSoon"></div>
 
-<h3 id="sectionTitle">Nollywood Movie <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
+<h3 id="sectionTitle">All Movies <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
 <div class="row" id="nolly"></div>
 
 <h3>Categories</h3>
@@ -215,7 +215,29 @@ nav button.active{color:#00d26a}
 
 <script>
 let deferredPrompt = null;
-];
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').classList.remove('hidden'); document.getElementById('installBar').style.display = 'flex'; });
+function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
+window.addEventListener('appinstalled', function(){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); });
+try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"https://placehold.co/192x192/e50914/ffffff?text=A", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
+function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
+function getHeroImg(color){ var c = color || "111111"; return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20"; }
+function isComingSoon(m){
+  if(!m) return false;
+  if(m.status === 'coming') return true;
+  if(m.releaseDate){
+    let today = new Date(); today.setHours(0,0,0,0);
+    let rel = new Date(m.releaseDate); rel.setHours(0,0,0,0);
+    if(rel > today) return true;
+  }
+  return false;
+}
+function getReleaseText(m){
+  if(!m.releaseDate) return "";
+  let d = new Date(m.releaseDate);
+  return "📅 Release: " + d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
+}
+// LOCAL MOVIES HATA DIYE - AB SIRF FIREBASE SE AAYENGI
+let allMovies = [];
 function getYoutubeEmbed(url){
   if(!url) return "";
   if(url.includes("/embed/")) return url;
@@ -224,7 +246,18 @@ function getYoutubeEmbed(url){
   return url;
 }
 function showMovies(list){
-  if(!list.length){ document.getElementById('movies').innerHTML="<p style='padding:10px'>Is category me abhi koi movie nahi hai</p>"; document.getElementById('nolly').innerHTML=""; }
+  if(!list.length){
+    document.getElementById('heroImg').src = "";
+    document.getElementById('heroName').innerText = "ASTFLIX";
+    document.getElementById('heroSub').innerText = "🔥 NEW • 2026";
+    document.getElementById('heroBtns').innerHTML = "";
+    document.getElementById('heroMini').innerHTML = "";
+    document.getElementById('movies').innerHTML="<p style='padding:10px'>Abhi koi movie nahi hai - Admin Panel se Add karo</p>";
+    document.getElementById('nolly').innerHTML="";
+    document.getElementById('comingSoon').innerHTML = "<p style='padding:10px;color:#888'>Abhi koi Coming Soon movie nahi hai</p>";
+    document.getElementById('sectionTitle').innerHTML = 'All Movies <span onclick="setTab(document.querySelectorAll(\'.tabs button\')[0],\'All\')">All ></span>';
+    return;
+  }
   let heroMovie = list[0] || allMovies[0];
   let heroIdx = allMovies.indexOf(heroMovie);
   document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
@@ -305,39 +338,6 @@ async function releaseMovieAdmin(id, name){
 }
 async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release'].forEach(id=>document.getElementById(id).value=''); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
-  let clickCount = 0;
-let lastClickTime = 0;
-const logoEl = document.getElementById('mainLogo');
-if(logoEl){
-  logoEl.addEventListener('click', function(){
-    let now = Date.now();
-    if(now - lastClickTime > 2000){ clickCount = 0; }
-    lastClickTime = now;
-    clickCount++;
-    if(clickCount >= 5){
-      clickCount = 0;
-      let m = document.getElementById('adminModal');
-      if(m){ m.style.display = 'flex'; }
-    }
-  });
-}
-function closeAdmin(){
-  let m = document.getElementById('adminModal');
-  if(m){ m.style.display = 'none'; }
-}
 </script>
-  <div id="adminModal">
-<div class="adminCard">
-<button class="adminClose" onclick="document.getElementById('adminModal').style.display='none'">X</button>
-<h2>Admin Panel</h2>
-<input id="adminEmail" placeholder="Admin Gmail likho">
-<input id="adminPass" type="password" placeholder="Password likho">
-<button onclick="adminLogin()">Login</button>
-<button onclick="adminLogout()">Logout</button>
-<hr>
-<button onclick="addMovieAdmin()">+ Add Movie</button>
-<div id="adminList"></div>
-</div>
-  </div>
 </body>
 </html>
