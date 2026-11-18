@@ -150,7 +150,7 @@ nav button.active{color:#00d26a}
 <nav>
 <button class="active" onclick="goHome(this)">🏠<br>Home</button>
 <button onclick="alert('NovelHub jaldi aa raha hai!')">📖<span class="hot">HOT</span><br>NovelHub</button>
-<button onclick="alert('Downloads me abhi kuch nahi hai')">⬇<br>Downloads</button>
+<button onclick="openDownloads()">⬇<br>Downloads</button>
 <button onclick="openProfile()">👤<br>Me</button>
 </nav>
 
@@ -168,6 +168,15 @@ nav button.active{color:#00d26a}
 <div class="adminSuccess" id="profileSuccess"></div>
 <button class="adminBtn green" onclick="saveProfile()">✅ Profile Save Karo</button>
 <button class="adminBtn gray" onclick="logoutProfile()">Logout</button>
+</div>
+</div>
+
+<div class="adminModal" id="downloadsModal">
+<button class="adminClose" onclick="closeAdmin('downloadsModal')">✕</button>
+<div class="adminCard">
+<h2>⬇ My Downloads</h2>
+<p id="downloadsStatus">Yahan tumhari Download ki hui Movies ayengi.</p>
+<div id="downloadsList"></div>
 </div>
 </div>
 
@@ -301,7 +310,7 @@ function showMovies(list){
     let releaseTxt = coming && d.releaseDate ? `<div class="releaseDate">${getReleaseText(d)}</div>` : '';
     let watchBtn = coming ? `<button class="watch disabled" onclick="playTrailer(${idx});alert('Movie abhi nahi aayi! ${getReleaseText(d)} ko aayegi. Pehle Trailer dekho!')">🔔 Coming Soon</button>` : `<button class="watch" onclick="playMovie(${idx})">▶ Watch</button>`;
     let trailerBtn = d.trailer ? `<button class="trailerBtn" onclick="playTrailer(${idx})">🎬 Trailer</button>` : `<button class="trailerBtn" onclick="alert('Trailer abhi nahi hai!')">🎬 Trailer</button>`;
-    return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="${coming ? `alert('Movie aane ke baad Download hoga!')` : `alert('${d.name} Download ho raha hai...')`}">⬇ ${coming ? 'Notify Me' : 'Download'}</button></div>`
+    return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="addToDownloads(${idx})">⬇ ${coming ? 'Notify Me' : 'Download'}</button></div>`
   }
   document.getElementById('nolly').innerHTML = list.map(card).join('');
   document.getElementById('movies').innerHTML = list.map(card).join('');
@@ -349,6 +358,42 @@ function playTrailer(i){
   document.getElementById('player').style.display = 'flex';
 }
 function closePlayer(){ let v=document.getElementById('video'); v.pause(); v.src=''; document.getElementById('trailerFrame').src=''; document.getElementById('player').style.display='none'; }
+function openDownloads(){
+  document.getElementById('downloadsModal').classList.add('open');
+  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
+  let box = document.getElementById('downloadsList');
+  if(!list.length){
+    box.innerHTML = "";
+    document.getElementById('downloadsStatus').innerText = "";
+    return;
+  }
+  document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads";
+  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
+}
+function addToDownloads(idx){
+  let m = allMovies[idx]; if(!m) return;
+  if(isComingSoon(m)){ alert('Movie aane ke baad Download hoga!'); return; }
+  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
+  if(list.find(x=>x.name===m.name)){ alert(m.name+' pehle se Downloads me hai!'); openDownloads(); return; }
+  list.push(m);
+  localStorage.setItem('astflix_downloads', JSON.stringify(list));
+  alert('✅ '+m.name+' Downloads me Save ho gayi!');
+  openDownloads();
+}
+function removeDownload(i){
+  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
+  list.splice(i,1);
+  localStorage.setItem('astflix_downloads', JSON.stringify(list));
+  openDownloads();
+}
+function playMovieFromDownload(i){
+  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
+  let m = list[i]; if(!m) return;
+  let idx = allMovies.findIndex(x=>x.name===m.name);
+  closeAdmin('downloadsModal');
+  if(idx>=0) playMovie(idx);
+  else if(m.video){ document.getElementById('playTitle').innerText="▶ "+m.name; let v=document.getElementById('video'); v.style.display='block'; v.src=m.video; document.getElementById('player').style.display='flex'; v.play(); }
+}
 function openProfile(){
   document.getElementById('profileModal').classList.add('open');
   let name = localStorage.getItem('astflix_name');
