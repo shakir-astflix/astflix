@@ -144,7 +144,6 @@ nav button.active{color:#00d26a}
 
 <div class="hero" onclick="playMovie(0)">
 <img id="heroImg" src="" onerror="this.style.display='none'">
-<img src="logo.png" class="heroLogo" onerror="this.style.display='none'">
 <div class="heroText" id="heroName">ASTFLIX</div>
 <div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
 <div class="heroBtns" id="heroBtns"></div>
@@ -292,6 +291,7 @@ nav button.active{color:#00d26a}
 <input id="f_img" placeholder="https://... poster link">
 <label>Hero Image Link</label>
 <input id="f_hero" placeholder="https://... hero link">
+<label style="display:block;background:#111;border:1px solid #333;border-radius:10px;padding:12px;margin-top:10px;color:#fff;font-size:14px;cursor:pointer"><input type="checkbox" id="f_heroShow" style="width:auto;margin-right:8px;accent-color:#00d26a"> ✅ Is Movie ka poster upar Hero me dikhao</label>
 <label>Year</label>
 <input id="f_year" placeholder="2024">
 <label>Type</label>
@@ -393,7 +393,7 @@ function showMovies(list){
     document.getElementById('sectionTitle').innerHTML = 'All Movies <span onclick="setTab(document.querySelectorAll(\'.tabs button\')[0],\'All\')">All ></span>';
     return;
   }
-  let heroMovie = list[0] || allMovies[0];
+  let heroMovie = allMovies.find(m => m.heroShow) || list[0] || allMovies[0];
   let heroIdx = allMovies.indexOf(heroMovie);
   document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
   document.getElementById('heroName').innerText = heroMovie.name;
@@ -695,8 +695,8 @@ async function releaseMovieAdmin(id, name){
   if(!link) return;
   try{ await db.collection("movies").doc(id).update({video: link, status: "released", releaseDate: new Date().toISOString().split('T')[0]}); alert('✅ ' + name + ' Ab Released Ho Gayi! Sab dekh sakte hain!'); loadAdminList(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); }catch(e){ alert('Fail: '+e.message); }
 }
-async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const episodesText = document.getElementById('f_episodes').value.trim(); const episodes = episodesText ? episodesText.split('\n').map(s=>s.trim()).filter(s=>s).map((link, idx)=>({title: 'Episode ' + (idx+1), video: link})) : []; const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value, season: document.getElementById('f_season').value.trim(), episodes: episodes }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(episodes.length && !data.video){ data.video = episodes[0].video; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
+async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const episodesText = document.getElementById('f_episodes').value.trim(); const episodes = episodesText ? episodesText.split('\n').map(s=>s.trim()).filter(s=>s).map((link, idx)=>({title: 'Episode ' + (idx+1), video: link})) : []; const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), heroShow: document.getElementById('f_heroShow').checked, year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value, season: document.getElementById('f_season').value.trim(), episodes: episodes }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(episodes.length && !data.video){ data.video = episodes[0].video; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); document.getElementById('f_heroShow').checked=false; const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-</html>
+  </html>
