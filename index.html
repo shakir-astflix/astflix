@@ -178,24 +178,16 @@ nav button.active{color:#00d26a}
 <button onclick="openProfile()">👤<br>Me</button>
 </nav>
 
-<!-- ============ NEW PROFILE ONLY - BAAKI SAB SAME ============ -->
+<!-- ============ CLEAN PROFILE - KOI FAZOOL TEXT NAHI ============ -->
 <div class="adminModal" id="profileModal">
 <button class="adminClose" onclick="closeAdmin('profileModal')">✕</button>
 <div class="adminCard" style="text-align:center">
-<h2 style="text-align:left">👤 My Profile</h2>
-
-<!-- GOL AVATAR S + PHOTO -->
-<div style="position:relative;width:110px;height:110px;margin:12px auto 5px">
+<div style="position:relative;width:110px;height:110px;margin:15px auto">
   <div id="profileAvatar" onclick="document.getElementById('avatarInput').click()" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(45deg,#e50914,#ff6b00);display:flex;align-items:center;justify-content:center;font-size:50px;font-weight:900;color:white;overflow:hidden;cursor:pointer">S</div>
   <div onclick="document.getElementById('avatarInput').click()" style="position:absolute;bottom:0;right:0;background:white;color:black;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;border:2px solid #0b0b0f">📷</div>
 </div>
 <input type="file" id="avatarInput" accept="image/*" hidden onchange="changeAvatar(event)">
-<p style="font-size:12px;color:#aaa;margin:0">Photo badalne ke liye gol pe dabao</p>
-
-<p id="profileStatus" style="font-size:13px;color:#aaa;margin:10px 0"></p>
-
-<!-- 3 DABBE -->
-<div style="display:flex;gap:10px;margin:12px 0;text-align:center">
+<div style="display:flex;gap:10px;margin:15px 0;text-align:center">
   <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222">
     <div style="font-size:22px">⬇️</div>
     <div id="countDownloads" style="font-size:20px;font-weight:800">0</div>
@@ -212,20 +204,15 @@ nav button.active{color:#00d26a}
     <div style="font-size:12px;color:#aaa">My Music</div>
   </div>
 </div>
-
-<!-- SETTING -->
 <div style="text-align:left">
-<label>⚙️ Setting - Profile Name</label>
-<input id="p_name" placeholder="Apna Naam likho">
-<label>Gmail</label>
-<input id="p_email" placeholder="Apni Gmail likho">
-<label>Password</label>
-<input type="password" id="p_pass" placeholder="Apna Password likho">
+<input id="p_name" placeholder="" style="margin-top:10px">
+<input id="p_email" placeholder="" style="margin-top:10px">
+<input type="password" id="p_pass" placeholder="" style="margin-top:10px">
 </div>
 <div class="adminError" id="profileError"></div>
 <div class="adminSuccess" id="profileSuccess"></div>
 <button class="adminBtn green" onclick="saveProfile()">✅ Profile Save Karo</button>
-<button class="adminBtn" style="background:#222;border:1px solid #333" onclick="showDownloadsFromProfile()">📂 My Downloads Dekho</button>
+<button class="adminBtn" style="background:#222;border:1px solid #333" onclick="showDownloadsFromProfile()">📂 My Downloads</button>
 <div style="display:flex;gap:10px">
   <button class="adminBtn gray" onclick="logoutProfile()" style="flex:1">Logout</button>
   <button class="adminBtn" onclick="deleteAccount()" style="flex:1;background:#ff0000">🗑️ Account Delete</button>
@@ -511,8 +498,6 @@ function playMovieFromDownload(i){
   if(idx>=0) playMovie(idx);
   else if(m.video){ document.getElementById('playTitle').innerText="▶ "+m.name; let v=document.getElementById('video'); v.style.display='block'; v.src=m.video; document.getElementById('player').style.display='flex'; v.play(); }
 }
-
-// ===== NEW PROFILE FUNCTIONS ONLY =====
 function changeAvatar(e){
   const file = e.target.files[0];
   if(!file) return;
@@ -557,14 +542,10 @@ function openProfile(){
   let name = localStorage.getItem('astflix_name');
   let email = localStorage.getItem('astflix_email');
   let pass = localStorage.getItem('astflix_pass');
-  let st = document.getElementById('profileStatus');
   if(name){
     document.getElementById('p_name').value = name;
     document.getElementById('p_email').value = email || '';
     if(pass) document.getElementById('p_pass').value = pass;
-    if(st) st.innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
-  } else {
-    if(st) st.innerHTML = "Apna Profile banao - Naam + Gmail + Password";
   }
   updateProfileCounts();
 }
@@ -580,8 +561,6 @@ function saveProfile(){
   localStorage.setItem('astflix_name', name);
   localStorage.setItem('astflix_email', email);
   localStorage.setItem('astflix_pass', pass);
-  let st = document.getElementById('profileStatus');
-  if(st) st.innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
   ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block';
   updateAvatar();
   updateProfileCounts();
@@ -591,16 +570,12 @@ function logoutProfile(){
   localStorage.removeItem('astflix_email');
   localStorage.removeItem('astflix_pass');
   document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
-  let st = document.getElementById('profileStatus');
-  if(st) st.innerText="Logout ho gaya!";
   let ok = document.getElementById('profileSuccess');
   if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
   updateAvatar();
   updateProfileCounts();
 }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
-
-// --- MUSIC ---
 function openMusic(){
   document.getElementById('musicModal').classList.add('open');
   renderMusic();
@@ -663,7 +638,6 @@ async function deleteMusicAdmin(id, name){
   if(!confirm(name + ' - Pakka Delete karna hai?')) return;
   try{ await db.collection("music").doc(id).delete(); await loadMusicFromDB(); }catch(e){ alert('Delete Fail: '+e.message); }
 }
-
 showMovies(allMovies);
 const ADMIN_EMAIL = "astkhanii15@gmail.com";
 var db = null; var auth = null;
