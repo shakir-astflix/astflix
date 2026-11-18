@@ -310,7 +310,7 @@ function showMovies(list){
     let releaseTxt = coming && d.releaseDate ? `<div class="releaseDate">${getReleaseText(d)}</div>` : '';
     let watchBtn = coming ? `<button class="watch disabled" onclick="playTrailer(${idx});alert('Movie abhi nahi aayi! ${getReleaseText(d)} ko aayegi. Pehle Trailer dekho!')">🔔 Coming Soon</button>` : `<button class="watch" onclick="playMovie(${idx})">▶ Watch</button>`;
     let trailerBtn = d.trailer ? `<button class="trailerBtn" onclick="playTrailer(${idx})">🎬 Trailer</button>` : `<button class="trailerBtn" onclick="alert('Trailer abhi nahi hai!')">🎬 Trailer</button>`;
-    return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="addToDownloads(${idx})">⬇ ${coming ? 'Notify Me' : 'Download'}</button></div>`
+    return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="addToDownloads(${idx})">⬇ Download</button></div>`
   }
   document.getElementById('nolly').innerHTML = list.map(card).join('');
   document.getElementById('movies').innerHTML = list.map(card).join('');
@@ -368,15 +368,25 @@ function openDownloads(){
     return;
   }
   document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads";
-  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''} • ${isComingSoon(m) ? '🔥 Coming Soon - 🔔 Notify On ✅' : '✅ Downloaded'}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
+  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''} • ${m.downloading ? '⬇ ' + (m.progress || 0) + '%' : '✅ Downloaded'}</small><br><div style="background:#333;height:6px;border-radius:10px;margin-top:6px;overflow:hidden"><div style="background:${m.downloading ? '#ffaa00' : '#00d26a'};height:100%;width:${m.downloading ? (m.progress || 0) : 100}%"></div></div><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
 }
 function addToDownloads(idx){
   let m = allMovies[idx]; if(!m) return;
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  if(list.find(x=>x.name===m.name)){ openDownloads(); return; }
+  if(list.find(x=>x.name===m.name)){ return; }
+  m.progress = 0;
+  m.downloading = true;
   list.push(m);
   localStorage.setItem('astflix_downloads', JSON.stringify(list));
-  openDownloads();
+  let timer = setInterval(function(){
+    let l = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
+    let item = l.find(x=>x.name===m.name);
+    if(!item){ clearInterval(timer); return; }
+    item.progress = (item.progress || 0) + 10;
+    if(item.progress >= 100){ item.progress = 100; item.downloading = false; clearInterval(timer); }
+    localStorage.setItem('astflix_downloads', JSON.stringify(l));
+    if(document.getElementById('downloadsModal').classList.contains('open')){ openDownloads(); }
+  }, 800);
 }
 function removeDownload(i){
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
@@ -457,4 +467,4 @@ async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-  </html>
+</html>
