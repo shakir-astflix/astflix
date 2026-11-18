@@ -184,6 +184,7 @@ nav button.active{color:#00d26a}
 <button class="adminClose" onclick="closeAdmin('profileModal')">✕</button>
 <div class="adminCard">
 <h2>👤 My Profile</h2>
+<p id="profileStatus" style="font-size:13px;color:#aaa;margin:6px 0"></p>
 <label>Profile Name</label>
 <input id="p_name" placeholder="">
 <label>Gmail</label>
@@ -324,9 +325,9 @@ nav button.active{color:#00d26a}
 
 <script>
 let deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; document.getElementById('installBtn').classList.remove('hidden'); document.getElementById('installBar').style.display = 'flex'; });
-function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
-window.addEventListener('appinstalled', function(){ document.getElementById('installBar').style.display='none'; document.getElementById('installBtn').classList.add('hidden'); });
+window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; var ib=document.getElementById('installBtn'); if(ib) ib.classList.remove('hidden'); var bar=document.getElementById('installBar'); if(bar) bar.style.display = 'flex'; });
+function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(res){ if(res.outcome === 'accepted'){ var b=document.getElementById('installBar'); if(b) b.style.display='none'; var ib=document.getElementById('installBtn'); if(ib) ib.classList.add('hidden'); } deferredPrompt = null; }); } else { alert('Chrome me 3 dot dabao > Add to Home screen dabao!'); } }
+window.addEventListener('appinstalled', function(){ var b=document.getElementById('installBar'); if(b) b.style.display='none'; var ib=document.getElementById('installBtn'); if(ib) ib.classList.add('hidden'); });
 try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"logo.png", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
 function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
 function getHeroImg(color){ var c = color || "111111"; return "https://placehold.co/800x400/" + c + "/" + c + "?text=%20"; }
@@ -480,10 +481,15 @@ function openProfile(){
   document.getElementById('profileModal').classList.add('open');
   let name = localStorage.getItem('astflix_name');
   let email = localStorage.getItem('astflix_email');
+  let pass = localStorage.getItem('astflix_pass');
+  let st = document.getElementById('profileStatus');
   if(name){
     document.getElementById('p_name').value = name;
     document.getElementById('p_email').value = email || '';
-    document.getElementById('profileStatus').innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
+    if(pass) document.getElementById('p_pass').value = pass;
+    if(st) st.innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
+  } else {
+    if(st) st.innerHTML = "";
   }
 }
 function saveProfile(){
@@ -498,7 +504,8 @@ function saveProfile(){
   localStorage.setItem('astflix_name', name);
   localStorage.setItem('astflix_email', email);
   localStorage.setItem('astflix_pass', pass);
-  document.getElementById('profileStatus').innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
+  let st = document.getElementById('profileStatus');
+  if(st) st.innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
   ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block';
 }
 function logoutProfile(){
@@ -506,7 +513,10 @@ function logoutProfile(){
   localStorage.removeItem('astflix_email');
   localStorage.removeItem('astflix_pass');
   document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
-  document.getElementById('profileStatus').innerText="Logout ho gaya!";
+  let st = document.getElementById('profileStatus');
+  if(st) st.innerText="Logout ho gaya!";
+  let ok = document.getElementById('profileSuccess');
+  if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
 }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
 
