@@ -183,7 +183,7 @@ nav button.active{color:#00d26a}
 <div id="player">
 <div class="topBar"><b id="playTitle">Playing...</b><button onclick="closePlayer()">✕ Close</button></div>
 <div id="episodeBar" style="display:none;padding:8px 12px;gap:6px;overflow-x:auto;white-space:nowrap;background:#111"></div>
-<video id="video" controls autoplay src=""></video>
+<video id="video" controls autoplay controlsList="nodownload" disablePictureInPicture oncontextmenu="return false" src=""></video>
 <iframe id="trailerFrame" allowfullscreen></iframe>
 </div>
 
@@ -368,16 +368,14 @@ function openDownloads(){
     return;
   }
   document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads";
-  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
+  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''} • ${isComingSoon(m) ? '🔥 Coming Soon - 🔔 Notify On ✅' : '✅ Downloaded'}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
 }
 function addToDownloads(idx){
   let m = allMovies[idx]; if(!m) return;
-  if(isComingSoon(m)){ alert('Movie aane ke baad Download hoga!'); return; }
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  if(list.find(x=>x.name===m.name)){ alert(m.name+' pehle se Downloads me hai!'); openDownloads(); return; }
+  if(list.find(x=>x.name===m.name)){ openDownloads(); return; }
   list.push(m);
   localStorage.setItem('astflix_downloads', JSON.stringify(list));
-  alert('✅ '+m.name+' Downloads me Save ho gayi!');
   openDownloads();
 }
 function removeDownload(i){
@@ -459,4 +457,4 @@ async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-</html>
+  </html>
