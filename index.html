@@ -79,7 +79,7 @@ nav button.active{color:#00d26a}
 .adminCard h2{font-size:22px}
 .adminCard p{font-size:13px;color:#aaa;margin:6px 0 14px;line-height:1.5}
 .adminCard label{font-size:12px;color:#aaa;display:block;margin-top:10px}
-.adminCard input,.adminCard select{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;margin-top:5px;outline:none;font-size:14px}
+.adminCard input,.adminCard select,.adminCard textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;margin-top:5px;outline:none;font-size:14px}
 .adminBtn{width:100%;background:#e50914;color:#fff;border:none;padding:13px;border-radius:10px;font-weight:900;font-size:15px;margin-top:14px;cursor:pointer}
 .adminBtn.green{background:#00d26a;color:#000}
 .adminBtn.gray{background:#333}
@@ -162,6 +162,7 @@ nav button.active{color:#00d26a}
 
 <div id="player">
 <div class="topBar"><b id="playTitle">Playing...</b><button onclick="closePlayer()">✕ Close</button></div>
+<div id="episodeBar" style="display:none;padding:8px 12px;gap:6px;overflow-x:auto;white-space:nowrap;background:#111"></div>
 <video id="video" controls autoplay src=""></video>
 <iframe id="trailerFrame" allowfullscreen></iframe>
 </div>
@@ -207,6 +208,11 @@ nav button.active{color:#00d26a}
 <select id="f_status"><option value="released">✅ Released - Abhi Dekh Sakte Hain</option><option value="coming">🔥 Coming Soon - Sirf Trailer</option></select>
 <label>Video Link (MP4) - Coming Soon ho to khali chor do, baad me dal dena</label>
 <input id="f_video" placeholder="https://... .mp4">
+<label>📺 Season Name - Agar Series hai to likho, Movie hai to khali chor do</label>
+<input id="f_season" placeholder="Season 1">
+<label>🎬 Episodes List - Pura Season Ek Sath - Har Line pe 1 Episode Link</label>
+<textarea id="f_episodes" rows="6" placeholder="Episode 1 ka link yahan paste karo&#10;Episode 2 ka link yahan paste karo&#10;Episode 3 ka link yahan paste karo"></textarea>
+<p style="font-size:11px;color:#888;margin-top:4px">Example: Line 1 = Episode 1, Line 2 = Episode 2, Line 3 = Episode 3... pura season ek sath save ho jayega.</p>
 <button class="adminBtn green" onclick="addMovieAdmin()">+ Add Movie</button>
 <button class="adminBtn gray" onclick="adminLogout()">Logout</button>
 <p style="font-size:12px;color:#ffaa00;margin-top:10px">Tip: Pehle Trailer + Release Date daal ke Coming Soon karo. Movie aane wale din Video Link daal ke Status Released kar do!</p>
@@ -298,10 +304,27 @@ function doSearch(q){ q = q.toLowerCase(); if(!q) { showMovies(allMovies); retur
 function playMovie(i){
   let m = allMovies[i]; if(!m) return;
   if(isComingSoon(m)){ playTrailer(i); alert('Movie abhi nahi aayi! ' + getReleaseText(m) + ' ko aayegi. Pehle Trailer dekho!'); return; }
+  if(m.episodes && m.episodes.length){ playEpisode(i, 0); return; }
   if(!m.video){ alert('Movie ka Video Link abhi nahi dala!'); return; }
   document.getElementById('playTitle').innerText = "▶ " + m.name;
+  document.getElementById('episodeBar').style.display='none';
   document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src='';
   let v = document.getElementById('video'); v.style.display='block'; v.src = m.video;
+  document.getElementById('player').style.display = 'flex'; v.play();
+}
+function playEpisode(i, epIdx){
+  let m = allMovies[i]; if(!m || !m.episodes || !m.episodes[epIdx]) return;
+  let ep = m.episodes[epIdx];
+  let epVideo = typeof ep === 'string' ? ep : ep.video;
+  let epTitle = typeof ep === 'string' ? ('Episode ' + (epIdx+1)) : (ep.title || ('Episode ' + (epIdx+1)));
+  document.getElementById('playTitle').innerText = "▶ " + m.name + (m.season ? " - " + m.season : "") + " - " + epTitle;
+  document.getElementById('episodeBar').style.display='flex';
+  document.getElementById('episodeBar').innerHTML = m.episodes.map((e,idx)=>{
+    let t = typeof e === 'string' ? ('Episode ' + (idx+1)) : (e.title || ('Episode ' + (idx+1)));
+    return `<button onclick="playEpisode(${i},${idx})" style="background:${idx===epIdx?'#e50914':'#333'};color:#fff;border:none;padding:8px 12px;border-radius:20px;font-weight:900;white-space:nowrap;cursor:pointer">${t}</button>`;
+  }).join('');
+  document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src='';
+  let v = document.getElementById('video'); v.style.display='block'; v.src = epVideo;
   document.getElementById('player').style.display = 'flex'; v.play();
 }
 function playTrailer(i){
@@ -338,14 +361,14 @@ function closeAdmin(id){ document.getElementById(id).classList.remove('open'); }
 function openAdminPanel(){ document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminModal').classList.add('open'); loadAdminList(); }
 async function adminLogin(){ const email = document.getElementById('adminEmail').value.trim(); const pass = document.getElementById('adminPassword').value; const errBox = document.getElementById('loginError'); errBox.style.display='none'; if(email !== ADMIN_EMAIL){ errBox.innerText = "❌ Ye Gmail Admin nahi hai!"; errBox.style.display='block'; return; } if(!pass){ errBox.innerText="Password dalo!"; errBox.style.display='block'; return; } try{ const cred = await auth.signInWithEmailAndPassword(email, pass); if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); throw new Error("Not Admin"); } document.getElementById('adminUserLabel').innerText = cred.user.email; document.getElementById('adminPassword').value=''; openAdminPanel(); }catch(e){ errBox.innerText = "❌ Login Fail: " + (e.message || "Galat Gmail / Password"); errBox.style.display='block'; } }
 async function adminLogout(){ try{ await auth.signOut(); }catch(e){} closeAdmin('adminModal'); alert('Logout ho gaya!'); }
-async function loadAdminList(){ if(!db) return; try{ const snap = await db.collection("movies").get(); const list = []; snap.forEach(d=>{ let m=d.data(); m._id=d.id; list.push(m); }); document.getElementById('adminCount').innerText = "Total: " + list.length + " movies"; document.getElementById('adminList').innerHTML = list.map(m=>`<div class="adminItem"><img src="${m.img||''}"><div><b>${m.name}</b><br><small>${m.cat} • ${m.year} • ${isComingSoon(m) ? '🔥 Coming Soon - '+ (m.releaseDate||'') : '✅ Released'} ${m.trailer ? ' • 🎬' : ''}</small><br><button style="background:#00d26a;color:#000;margin-top:4px" onclick="releaseMovieAdmin('${m._id}','${m.name}')">✅ Ab Release Karo - Movie Daalo</button></div><button onclick="deleteMovieAdmin('${m._id}','${m.name}')">Delete</button></div>`).join('') || '<p style="opacity:.6">Koi movie nahi.</p>'; }catch(e){ document.getElementById('adminList').innerHTML = '<p style="color:#ff5555">List nahi aayi: '+e.message+'</p>'; } }
+async function loadAdminList(){ if(!db) return; try{ const snap = await db.collection("movies").get(); const list = []; snap.forEach(d=>{ let m=d.data(); m._id=d.id; list.push(m); }); document.getElementById('adminCount').innerText = "Total: " + list.length + " movies"; document.getElementById('adminList').innerHTML = list.map(m=>`<div class="adminItem"><img src="${m.img||''}"><div><b>${m.name}</b><br><small>${m.cat} • ${m.year} • ${isComingSoon(m) ? '🔥 Coming Soon - '+ (m.releaseDate||'') : '✅ Released'} ${m.trailer ? ' • 🎬' : ''} ${m.season ? ' • 📺 '+m.season+' ('+(m.episodes?m.episodes.length:0)+' Episodes)' : ''}</small><br><button style="background:#00d26a;color:#000;margin-top:4px" onclick="releaseMovieAdmin('${m._id}','${m.name}')">✅ Ab Release Karo - Movie Daalo</button></div><button onclick="deleteMovieAdmin('${m._id}','${m.name}')">Delete</button></div>`).join('') || '<p style="opacity:.6">Koi movie nahi.</p>'; }catch(e){ document.getElementById('adminList').innerHTML = '<p style="color:#ff5555">List nahi aayi: '+e.message+'</p>'; } }
 async function releaseMovieAdmin(id, name){
   let link = prompt(name + ' ka Movie Video Link daalo (MP4):');
   if(!link) return;
   try{ await db.collection("movies").doc(id).update({video: link, status: "released", releaseDate: new Date().toISOString().split('T')[0]}); alert('✅ ' + name + ' Ab Released Ho Gayi! Sab dekh sakte hain!'); loadAdminList(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); }catch(e){ alert('Fail: '+e.message); }
 }
-async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release'].forEach(id=>document.getElementById(id).value=''); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
+async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const episodesText = document.getElementById('f_episodes').value.trim(); const episodes = episodesText ? episodesText.split('\n').map(s=>s.trim()).filter(s=>s).map((link, idx)=>({title: 'Episode ' + (idx+1), video: link})) : []; const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value, season: document.getElementById('f_season').value.trim(), episodes: episodes }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(episodes.length && !data.video){ data.video = episodes[0].video; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = data.img; try{ await db.collection("movies").add(data); document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Add Fail: '+e.message); } }
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-</html>
+  </html>
