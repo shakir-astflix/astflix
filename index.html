@@ -151,8 +151,25 @@ nav button.active{color:#00d26a}
 <button class="active" onclick="goHome(this)">🏠<br>Home</button>
 <button onclick="alert('NovelHub jaldi aa raha hai!')">📖<span class="hot">HOT</span><br>NovelHub</button>
 <button onclick="alert('Downloads me abhi kuch nahi hai')">⬇<br>Downloads</button>
-<button onclick="alert('AstFlix Profile')">👤<br>Me</button>
+<button onclick="openProfile()">👤<br>Me</button>
 </nav>
+
+<div class="adminModal" id="profileModal">
+<button class="adminClose" onclick="closeAdmin('profileModal')">✕</button>
+<div class="adminCard">
+<h2>👤 My Profile</h2>
+<label>Profile Name</label>
+<input id="p_name" placeholder="">
+<label>Gmail</label>
+<input id="p_email" placeholder="">
+<label>Password</label>
+<input type="password" id="p_pass" placeholder="">
+<div class="adminError" id="profileError"></div>
+<div class="adminSuccess" id="profileSuccess"></div>
+<button class="adminBtn green" onclick="saveProfile()">✅ Profile Save Karo</button>
+<button class="adminBtn gray" onclick="logoutProfile()">Logout</button>
+</div>
+</div>
 
 <div id="player">
 <div class="topBar"><b id="playTitle">Playing...</b><button onclick="closePlayer()">✕ Close</button></div>
@@ -332,6 +349,38 @@ function playTrailer(i){
   document.getElementById('player').style.display = 'flex';
 }
 function closePlayer(){ let v=document.getElementById('video'); v.pause(); v.src=''; document.getElementById('trailerFrame').src=''; document.getElementById('player').style.display='none'; }
+function openProfile(){
+  document.getElementById('profileModal').classList.add('open');
+  let name = localStorage.getItem('astflix_name');
+  let email = localStorage.getItem('astflix_email');
+  if(name){
+    document.getElementById('p_name').value = name;
+    document.getElementById('p_email').value = email || '';
+    document.getElementById('profileStatus').innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
+  }
+}
+function saveProfile(){
+  let name = document.getElementById('p_name').value.trim();
+  let email = document.getElementById('p_email').value.trim();
+  let pass = document.getElementById('p_pass').value;
+  let err = document.getElementById('profileError');
+  let ok = document.getElementById('profileSuccess');
+  err.style.display='none'; ok.style.display='none';
+  if(!name || !email || !pass){ err.innerText="❌ Name + Gmail + Password teeno likho!"; err.style.display='block'; return; }
+  if(pass.length < 6){ err.innerText="❌ Password kam se kam 6 letters ka rakho!"; err.style.display='block'; return; }
+  localStorage.setItem('astflix_name', name);
+  localStorage.setItem('astflix_email', email);
+  localStorage.setItem('astflix_pass', pass);
+  document.getElementById('profileStatus').innerHTML = "Welcome, <b style='color:#00d26a'>"+name+"</b><br>"+email;
+  ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block';
+}
+function logoutProfile(){
+  localStorage.removeItem('astflix_name');
+  localStorage.removeItem('astflix_email');
+  localStorage.removeItem('astflix_pass');
+  document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
+  document.getElementById('profileStatus').innerText="Logout ho gaya!";
+}
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
 showMovies(allMovies);
 const ADMIN_EMAIL = "astkhanii15@gmail.com";
@@ -365,4 +414,4 @@ async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-  </html>
+</html>
