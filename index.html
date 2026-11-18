@@ -182,10 +182,12 @@ nav button.active{color:#00d26a}
 <div class="adminModal" id="profileModal">
 <button class="adminClose" onclick="closeAdmin('profileModal')">✕</button>
 <div class="adminCard" style="text-align:center">
-<div style="position:relative;width:110px;height:110px;margin:15px auto">
+<div style="position:relative;width:110px;height:110px;margin:15px auto 5px">
   <div id="profileAvatar" onclick="document.getElementById('avatarInput').click()" style="width:110px;height:110px;border-radius:50%;background:linear-gradient(45deg,#e50914,#ff6b00);display:flex;align-items:center;justify-content:center;font-size:50px;font-weight:900;color:white;overflow:hidden;cursor:pointer">S</div>
   <div onclick="document.getElementById('avatarInput').click()" style="position:absolute;bottom:0;right:0;background:white;color:black;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;border:2px solid #0b0b0f">📷</div>
 </div>
+<!-- NAAM PHOTO KE NEECHE SHOW HOGA -->
+<div id="profileDisplayName" style="font-size:20px;font-weight:900;margin:5px 0 10px"></div>
 <input type="file" id="avatarInput" accept="image/*" hidden onchange="changeAvatar(event)">
 <div style="display:flex;gap:10px;margin:15px 0;text-align:center">
   <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222">
@@ -205,9 +207,12 @@ nav button.active{color:#00d26a}
   </div>
 </div>
 <div style="text-align:left">
-<input id="p_name" placeholder="" style="margin-top:10px">
-<input id="p_email" placeholder="" style="margin-top:10px">
-<input type="password" id="p_pass" placeholder="" style="margin-top:10px">
+<label style="font-size:13px;color:#fff;font-weight:700;margin-left:4px">Name</label>
+<input id="p_name" placeholder="" style="margin-top:5px">
+<label style="font-size:13px;color:#fff;font-weight:700;margin-left:4px;margin-top:10px">Gmail</label>
+<input id="p_email" placeholder="" style="margin-top:5px">
+<label style="font-size:13px;color:#fff;font-weight:700;margin-left:4px;margin-top:10px">Password</label>
+<input type="password" id="p_pass" placeholder="" style="margin-top:5px">
 </div>
 <div class="adminError" id="profileError"></div>
 <div class="adminSuccess" id="profileSuccess"></div>
@@ -515,6 +520,8 @@ function updateAvatar(){
   if(!av) return;
   if(img){ av.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover">`; }
   else { av.textContent = name.charAt(0).toUpperCase(); }
+  var dn = document.getElementById('profileDisplayName');
+  if(dn) dn.textContent = localStorage.getItem('astflix_name') || '';
 }
 function updateProfileCounts(){
   const dl = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
@@ -570,6 +577,8 @@ function logoutProfile(){
   localStorage.removeItem('astflix_email');
   localStorage.removeItem('astflix_pass');
   document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
+  var dn = document.getElementById('profileDisplayName');
+  if(dn) dn.textContent = '';
   let ok = document.getElementById('profileSuccess');
   if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
   updateAvatar();
@@ -671,4 +680,4 @@ async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-</html>
+  </html>
