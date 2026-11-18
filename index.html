@@ -30,7 +30,7 @@ body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px;flex-shrink:0}
 .tabs button.active{color:#fff;border-bottom:3px solid #e50914}
 .hero{position:relative;height:250px;overflow:hidden;background:linear-gradient(135deg,#e50914,#111);cursor:pointer}
-.hero img#heroImg{width:100%;height:100%;object-fit:cover}
+.hero img#heroImg{width:100%;height:100%;object-fit:contain;background:#000}
 .hero img.heroLogo{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:2}
 .heroText{display:none !important}
 .heroSub{position:absolute;left:12px;top:168px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
@@ -143,7 +143,7 @@ nav button.active{color:#00d26a}
 </div>
 
 <div class="hero" onclick="playMovie(0)">
-<img id="heroImg" src="" onerror="this.style.display='none'">
+<img id="heroImg" src="" onerror="this.onerror=null; this.src='https://res.cloudinary.com/vc0qyto8/image/upload/v1795036155/Shah-Rukh-Khan_KING.jpg'">
 <div class="heroText" id="heroName">ASTFLIX</div>
 <div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
 <div class="heroBtns" id="heroBtns"></div>
@@ -395,7 +395,8 @@ function showMovies(list){
   }
   let heroMovie = allMovies.find(m => m.heroShow) || list[0] || allMovies[0];
   let heroIdx = allMovies.indexOf(heroMovie);
-  document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
+  document.getElementById('heroImg').style.display='block';
+document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
   document.getElementById('heroName').innerText = heroMovie.name;
   document.getElementById('heroSub').innerText = isComingSoon(heroMovie) ? "🔥 COMING SOON • " + (heroMovie.releaseDate || heroMovie.year) : "🔥 NEW • " + heroMovie.year + " • " + heroMovie.type;
   if(isComingSoon(heroMovie)){
