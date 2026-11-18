@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>AstFlix - Watch Movies Online</title>
 <meta name="description" content="AstFlix - Watch Trending, Hollywood, Bollywood, Punjabi, Pakistani Movies Online Free">
 <meta name="theme-color" content="#0b0b0f">
@@ -14,26 +14,27 @@
 <link rel="icon" href="logo.png">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
+html,body{overflow-x:hidden !important;max-width:100vw !important;width:100%}
 body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .top{padding:10px;display:flex;gap:10px;align-items:center;position:sticky;top:0;background:#0b0b0f;z-index:99}
 .logo{font-size:22px;font-weight:900;color:#e50914;white-space:nowrap;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;display:flex;align-items:center;gap:6px}
 .logo img{width:30px;height:30px;object-fit:contain;border-radius:6px}
 .logo span{color:#fff}
-.searchBox{flex:1;background:#1c1c22;border-radius:10px;padding:11px;display:flex;gap:8px;align-items:center}
-.searchBox input{flex:1;background:none;border:none;color:#fff;outline:none;font-size:15px}
-.searchBtn{color:#00d26a;font-weight:900;border:none;background:none;font-size:16px}
+.searchBox{flex:1;background:#1c1c22;border-radius:10px;padding:11px;display:flex;gap:8px;align-items:center;min-width:0}
+.searchBox input{flex:1;background:none;border:none;color:#fff;outline:none;font-size:15px;min-width:0}
+.searchBtn{color:#00d26a;font-weight:900;border:none;background:none;font-size:16px;flex-shrink:0}
 .installBtn{background:#00d26a;color:#000;border:none;padding:9px 12px;border-radius:10px;font-weight:900;font-size:13px;white-space:nowrap}
 .installBtn.hidden{display:none}
 .tabs{display:flex;gap:20px;padding:10px 15px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
-.tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px}
+.tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px;flex-shrink:0}
 .tabs button.active{color:#fff;border-bottom:3px solid #e50914}
 .hero{position:relative;height:250px;overflow:hidden;background:linear-gradient(135deg,#e50914,#111);cursor:pointer}
 .hero img#heroImg{width:100%;height:100%;object-fit:cover}
 .hero img.heroLogo{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:2}
 .heroText{display:none !important}
 .heroSub{position:absolute;left:12px;top:168px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
-.heroBtns{position:absolute;left:12px;top:195px;display:flex;gap:8px}
+.heroBtns{position:absolute;left:12px;top:195px;display:flex;gap:8px;flex-wrap:wrap}
 .heroBtns button{border:none;padding:9px 16px;border-radius:20px;font-weight:900;font-size:13px;cursor:pointer}
 .heroPlay{background:#fff;color:#000}
 .heroTrailer{background:rgba(0,0,0,.7);color:#fff;border:1px solid #fff !important}
@@ -43,7 +44,7 @@ body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .mini b{font-size:15px}.mini span{font-size:12px;color:#aaa}
 .dl{margin-left:auto;background:#00d26a;color:#000;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;flex-shrink:0}
 h3{padding:14px 15px 8px;display:flex;justify-content:space-between;font-size:19px}
-h3 span{color:#888;font-size:16px;cursor:pointer}
+h3 span{color:#888;font-size:16px;cursor:pointer;flex-shrink:0}
 .row{display:flex;gap:10px;overflow-x:auto;padding:0 12px}
 .card{min-width:155px;width:155px;position:relative}
 .card img{width:155px;height:215px;object-fit:cover;border-radius:10px;background:#333;cursor:pointer}
@@ -51,8 +52,9 @@ h3 span{color:#888;font-size:16px;cursor:pointer}
 .comingBadge{position:absolute;top:8px;left:8px;background:#ffaa00;color:#000;font-size:11px;font-weight:900;padding:4px 8px;border-radius:20px;z-index:2}
 .newBadge{position:absolute;top:8px;left:8px;background:#e50914;color:#fff;font-size:11px;font-weight:900;padding:4px 8px;border-radius:20px;z-index:2}
 .releaseDate{font-size:11px;color:#ffaa00;margin-top:3px}
-.catRow{display:flex;gap:10px;overflow-x:auto;padding:0 12px}
-.cat{min-width:140px;height:68px;border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:none;color:#fff;background:#222}
+.catRow{display:flex;gap:10px;overflow-x:auto;padding:0 12px;scrollbar-width:none}
+.catRow::-webkit-scrollbar{display:none}
+.cat{min-width:140px;height:68px;border-radius:10px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;border:none;color:#fff;background:#222;flex-shrink:0}
 .cat b{position:relative;z-index:1;font-size:18px}
 .cat.active{outline:3px solid #e50914}
 select{width:100%;background:#222;color:#fff;border:none;padding:7px;border-radius:7px;margin-top:5px}
@@ -61,8 +63,8 @@ select{width:100%;background:#222;color:#fff;border:none;padding:7px;border-radi
 .watch.disabled{background:#444;color:#aaa}
 .trailerBtn{flex:1;background:#ffaa00;color:#000;border:none;padding:8px;border-radius:7px;font-weight:900}
 .down{flex:1;background:#333;color:#fff;border:none;padding:8px;border-radius:7px}
-nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:999}
-nav button{text-align:center;font-size:12px;color:#888;background:none;border:none;position:relative}
+nav{position:fixed;bottom:0;left:0;right:0;background:#111;display:flex;justify-content:space-around;padding:10px 0;z-index:999;width:100%;max-width:100vw}
+nav button{text-align:center;font-size:12px;color:#888;background:none;border:none;position:relative;flex:1;min-width:0;white-space:nowrap}
 nav button.active{color:#00d26a}
 .hot{background:red;color:#fff;font-size:9px;padding:1px 5px;border-radius:4px;position:absolute;top:-8px;right:-5px}
 #player{position:fixed;inset:0;background:#000;z-index:1000;display:none;flex-direction:column}
@@ -75,7 +77,7 @@ nav button.active{color:#00d26a}
 .adminModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.96);z-index:2000;overflow-y:auto;padding:18px}
 .adminModal.open{display:block}
 .adminClose{position:fixed;top:14px;right:16px;background:#e50914;color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:20px;cursor:pointer;z-index:2001}
-.adminCard{background:#1c1c22;border:1px solid #333;border-radius:16px;padding:18px;max-width:480px;margin:50px auto 20px}
+.adminCard{background:#1c1c22;border:1px solid #333;border-radius:16px;padding:18px;max-width:480px;margin:50px auto 20px;width:100%}
 .adminCard h2{font-size:22px}
 .adminCard p{font-size:13px;color:#aaa;margin:6px 0 14px;line-height:1.5}
 .adminCard label{font-size:12px;color:#aaa;display:block;margin-top:10px}
@@ -85,15 +87,34 @@ nav button.active{color:#00d26a}
 .adminBtn.gray{background:#333}
 .adminItem{display:flex;gap:10px;align-items:center;background:#111;padding:10px;border-radius:10px;margin:8px 0;border:1px solid #222}
 .adminItem img{width:45px;height:65px;object-fit:cover;border-radius:6px;background:#333}
-.adminItem div{flex:1}
-.adminItem button{background:#ff3333;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700}
+.adminItem div{flex:1;min-width:0}
+.adminItem button{background:#ff3333;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:700;flex-shrink:0}
 .adminSuccess{background:#0a5c2e;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
 .adminError{background:#5c0a0a;padding:10px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
 .musicItem{display:flex;gap:12px;align-items:center;background:#111;padding:12px;border-radius:14px;margin:10px 0;border:1px solid #222;cursor:pointer}
 .musicItem .poster{width:70px;height:70px;object-fit:cover;border-radius:10px;background:#333;flex-shrink:0}
 .musicItem .singerPic{width:48px;height:48px;object-fit:cover;border-radius:50%;background:#333;border:2px solid #00d26a;flex-shrink:0}
-.musicItem div{flex:1}
+.musicItem div{flex:1;min-width:0}
 .musicPlay{background:#00d26a;color:#000;border:none;width:42px;height:42px;border-radius:50%;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0}
+/* === SIRF MOBILE FIT FIX - CATEGORIES PATTI JAISI PEHLE THI === */
+@media (max-width:768px){
+  .top{flex-wrap:nowrap}
+  .logo{font-size:19px}
+  .tabs{gap:14px;padding:10px 12px}
+  .tabs button{font-size:16px}
+  .heroBottom{flex-wrap:nowrap}
+  .mini{min-width:220px}
+  .row{flex-wrap:wrap;overflow-x:hidden;overflow-y:visible;justify-content:flex-start}
+  .row .card{flex:1 1 calc(50% - 10px);min-width:0;width:auto;max-width:calc(50% - 5px)}
+  .row .card img{width:100%;height:auto;aspect-ratio:155/215}
+  .catRow{flex-wrap:nowrap !important;overflow-x:auto !important;overflow-y:hidden !important;padding-bottom:5px}
+  .cat{flex:0 0 140px !important;min-width:140px !important;max-width:140px !important;height:68px !important}
+  h3{font-size:17px}
+  nav{padding:8px 0}
+  nav button{font-size:11px}
+  .adminModal{padding:10px}
+  .adminCard{max-width:94vw;margin:40px auto 20px;padding:14px}
+}
 </style>
 <script data-cfasync="false" src="https://aarems.org/1/82686f2d701c08f42e3a67cdd6f06788"></script>
 <script data-cfasync="false" src="https://bancadeltempoidea.org/14/995af07dee600512dab7cd3ff4abdac9"></script>
@@ -586,4 +607,4 @@ async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=getHeroImg("111111"); fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-  </html>
+</html>
