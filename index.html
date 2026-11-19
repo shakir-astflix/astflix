@@ -685,7 +685,20 @@ try{
   loadMusicFromDB();
 }catch(e){}
 let tapCount = 0, tapTimer = null;
-document.getElementById('mainLogo').addEventListener('click', function(){ tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function(){ tapCount=0; }, 1500); if(tapCount>=5){ tapCount=0; if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){ openAdminPanel(); } else { document.getElementById('loginModal').classList.add('open'); } } });
+document.getElementById('mainLogo').addEventListener('click', function(){ 
+  tapCount++; 
+  clearTimeout(tapTimer); 
+  tapTimer = setTimeout(function(){ tapCount=0; }, 3000); 
+  if(tapCount>=3){ 
+    tapCount=0; 
+    if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){ openAdminPanel(); } 
+    else { document.getElementById('loginModal').classList.add('open'); } 
+  } 
+});
+// Seedha link se bhi Admin khulega
+if(window.location.search.includes('admin=true')){
+  setTimeout(function(){ document.getElementById('loginModal').classList.add('open'); }, 1000);
+}
 function closeAdmin(id){ document.getElementById(id).classList.remove('open'); }
 function openAdminPanel(){ document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminModal').classList.add('open'); loadAdminList(); loadMusicAdminList(); }
 async function adminLogin(){ const email = document.getElementById('adminEmail').value.trim(); const pass = document.getElementById('adminPassword').value; const errBox = document.getElementById('loginError'); errBox.style.display='none'; if(email !== ADMIN_EMAIL){ errBox.innerText = "❌ Ye Gmail Admin nahi hai!"; errBox.style.display='block'; return; } if(!pass){ errBox.innerText="Password dalo!"; errBox.style.display='block'; return; } try{ const cred = await auth.signInWithEmailAndPassword(email, pass); if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); throw new Error("Not Admin"); } document.getElementById('adminUserLabel').innerText = cred.user.email; document.getElementById('adminPassword').value=''; openAdminPanel(); }catch(e){ errBox.innerText = "❌ Login Fail: " + (e.message || "Galat Gmail / Password"); errBox.style.display='block'; } }
