@@ -30,7 +30,7 @@ body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .tabs button{font-size:18px;color:#888;background:none;border:none;font-weight:700;white-space:nowrap;padding-bottom:4px;flex-shrink:0}
 .tabs button.active{color:#fff;border-bottom:3px solid #e50914}
 .hero{position:relative;height:250px;overflow:hidden;background:linear-gradient(135deg,#e50914,#111);cursor:pointer}
-.hero img#heroImg{width:100%;height:100%;object-fit:contain;background:#000}
+.hero img#heroImg{width:100%;height:100%;object-fit:cover}
 .hero img.heroLogo{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:2}
 .heroText{display:none !important}
 .heroSub{position:absolute;left:12px;top:168px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
@@ -143,7 +143,7 @@ nav button.active{color:#00d26a}
 </div>
 
 <div class="hero" onclick="playMovie(0)">
-<img id="heroImg" src="" 
+<img id="heroImg" src="" onerror="this.style.display='none'">
 <div class="heroText" id="heroName">ASTFLIX</div>
 <div class="heroSub" id="heroSub">🔥 NEW • 2026</div>
 <div class="heroBtns" id="heroBtns"></div>
@@ -395,8 +395,7 @@ function showMovies(list){
   }
   let heroMovie = allMovies.find(m => m.heroShow) || list[0] || allMovies[0];
   let heroIdx = allMovies.indexOf(heroMovie);
-  document.getElementById('heroImg').style.display='block';
-document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
+  document.getElementById('heroImg').src = heroMovie.hero || heroMovie.img;
   document.getElementById('heroName').innerText = heroMovie.name;
   document.getElementById('heroSub').innerText = isComingSoon(heroMovie) ? "🔥 COMING SOON • " + (heroMovie.releaseDate || heroMovie.year) : "🔥 NEW • " + heroMovie.year + " • " + heroMovie.type;
   if(isComingSoon(heroMovie)){
@@ -684,23 +683,8 @@ try{
   }).catch(function(e){});
   loadMusicFromDB();
 }catch(e){}
-// === ASTFLIX SECRET ADMIN - LOGO 5 TAP - BILKUL CHHUPA HUA ===
 let tapCount = 0, tapTimer = null;
-function logoAdminTap(){
-  tapCount++;
-  clearTimeout(tapTimer);
-  tapTimer = setTimeout(function(){ tapCount = 0; }, 3000);
-  if(tapCount >= 5){
-    tapCount = 0;
-    if(navigator.vibrate) navigator.vibrate(200);
-    if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){
-      openAdminPanel();
-    } else {
-      document.getElementById('loginModal').classList.add('open');
-    }
-  }
-}
-document.getElementById('mainLogo').addEventListener('pointerdown', logoAdminTap);
+document.getElementById('mainLogo').addEventListener('click', function(){ tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function(){ tapCount=0; }, 1500); if(tapCount>=5){ tapCount=0; if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){ openAdminPanel(); } else { document.getElementById('loginModal').classList.add('open'); } } });
 function closeAdmin(id){ document.getElementById(id).classList.remove('open'); }
 function openAdminPanel(){ document.getElementById('loginModal').classList.remove('open'); document.getElementById('adminModal').classList.add('open'); loadAdminList(); loadMusicAdminList(); }
 async function adminLogin(){ const email = document.getElementById('adminEmail').value.trim(); const pass = document.getElementById('adminPassword').value; const errBox = document.getElementById('loginError'); errBox.style.display='none'; if(email !== ADMIN_EMAIL){ errBox.innerText = "❌ Ye Gmail Admin nahi hai!"; errBox.style.display='block'; return; } if(!pass){ errBox.innerText="Password dalo!"; errBox.style.display='block'; return; } try{ const cred = await auth.signInWithEmailAndPassword(email, pass); if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); throw new Error("Not Admin"); } document.getElementById('adminUserLabel').innerText = cred.user.email; document.getElementById('adminPassword').value=''; openAdminPanel(); }catch(e){ errBox.innerText = "❌ Login Fail: " + (e.message || "Galat Gmail / Password"); errBox.style.display='block'; } }
