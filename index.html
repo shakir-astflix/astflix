@@ -31,7 +31,6 @@ body{background:#0b0b0f;color:#fff;padding-bottom:85px}
 .tabs button.active{color:#fff;border-bottom:3px solid #e50914}
 .hero{position:relative;height:250px;overflow:hidden;background:#111;cursor:pointer}
 .hero img#heroImg{width:100%;height:100%;object-fit:cover;background:#111}
-.hero img.heroLogo{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;z-index:2}
 .heroText{display:none !important}
 .heroSub{position:absolute;left:12px;top:168px;background:#e50914;color:#fff;font-size:12px;font-weight:900;padding:4px 10px;border-radius:20px}
 .heroBtns{position:absolute;left:12px;top:195px;display:flex;gap:8px;flex-wrap:wrap}
@@ -92,28 +91,21 @@ nav button.active{color:#00d26a}
 .adminItem button.editBtn{background:#ffaa00;color:#000}
 .musicItem{display:flex;gap:12px;align-items:center;background:#111;padding:12px;border-radius:14px;margin:10px 0;border:1px solid #222;cursor:pointer}
 .musicItem .poster{width:70px;height:70px;object-fit:cover;border-radius:10px;background:#333;flex-shrink:0}
-.musicItem .singerPic{width:48px;height:48px;object-fit:cover;border-radius:50%;background:#333;border:2px solid #00d26a;flex-shrink:0}
 .musicItem div{flex:1;min-width:0}
 .musicPlay{background:#00d26a;color:#000;border:none;width:42px;height:42px;border-radius:50%;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0}
+.musicDl{background:#222;color:#fff;border:1px solid #444;width:42px;height:42px;border-radius:50%;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0}
 .singerBtn{background:#222;color:#fff;border:1px solid #333;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer;white-space:nowrap;font-size:13px}
 .singerBtn:hover{background:#e50914}
 @media (max-width:768px){
-  .top{flex-wrap:nowrap}
-  .logo{font-size:19px}
-  .tabs{gap:14px;padding:10px 12px}
-  .tabs button{font-size:16px}
-  .heroBottom{flex-wrap:nowrap}
-  .mini{min-width:220px}
+  .top{flex-wrap:nowrap}.logo{font-size:19px}.tabs{gap:14px;padding:10px 12px}.tabs button{font-size:16px}
+  .heroBottom{flex-wrap:nowrap}.mini{min-width:220px}
   .row{flex-wrap:wrap;overflow-x:hidden;overflow-y:visible;justify-content:flex-start}
   .row .card{flex:1 1 calc(50% - 10px);min-width:0;width:auto;max-width:calc(50% - 5px)}
   .row .card img{width:100%;height:auto;aspect-ratio:155/215}
   .catRow{flex-wrap:nowrap !important;overflow-x:auto !important;overflow-y:hidden !important;padding-bottom:5px}
   .cat{flex:0 0 140px !important;min-width:140px !important;max-width:140px !important;height:68px !important}
-  h3{font-size:17px}
-  nav{padding:8px 0}
-  nav button{font-size:11px}
-  .adminModal{padding:10px}
-  .adminCard{max-width:94vw;margin:40px auto 20px;padding:14px}
+  h3{font-size:17px}nav{padding:8px 0}nav button{font-size:11px}
+  .adminModal{padding:10px}.adminCard{max-width:94vw;margin:40px auto 20px;padding:14px}
 }
 </style>
 <script data-cfasync="false" src="https://aarems.org/1/82686f2d701c08f42e3a67cdd6f06788"></script>
@@ -209,10 +201,12 @@ nav button.active{color:#00d26a}
 <h2>⬇ My Downloads</h2>
 <p id="downloadsStatus">Yahan tumhari Download ki hui Movies ayengi.</p>
 <div id="downloadsList"></div>
+<h2 style="margin-top:18px">🎵 My Music Downloads - App Ke Andar</h2>
+<p style="font-size:12px;color:#aaa">Yahan Save kiye hue gaane hain, Chrome me nahi jate.</p>
+<div id="musicDownloadsList"></div>
 </div>
 </div>
 
-<!-- ===== MUSIC - SIRF SINGERS WALE BUTTON ===== -->
 <div class="adminModal" id="musicModal">
 <button class="adminClose" onclick="closeMusic()">✕</button>
 <div class="adminCard">
@@ -222,14 +216,12 @@ nav button.active{color:#00d26a}
 <input id="musicSearchInput" placeholder="Gaana / Singer search karo... Arijit Singh" onkeydown="if(event.key==='Enter') searchMusic()" style="flex:1;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;outline:none">
 <button onclick="searchMusic()" style="background:#00d26a;color:#000;border:none;padding:12px 16px;border-radius:10px;font-weight:900;cursor:pointer">🔍</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🔥 Trending</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" style="background:#e50914" onclick="searchMusicByCat('Trending Hindi Songs')">🔥 Trending</button>
 <button class="singerBtn" onclick="searchMusicByCat('Top 50 Global')">🌍 Top 50 Global</button>
 <button class="singerBtn" onclick="searchMusicByCat('Viral Songs')">📈 Viral</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🇮🇳 Bollywood - Boys</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Arijit Singh')">Arijit Singh</button>
@@ -245,7 +237,6 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Sachet Tandon')">Sachet Tandon</button>
 <button class="singerBtn" onclick="searchMusicByCat('Vishal Mishra')">Vishal Mishra</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#ff6b9d;margin:8px 0 6px">🇮🇳 Bollywood - Girls</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Shreya Ghoshal')">Shreya Ghoshal</button>
@@ -257,27 +248,22 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Lata Mangeshkar')">Lata Mangeshkar</button>
 <button class="singerBtn" onclick="searchMusicByCat('Asha Bhosle')">Asha Bhosle</button>
 <button class="singerBtn" onclick="searchMusicByCat('Alka Yagnik')">Alka Yagnik</button>
-<button class="singerBtn" onclick="searchMusicByCat('Anuv Jain')">Anuv Jain</button>
 <button class="singerBtn" onclick="searchMusicByCat('Shilpa Rao')">Shilpa Rao</button>
 <button class="singerBtn" onclick="searchMusicByCat('Monali Thakur')">Monali Thakur</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#ffaa00;margin:8px 0 6px">🇵🇰 Pakistani - Famous</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Atif Aslam')">Atif Aslam</button>
 <button class="singerBtn" onclick="searchMusicByCat('Rahat Fateh Ali Khan')">Rahat Fateh Ali Khan</button>
 <button class="singerBtn" onclick="searchMusicByCat('Nusrat Fateh Ali Khan')">Nusrat Fateh Ali Khan</button>
 <button class="singerBtn" onclick="searchMusicByCat('Ali Zafar')">Ali Zafar</button>
-<button class="singerBtn" onclick="searchMusicByCat('Strings')">Strings</button>
 <button class="singerBtn" onclick="searchMusicByCat('Sajjad Ali')">Sajjad Ali</button>
 <button class="singerBtn" onclick="searchMusicByCat('Abrar Ul Haq')">Abrar Ul Haq</button>
 <button class="singerBtn" onclick="searchMusicByCat('Abida Parveen')">Abida Parveen</button>
 <button class="singerBtn" onclick="searchMusicByCat('Hadiqa Kiani')">Hadiqa Kiani</button>
 <button class="singerBtn" onclick="searchMusicByCat('Aima Baig')">Aima Baig</button>
-<button class="singerBtn" onclick="searchMusicByCat('Momino')">Momino</button>
 <button class="singerBtn" onclick="searchMusicByCat('Kaifi Khalil')">Kaifi Khalil</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🎤 Punjabi - Famous</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Sidhu Moose Wala')">Sidhu Moose Wala</button>
@@ -293,7 +279,6 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Sunanda Sharma')">Sunanda Sharma</button>
 <button class="singerBtn" onclick="searchMusicByCat('Nimrat Khaira')">Nimrat Khaira</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#00aaff;margin:8px 0 6px">🌍 English - Famous</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Taylor Swift')">Taylor Swift</button>
@@ -309,7 +294,6 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Bruno Mars')">Bruno Mars</button>
 <button class="singerBtn" onclick="searchMusicByCat('Coldplay')">Coldplay</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#ff00aa;margin:8px 0 6px">🇰🇷 K-Pop / 🌍 World</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('BTS')">BTS</button>
@@ -319,7 +303,6 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Shakira')">Shakira</button>
 <button class="singerBtn" onclick="searchMusicByCat('Enrique Iglesias')">Enrique Iglesias</button>
 </div>
-
 <div style="font-size:13px;font-weight:900;color:#ffaa00;margin:8px 0 6px">🕌 Arabic / 🇹🇷 Turkish</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" onclick="searchMusicByCat('Amr Diab')">Amr Diab</button>
@@ -329,22 +312,24 @@ nav button.active{color:#00d26a}
 <button class="singerBtn" onclick="searchMusicByCat('Sezen Aksu')">Sezen Aksu</button>
 <button class="singerBtn" onclick="searchMusicByCat('Maher Zain')">Maher Zain</button>
 </div>
-
 <div id="musicPlayerBox" style="display:none;background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center">
 <img id="musicPlayerImg" src="" style="width:90px;height:90px;object-fit:cover;border-radius:50%;background:#333">
 <div id="musicPlayerName" style="font-weight:900;margin-top:8px"></div>
 <div id="musicPlayerSinger" style="font-size:12px;color:#aaa"></div>
-<audio id="musicAudio" controls style="width:100%;margin-top:10px"></audio>
-<div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+<audio id="musicAudio" controls controlsList="nodownload noplaybackrate" disablePictureInPicture oncontextmenu="return false" style="width:100%;margin-top:10px"></audio>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:8px;flex-wrap:wrap">
 <button onclick="prevMusic()" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900">⏮ Prev</button>
 <button onclick="nextMusic()" style="background:#00d26a;color:#000;border:none;padding:8px 14px;border-radius:20px;font-weight:900">Next ⏭</button>
+<button onclick="downloadCurrentMusic()" style="background:#ffaa00;color:#000;border:none;padding:8px 14px;border-radius:20px;font-weight:900">⬇ App Me Save</button>
 </div>
 </div>
 <p id="musicStatus"></p>
 <div id="musicList"></div>
+<div id="musicLoadMoreBox" style="text-align:center;display:none;margin:12px 0">
+<button onclick="loadMoreMusic()" style="background:#00d26a;color:#000;border:none;padding:12px 24px;border-radius:20px;font-weight:900;font-size:14px;cursor:pointer">⬇ Aur Gaane Load Karo - Singer Ke Sare Gaane</button>
 </div>
 </div>
-
+</div>
 <div id="player">
 <div class="topBar"><b id="playTitle">Playing...</b><button onclick="closePlayer()">✕ Close</button></div>
 <div id="episodeBar" style="display:none;padding:8px 12px;gap:6px;overflow-x:auto;white-space:nowrap;background:#111"></div>
@@ -374,9 +359,9 @@ nav button.active{color:#00d26a}
 <div id="editBanner" style="display:none;background:#ffaa00;color:#000;padding:10px;border-radius:8px;font-size:13px;font-weight:900;margin-top:10px">✏️ EDIT MODE - <span id="editMovieName"></span> ko edit kar rahe ho. Save dabao to update hogi, Delete nahi hogi!</div>
 <label>Movie / Series Name *</label>
 <input id="f_name" placeholder="Jatt & Juliet">
-<label>Poster Image Link - Yehi Poster Hero me bhi aayega agar Hero khaali ho</label>
+<label>Poster Image Link</label>
 <input id="f_img" placeholder="https://... poster link">
-<label>Hero Image Link - Khaali chor do to Poster hi Hero me aayega (Tumhari Marzi)</label>
+<label>Hero Image Link</label>
 <input id="f_hero" placeholder="Khaali chor do - Poster hi Hero ban jayega">
 <label style="display:block;background:#111;border:1px solid #333;border-radius:10px;padding:12px;margin-top:10px;color:#fff;font-size:14px;cursor:pointer"><input type="checkbox" id="f_heroShow" style="width:auto;margin-right:8px;accent-color:#00d26a"> ✅ Is Movie ka poster upar Hero me dikhao</label>
 <label>Year</label>
@@ -385,23 +370,21 @@ nav button.active{color:#00d26a}
 <select id="f_type"><option>Movie</option><option>Comedy</option><option>Action</option><option>Drama</option><option>Animation</option><option>TV</option></select>
 <label>Category</label>
 <select id="f_cat"><option>Punjabi</option><option>Pakistani</option><option>Bollywood</option><option>Hollywood</option><option>Nollywood</option><option>Western</option><option>Anime</option></select>
-<label>🎬 Trailer Link (YouTube / MP4) - Edit me sirf ye badlo, Movie Delete nahi hogi</label>
+<label>🎬 Trailer Link</label>
 <input id="f_trailer" placeholder="https://youtube.com/watch?v=...">
-<label>📅 Release Date - Movie Kab Aayegi?</label>
+<label>📅 Release Date</label>
 <input type="date" id="f_release">
 <label>Movie Status</label>
 <select id="f_status"><option value="released">✅ Released - Abhi Dekh Sakte Hain</option><option value="coming">🔥 Coming Soon - Sirf Trailer</option></select>
-<label>Video Link (MP4) - Coming Soon ho to khali chor do, baad me dal dena</label>
+<label>Video Link (MP4)</label>
 <input id="f_video" placeholder="https://... .mp4">
-<label>📺 Season Name - Agar Series hai to likho, Movie hai to khali chor do</label>
+<label>📺 Season Name</label>
 <input id="f_season" placeholder="Season 1">
-<label>🎬 Episodes List - Pura Season Ek Sath - Har Line pe 1 Episode Link</label>
-<textarea id="f_episodes" rows="6" placeholder="Episode 1 ka link yahan paste karo&#10;Episode 2 ka link yahan paste karo&#10;Episode 3 ka link yahan paste karo"></textarea>
-<p style="font-size:11px;color:#888;margin-top:4px">Example: Line 1 = Episode 1, Line 2 = Episode 2, Line 3 = Episode 3... pura season ek sath save ho jayega.</p>
+<label>🎬 Episodes List</label>
+<textarea id="f_episodes" rows="6" placeholder="Episode 1 ka link yahan paste karo&#10;Episode 2 ka link yahan paste karo"></textarea>
 <button class="adminBtn green" id="saveMovieBtn" onclick="addMovieAdmin()">+ Add Movie</button>
-<button class="adminBtn gray" id="cancelEditBtn" onclick="cancelEditMovie()" style="display:none">❌ Edit Cancel Karo - Nayi Movie Add Karo</button>
+<button class="adminBtn gray" id="cancelEditBtn" onclick="cancelEditMovie()" style="display:none">❌ Edit Cancel Karo</button>
 <button class="adminBtn gray" onclick="adminLogout()">Logout</button>
-<p style="font-size:12px;color:#ffaa00;margin-top:10px">Tip: Pehle Trailer + Release Date daal ke Coming Soon karo. Movie aane wale din Video Link daal ke Status Released kar do!</p>
 </div>
 <div class="adminCard">
 <h2 style="font-size:18px">All Movies - Edit / Delete</h2>
@@ -423,298 +406,126 @@ function installApp(){ if(deferredPrompt){ deferredPrompt.prompt(); deferredProm
 window.addEventListener('appinstalled', function(){ var b=document.getElementById('installBar'); if(b) b.style.display='none'; var ib=document.getElementById('installBtn'); if(ib) ib.classList.add('hidden'); });
 try{ var manifest = {name:"AstFlix", short_name:"AstFlix", start_url:".", display:"standalone", background_color:"#0b0b0f", theme_color:"#0b0b0f", icons:[{src:"logo.png", sizes:"192x192", type:"image/png"}]}; var blob = new Blob([JSON.stringify(manifest)], {type:'application/json'}); var link = document.createElement('link'); link.rel='manifest'; link.href=URL.createObjectURL(blob); document.head.appendChild(link); }catch(e){}
 function getImg(name, color){ var c = color || "e50914"; return "https://placehold.co/300x420/" + c + "/ffffff?text=" + encodeURIComponent(name); }
-function getHeroImg(color){ return ""; }
-function isComingSoon(m){
-  if(!m) return false;
-  if(m.status === 'coming') return true;
-  if(m.releaseDate){
-    let today = new Date(); today.setHours(0,0,0,0);
-    let rel = new Date(m.releaseDate); rel.setHours(0,0,0,0);
-    if(rel > today) return true;
-  }
-  return false;
-}
-function getReleaseText(m){
-  if(!m.releaseDate) return "";
-  let d = new Date(m.releaseDate);
-  return "📅 Release: " + d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
-}
-let allMovies = [];
-let allMusic = [];
-let musicFilter = 'All';
-let editingMovieId = null;
-function getYoutubeEmbed(url){
-  if(!url) return "";
-  if(url.includes("/embed/")) return url;
-  var m = url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/);
-  if(m) return "https://www.youtube.com/embed/" + m[1] + "?autoplay=1";
-  return url;
-}
+function isComingSoon(m){ if(!m) return false; if(m.status === 'coming') return true; if(m.releaseDate){ let today = new Date(); today.setHours(0,0,0,0); let rel = new Date(m.releaseDate); rel.setHours(0,0,0,0); if(rel > today) return true; } return false; }
+function getReleaseText(m){ if(!m.releaseDate) return ""; let d = new Date(m.releaseDate); return "📅 Release: " + d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}); }
+let allMovies = []; let allMusic = []; let editingMovieId = null;
+function getYoutubeEmbed(url){ if(!url) return ""; if(url.includes("/embed/")) return url; var m = url.match(/(?:v=|youtu\.be\/|shorts\/)([A-Za-z0-9_-]{11})/); if(m) return "https://www.youtube.com/embed/" + m[1] + "?autoplay=1"; return url; }
 function showMovies(list){
-  if(!list.length){
-    document.getElementById('heroImg').src = "";
-    document.getElementById('heroName').innerText = "ASTFLIX";
-    document.getElementById('heroSub').innerText = "🔥 NEW • 2026";
-    document.getElementById('heroBtns').innerHTML = "";
-    document.getElementById('heroMini').innerHTML = "";
-    document.getElementById('nolly').innerHTML="";
-    document.getElementById('sectionTitle').innerHTML = 'All Movies <span onclick="setTab(document.querySelectorAll(\'.tabs button\')[0],\'All\')">All ></span>';
-    return;
-  }
-  let heroMovie = allMovies.find(m => m.heroShow) || list[0] || allMovies[0];
-  let heroIdx = allMovies.indexOf(heroMovie);
-  let heroSrc = (heroMovie.hero && heroMovie.hero.trim()) ? heroMovie.hero.trim() : heroMovie.img;
-  window._heroFallback = heroMovie.img;
-  let hi = document.getElementById('heroImg');
-  hi.style.display='block'; hi.onerror=null;
-  hi.onerror = function(){ this.onerror=null; if(this.src !== heroMovie.img) this.src = heroMovie.img; else this.style.display='none'; };
-  hi.src = heroSrc;
-  document.getElementById('heroName').innerText = heroMovie.name;
-  document.getElementById('heroSub').innerText = isComingSoon(heroMovie) ? "🔥 COMING SOON • " + (heroMovie.releaseDate || heroMovie.year) : "🔥 NEW • " + heroMovie.year + " • " + heroMovie.type;
-  if(isComingSoon(heroMovie)){
-    document.getElementById('heroBtns').innerHTML = `<button class="heroTrailer" style="background:#ffaa00;color:#000" onclick="event.stopPropagation();playTrailer(${heroIdx})">🎬 Trailer Dekho</button><button class="heroTrailer" onclick="event.stopPropagation();alert('${getReleaseText(heroMovie)} - Us din movie aa jayegi!')">📅 ${heroMovie.releaseDate || 'Coming Soon'}</button>`;
-  } else {
-    document.getElementById('heroBtns').innerHTML = `<button class="heroPlay" onclick="event.stopPropagation();playMovie(${heroIdx})">▶ Watch Now</button><button class="heroTrailer" onclick="event.stopPropagation();playTrailer(${heroIdx})">🎬 Trailer</button>`;
-  }
+  if(!list.length){ document.getElementById('heroImg').src = ""; document.getElementById('heroName').innerText = "ASTFLIX"; document.getElementById('heroSub').innerText = "🔥 NEW • 2026"; document.getElementById('heroBtns').innerHTML = ""; document.getElementById('heroMini').innerHTML = ""; document.getElementById('nolly').innerHTML=""; document.getElementById('sectionTitle').innerHTML = 'All Movies <span onclick="setTab(document.querySelectorAll(\'.tabs button\')[0],\'All\')">All ></span>'; return; }
+  let heroMovie = allMovies.find(m => m.heroShow) || list[0] || allMovies[0]; let heroIdx = allMovies.indexOf(heroMovie); let heroSrc = (heroMovie.hero && heroMovie.hero.trim()) ? heroMovie.hero.trim() : heroMovie.img; window._heroFallback = heroMovie.img; let hi = document.getElementById('heroImg'); hi.style.display='block'; hi.onerror=null; hi.onerror = function(){ this.onerror=null; if(this.src !== heroMovie.img) this.src = heroMovie.img; else this.style.display='none'; }; hi.src = heroSrc; document.getElementById('heroName').innerText = heroMovie.name; document.getElementById('heroSub').innerText = isComingSoon(heroMovie) ? "🔥 COMING SOON • " + (heroMovie.releaseDate || heroMovie.year) : "🔥 NEW • " + heroMovie.year + " • " + heroMovie.type;
+  if(isComingSoon(heroMovie)){ document.getElementById('heroBtns').innerHTML = `<button class="heroTrailer" style="background:#ffaa00;color:#000" onclick="event.stopPropagation();playTrailer(${heroIdx})">🎬 Trailer Dekho</button><button class="heroTrailer" onclick="event.stopPropagation();alert('${getReleaseText(heroMovie)} - Us din movie aa jayegi!')">📅 ${heroMovie.releaseDate || 'Coming Soon'}</button>`; } else { document.getElementById('heroBtns').innerHTML = `<button class="heroPlay" onclick="event.stopPropagation();playMovie(${heroIdx})">▶ Watch Now</button><button class="heroTrailer" onclick="event.stopPropagation();playTrailer(${heroIdx})">🎬 Trailer</button>`; }
   document.getElementById('heroMini').innerHTML = list.slice(0,2).map(m=>`<div class="mini" onclick="event.stopPropagation();${isComingSoon(m) ? 'playTrailer' : 'playMovie'}(${allMovies.indexOf(m)})"><img src="${m.img}" onerror="this.src='${getImg(m.name)}'"><div><b>${m.name}</b><br><span>${isComingSoon(m) ? '🔥 Coming Soon' : '📺 | '+m.year+' | '+m.type}</span></div><div class="dl">⬇</div></div>`).join('');
-  function card(d){
-    let idx = allMovies.indexOf(d);
-    let coming = isComingSoon(d);
-    let badge = coming ? `<div class="comingBadge">🔥 COMING SOON</div>` : `<div class="newBadge">NEW</div>`;
-    let releaseTxt = coming && d.releaseDate ? `<div class="releaseDate">${getReleaseText(d)}</div>` : '';
-    let watchBtn = coming ? `<button class="watch disabled" onclick="playTrailer(${idx});alert('Movie abhi nahi aayi! ${getReleaseText(d)} ko aayegi. Pehle Trailer dekho!')">🔔 Coming Soon</button>` : `<button class="watch" onclick="playMovie(${idx})">▶ Watch</button>`;
-    let trailerBtn = d.trailer ? `<button class="trailerBtn" onclick="playTrailer(${idx})">🎬 Trailer</button>` : `<button class="trailerBtn" onclick="alert('Trailer abhi nahi hai!')">🎬 Trailer</button>`;
-    return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}" onerror="this.src='${getImg(d.name)}'"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="addToDownloads(${idx})">⬇ Download</button></div>`
-  }
-  document.getElementById('nolly').innerHTML = list.map(card).join('');
-  document.getElementById('movies').innerHTML = list.map(card).join('');
-  let comingList = allMovies.filter(x=>isComingSoon(x));
-  document.getElementById('comingSoon').innerHTML = comingList.length ? comingList.map(card).join('') : "<p style='padding:10px;color:#888'>Abhi koi Coming Soon movie nahi hai</p>";
-  document.getElementById('sectionTitle').innerHTML = list[0].cat + " Movie <span onclick=\"setTab(document.querySelectorAll('.tabs button')[0],'All')\">All ></span>";
+  function card(d){ let idx = allMovies.indexOf(d); let coming = isComingSoon(d); let badge = coming ? `<div class="comingBadge">🔥 COMING SOON</div>` : `<div class="newBadge">NEW</div>`; let releaseTxt = coming && d.releaseDate ? `<div class="releaseDate">${getReleaseText(d)}</div>` : ''; let watchBtn = coming ? `<button class="watch disabled" onclick="playTrailer(${idx});alert('Movie abhi nahi aayi! ${getReleaseText(d)} ko aayegi. Pehle Trailer dekho!')">🔔 Coming Soon</button>` : `<button class="watch" onclick="playMovie(${idx})">▶ Watch</button>`; let trailerBtn = d.trailer ? `<button class="trailerBtn" onclick="playTrailer(${idx})">🎬 Trailer</button>` : `<button class="trailerBtn" onclick="alert('Trailer abhi nahi hai!')">🎬 Trailer</button>`; return `<div class="card">${badge}<img onclick="${coming ? 'playTrailer' : 'playMovie'}(${idx})" src="${d.img}" onerror="this.src='${getImg(d.name)}'"><p>${d.name}</p>${releaseTxt}<select><option>720p HD</option><option>1080p HD</option></select><div class="btns">${watchBtn}${trailerBtn}</div><button class="down" style="width:100%;margin-top:5px" onclick="addToDownloads(${idx})">⬇ Download</button></div>` }
+  document.getElementById('nolly').innerHTML = list.map(card).join(''); document.getElementById('movies').innerHTML = list.map(card).join(''); let comingList = allMovies.filter(x=>isComingSoon(x)); document.getElementById('comingSoon').innerHTML = comingList.length ? comingList.map(card).join('') : "<p style='padding:10px;color:#888'>Abhi koi Coming Soon movie nahi hai</p>"; document.getElementById('sectionTitle').innerHTML = list[0].cat + " Movie <span onclick=\"setTab(document.querySelectorAll('.tabs button')[0],'All')\">All ></span>";
 }
 function setTab(btn, tab){ document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); if(tab=='All') showMovies(allMovies); else if(tab=='Coming Soon') showMovies(allMovies.filter(x=>isComingSoon(x))); else if(tab=='Movie') showMovies(allMovies.filter(x=>x.type!='TV' && !isComingSoon(x))); else if(tab=='TV') showMovies(allMovies.filter(x=>x.type=='TV')); else showMovies(allMovies.filter(x=>x.cat==tab)); }
 function setCat(btn, cat){ document.querySelectorAll('.cat').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); if(cat=='All') showMovies(allMovies); else showMovies(allMovies.filter(x=>x.cat==cat)); document.querySelectorAll('.tabs button').forEach(b=>{ b.classList.remove('active'); if(b.innerText==cat) b.classList.add('active'); }); }
 function doSearch(q){ q = q.toLowerCase(); if(!q) { showMovies(allMovies); return; } showMovies(allMovies.filter(x=>x.name.toLowerCase().includes(q) || x.cat.toLowerCase().includes(q))); }
-function playMovie(i){
-  let m = allMovies[i]; if(!m) return;
-  if(isComingSoon(m)){ playTrailer(i); alert('Movie abhi nahi aayi! ' + getReleaseText(m) + ' ko aayegi. Pehle Trailer dekho!'); return; }
-  if(m.episodes && m.episodes.length){ playEpisode(i, 0); return; }
-  if(!m.video){ alert('Movie ka Video Link abhi nahi dala!'); return; }
-  document.getElementById('playTitle').innerText = "▶ " + m.name;
-  document.getElementById('episodeBar').style.display='none';
-  document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src='';
-  let v = document.getElementById('video'); v.style.display='block'; v.src = m.video;
-  document.getElementById('player').style.display = 'flex'; v.play();
-}
-function playEpisode(i, epIdx){
-  let m = allMovies[i]; if(!m || !m.episodes || !m.episodes[epIdx]) return;
-  let ep = m.episodes[epIdx];
-  let epVideo = typeof ep === 'string' ? ep : ep.video;
-  let epTitle = typeof ep === 'string' ? ('Episode ' + (epIdx+1)) : (ep.title || ('Episode ' + (epIdx+1)));
-  document.getElementById('playTitle').innerText = "▶ " + m.name + (m.season ? " - " + m.season : "") + " - " + epTitle;
-  document.getElementById('episodeBar').style.display='flex';
-  document.getElementById('episodeBar').innerHTML = m.episodes.map((e,idx)=>{
-    let t = typeof e === 'string' ? ('Episode ' + (idx+1)) : (e.title || ('Episode ' + (idx+1)));
-    return `<button onclick="playEpisode(${i},${idx})" style="background:${idx===epIdx?'#e50914':'#333'};color:#fff;border:none;padding:8px 12px;border-radius:20px;font-weight:900;white-space:nowrap;cursor:pointer">${t}</button>`;
-  }).join('');
-  document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src='';
-  let v = document.getElementById('video'); v.style.display='block'; v.src = epVideo;
-  document.getElementById('player').style.display = 'flex'; v.play();
-}
-function playTrailer(i){
-  let m = allMovies[i]; if(!m) return;
-  if(!m.trailer){ alert('Is movie ka Trailer abhi nahi hai!'); return; }
-  document.getElementById('playTitle').innerText = "🎬 Trailer - " + m.name + (isComingSoon(m) ? " (Coming Soon)" : "");
-  let v = document.getElementById('video'); v.pause(); v.style.display='none';
-  let f = document.getElementById('trailerFrame');
-  if(m.trailer.includes('youtube') || m.trailer.includes('youtu.be')){ f.style.display='block'; f.src = getYoutubeEmbed(m.trailer); }
-  else { f.style.display='none'; v.style.display='block'; v.src = m.trailer; v.play(); }
-  document.getElementById('player').style.display = 'flex';
-}
+function playMovie(i){ let m = allMovies[i]; if(!m) return; if(isComingSoon(m)){ playTrailer(i); alert('Movie abhi nahi aayi! ' + getReleaseText(m) + ' ko aayegi. Pehle Trailer dekho!'); return; } if(m.episodes && m.episodes.length){ playEpisode(i, 0); return; } if(!m.video){ alert('Movie ka Video Link abhi nahi dala!'); return; } document.getElementById('playTitle').innerText = "▶ " + m.name; document.getElementById('episodeBar').style.display='none'; document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src=''; let v = document.getElementById('video'); v.style.display='block'; v.src = m.video; document.getElementById('player').style.display = 'flex'; v.play(); }
+function playEpisode(i, epIdx){ let m = allMovies[i]; if(!m || !m.episodes || !m.episodes[epIdx]) return; let ep = m.episodes[epIdx]; let epVideo = typeof ep === 'string' ? ep : ep.video; let epTitle = typeof ep === 'string' ? ('Episode ' + (epIdx+1)) : (ep.title || ('Episode ' + (epIdx+1))); document.getElementById('playTitle').innerText = "▶ " + m.name + (m.season ? " - " + m.season : "") + " - " + epTitle; document.getElementById('episodeBar').style.display='flex'; document.getElementById('episodeBar').innerHTML = m.episodes.map((e,idx)=>{ let t = typeof e === 'string' ? ('Episode ' + (idx+1)) : (e.title || ('Episode ' + (idx+1))); return `<button onclick="playEpisode(${i},${idx})" style="background:${idx===epIdx?'#e50914':'#333'};color:#fff;border:none;padding:8px 12px;border-radius:20px;font-weight:900;white-space:nowrap;cursor:pointer">${t}</button>`; }).join(''); document.getElementById('trailerFrame').style.display='none'; document.getElementById('trailerFrame').src=''; let v = document.getElementById('video'); v.style.display='block'; v.src = epVideo; document.getElementById('player').style.display = 'flex'; v.play(); }
+function playTrailer(i){ let m = allMovies[i]; if(!m) return; if(!m.trailer){ alert('Is movie ka Trailer abhi nahi hai!'); return; } document.getElementById('playTitle').innerText = "🎬 Trailer - " + m.name + (isComingSoon(m) ? " (Coming Soon)" : ""); let v = document.getElementById('video'); v.pause(); v.style.display='none'; let f = document.getElementById('trailerFrame'); if(m.trailer.includes('youtube') || m.trailer.includes('youtu.be')){ f.style.display='block'; f.src = getYoutubeEmbed(m.trailer); } else { f.style.display='none'; v.style.display='block'; v.src = m.trailer; v.play(); } document.getElementById('player').style.display = 'flex'; }
 function closePlayer(){ let v=document.getElementById('video'); v.pause(); v.src=''; document.getElementById('trailerFrame').src=''; document.getElementById('player').style.display='none'; }
 function openDownloads(){
   document.getElementById('downloadsModal').classList.add('open');
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
   let box = document.getElementById('downloadsList');
-  if(!list.length){ box.innerHTML = ""; document.getElementById('downloadsStatus').innerText = ""; return; }
-  document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads";
-  box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''} • ${m.downloading ? '⬇ ' + (m.progress || 0) + '%' : '✅ Downloaded'}</small><br><div style="background:#333;height:6px;border-radius:10px;margin-top:6px;overflow:hidden"><div style="background:${m.downloading ? '#ffaa00' : '#00d26a'};height:100%;width:${m.downloading ? (m.progress || 0) : 100}%"></div></div><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
+  if(!list.length){ box.innerHTML = "<p style='color:#888'>Abhi koi Movie Download nahi hai</p>"; } else { document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads"; box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join(''); }
+  let mlist = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]');
+  let mbox = document.getElementById('musicDownloadsList');
+  if(!mlist.length){ mbox.innerHTML = "<p style='color:#888'>Abhi koi Gaana Save nahi hai. Gaane ke samne ⬇ dabao.</p>"; }
+  else { mbox.innerHTML = mlist.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>🎤 ${m.singerName} • ✅ PURA GAANA</small><br><button style="background:#00d26a;color:#000;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playSavedMusic(${i})">▶ Play</button></div><button onclick="removeSavedMusic(${i})">Delete</button></div>`).join(''); }
 }
-function addToDownloads(idx){
-  let m = allMovies[idx]; if(!m) return;
-  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  if(list.find(x=>x.name===m.name)){ return; }
-  m.progress = 0; m.downloading = true; list.push(m);
-  localStorage.setItem('astflix_downloads', JSON.stringify(list));
-  let timer = setInterval(function(){
-    let l = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-    let item = l.find(x=>x.name===m.name);
-    if(!item){ clearInterval(timer); return; }
-    item.progress = (item.progress || 0) + 10;
-    if(item.progress >= 100){ item.progress = 100; item.downloading = false; clearInterval(timer); }
-    localStorage.setItem('astflix_downloads', JSON.stringify(l));
-    if(document.getElementById('downloadsModal').classList.contains('open')){ openDownloads(); }
-  }, 800);
-}
+function addToDownloads(idx){ let m = allMovies[idx]; if(!m) return; let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); if(list.find(x=>x.name===m.name)){ return; } m.progress = 0; m.downloading = true; list.push(m); localStorage.setItem('astflix_downloads', JSON.stringify(list)); let timer = setInterval(function(){ let l = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); let item = l.find(x=>x.name===m.name); if(!item){ clearInterval(timer); return; } item.progress = (item.progress || 0) + 10; if(item.progress >= 100){ item.progress = 100; item.downloading = false; clearInterval(timer); } localStorage.setItem('astflix_downloads', JSON.stringify(l)); if(document.getElementById('downloadsModal').classList.contains('open')){ openDownloads(); } }, 800); }
 function removeDownload(i){ let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_downloads', JSON.stringify(list)); openDownloads(); }
-function playMovieFromDownload(i){
-  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  let m = list[i]; if(!m) return;
-  let idx = allMovies.findIndex(x=>x.name===m.name);
-  closeAdmin('downloadsModal');
-  if(idx>=0) playMovie(idx);
-  else if(m.video){ document.getElementById('playTitle').innerText="▶ "+m.name; let v=document.getElementById('video'); v.style.display='block'; v.src=m.video; document.getElementById('player').style.display='flex'; v.play(); }
-}
-function changeAvatar(e){
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = function(){ try{ localStorage.setItem('astflix_avatar', reader.result); }catch(err){ alert('Photo thori bari hai, choti photo lagao!'); return; } updateAvatar(); };
-  reader.readAsDataURL(file);
-}
-function updateAvatar(){
-  const img = localStorage.getItem('astflix_avatar');
-  const name = localStorage.getItem('astflix_name') || document.getElementById('p_name').value || 'S';
-  const av = document.getElementById('profileAvatar'); if(!av) return;
-  if(img){ av.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover">`; }
-  else { av.textContent = name.charAt(0).toUpperCase(); }
-  var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = localStorage.getItem('astflix_name') || '';
-}
-function updateProfileCounts(){
-  const dl = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  if(document.getElementById('countDownloads')) document.getElementById('countDownloads').textContent = dl.length;
-  if(document.getElementById('countMovies')) document.getElementById('countMovies').textContent = allMovies ? allMovies.filter(m=>m.type!=='TV').length : 0;
-  if(document.getElementById('countMusic')) document.getElementById('countMusic').textContent = allMusic ? allMusic.length : 0;
-  updateAvatar();
-}
+function playMovieFromDownload(i){ let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); let m = list[i]; if(!m) return; let idx = allMovies.findIndex(x=>x.name===m.name); closeAdmin('downloadsModal'); if(idx>=0) playMovie(idx); else if(m.video){ document.getElementById('playTitle').innerText="▶ "+m.name; let v=document.getElementById('video'); v.style.display='block'; v.src=m.video; document.getElementById('player').style.display='flex'; v.play(); } }
+function changeAvatar(e){ const file = e.target.files[0]; if(!file) return; const reader = new FileReader(); reader.onload = function(){ try{ localStorage.setItem('astflix_avatar', reader.result); }catch(err){ alert('Photo thori bari hai, choti photo lagao!'); return; } updateAvatar(); }; reader.readAsDataURL(file); }
+function updateAvatar(){ const img = localStorage.getItem('astflix_avatar'); const name = localStorage.getItem('astflix_name') || document.getElementById('p_name').value || 'S'; const av = document.getElementById('profileAvatar'); if(!av) return; if(img){ av.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover">`; } else { av.textContent = name.charAt(0).toUpperCase(); } var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = localStorage.getItem('astflix_name') || ''; }
+function updateProfileCounts(){ const dl = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); const mdl = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); if(document.getElementById('countDownloads')) document.getElementById('countDownloads').textContent = dl.length + mdl.length; if(document.getElementById('countMovies')) document.getElementById('countMovies').textContent = allMovies ? allMovies.filter(m=>m.type!=='TV').length : 0; if(document.getElementById('countMusic')) document.getElementById('countMusic').textContent = mdl.length; updateAvatar(); }
 function showDownloadsFromProfile(){ closeAdmin('profileModal'); openDownloads(); }
-function deleteAccount(){ if(confirm('Pakka Account Delete karna hai? Naam + Photo sab delete ho jayega!')){ localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass'); localStorage.removeItem('astflix_avatar'); alert('Account Delete ho gaya!'); location.reload(); } }
-function editProfile(){ document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; document.getElementById('profileSuccess').style.display='none'; }
-function openProfile(){
-  document.getElementById('profileModal').classList.add('open');
-  let name = localStorage.getItem('astflix_name'); let email = localStorage.getItem('astflix_email'); let pass = localStorage.getItem('astflix_pass');
-  if(name){ document.getElementById('p_name').value = name; document.getElementById('p_email').value = email || ''; if(pass) document.getElementById('p_pass').value = pass; document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block'; }
-  else { document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; }
-  updateProfileCounts();
-}
-function saveProfile(){
-  let name = document.getElementById('p_name').value.trim(); let email = document.getElementById('p_email').value.trim(); let pass = document.getElementById('p_pass').value;
-  let err = document.getElementById('profileError'); let ok = document.getElementById('profileSuccess'); err.style.display='none'; ok.style.display='none';
-  if(!name || !email || !pass){ err.innerText="❌ Name + Gmail + Password teeno likho!"; err.style.display='block'; return; }
-  if(pass.length < 6){ err.innerText="❌ Password kam se kam 6 letters ka rakho!"; err.style.display='block'; return; }
-  localStorage.setItem('astflix_name', name); localStorage.setItem('astflix_email', email); localStorage.setItem('astflix_pass', pass);
-  ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block';
-  document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block';
-  updateAvatar(); updateProfileCounts();
-}
-function logoutProfile(){
-  localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass');
-  document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
-  var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = '';
-  document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none';
-  let ok = document.getElementById('profileSuccess'); if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
-  updateAvatar(); updateProfileCounts();
-}
+function deleteAccount(){ if(confirm('Pakka Account Delete karna hai?')){ localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass'); localStorage.removeItem('astflix_avatar'); alert('Account Delete ho gaya!'); location.reload(); } }
+function editProfile(){ document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; }
+function openProfile(){ document.getElementById('profileModal').classList.add('open'); let name = localStorage.getItem('astflix_name'); let email = localStorage.getItem('astflix_email'); let pass = localStorage.getItem('astflix_pass'); if(name){ document.getElementById('p_name').value = name; document.getElementById('p_email').value = email || ''; if(pass) document.getElementById('p_pass').value = pass; document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block'; } else { document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; } updateProfileCounts(); }
+function saveProfile(){ let name = document.getElementById('p_name').value.trim(); let email = document.getElementById('p_email').value.trim(); let pass = document.getElementById('p_pass').value; let err = document.getElementById('profileError'); let ok = document.getElementById('profileSuccess'); err.style.display='none'; ok.style.display='none'; if(!name || !email || !pass){ err.innerText="❌ Name + Gmail + Password teeno likho!"; err.style.display='block'; return; } if(pass.length < 6){ err.innerText="❌ Password kam se kam 6 letters ka rakho!"; err.style.display='block'; return; } localStorage.setItem('astflix_name', name); localStorage.setItem('astflix_email', email); localStorage.setItem('astflix_pass', pass); ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block'; document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block'; updateAvatar(); updateProfileCounts(); }
+function logoutProfile(){ localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass'); document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value=''; var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = ''; document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; let ok = document.getElementById('profileSuccess'); if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; } updateAvatar(); updateProfileCounts(); }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
+
+// ===== MUSIC - SINGER KE SARE FILM WALE GAANE + PURA GAANA + APP KE ANDAR DOWNLOAD =====
 let searchResults = [];
 let currentMusicIdx = -1;
-function openMusic(){
-  document.getElementById('musicModal').classList.add('open');
-  if(searchResults.length===0) searchMusicByCat('Trending Hindi Songs');
-  else renderSearchMusic();
-}
+let currentMusicQuery = '';
+let currentMusicPage = 1;
+function openMusic(){ document.getElementById('musicModal').classList.add('open'); if(searchResults.length===0) searchMusicByCat('Trending Hindi Songs'); else renderSearchMusic(); }
 function closeMusic(){ let a = document.getElementById('musicAudio'); if(a) a.pause(); document.getElementById('musicModal').classList.remove('open'); }
-function filterMusic(cat){ searchMusicByCat(cat); }
-async function searchMusic(){
-  let q = document.getElementById('musicSearchInput').value.trim();
-  if(!q) q = 'Trending Hindi Songs';
-  searchMusicByCat(q);
+async function searchMusic(){ let q = document.getElementById('musicSearchInput').value.trim(); if(!q) q = 'Trending Hindi Songs'; searchMusicByCat(q); }
+async function fetchSaavnSongs(q, page){
+  // 1) Pehle Singer dhoondo - uske SARE gaane lene ke liye
+  let artistId = null;
+  let artistTries = [
+    'https://saavn.dev/api/search/artists?query=' + encodeURIComponent(q),
+    'https://corsproxy.io/?url=' + encodeURIComponent('https://saavn.dev/api/search/artists?query=' + encodeURIComponent(q)),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://saavn.dev/api/search/artists?query=' + encodeURIComponent(q))
+  ];
+  for(let url of artistTries){
+    try{ let r = await fetch(url); if(!r.ok) continue; let d = await r.json(); let arts = (d.data && d.data.results) ? d.data.results : (d.results || []); if(arts && arts.length){ let f = arts.find(a=>a.name && a.name.toLowerCase()===q.toLowerCase()) || arts[0]; artistId = f.id; if(artistId) break; } }catch(e){ continue; }
+  }
+  // 2) Singer mil gaya to uske SARE Film wale gaane
+  if(artistId){
+    let tries = [
+      'https://saavn.dev/api/artists/' + artistId + '/songs?page=' + page + '&limit=50',
+      'https://corsproxy.io/?url=' + encodeURIComponent('https://saavn.dev/api/artists/' + artistId + '/songs?page=' + page + '&limit=50'),
+      'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://saavn.dev/api/artists/' + artistId + '/songs?page=' + page + '&limit=50')
+    ];
+    for(let url of tries){
+      try{ let res = await fetch(url); if(!res.ok) continue; let data = await res.json(); let songs = (data.data && data.data.songs) ? data.data.songs : ((data.data && data.data.results) ? data.data.results : (data.songs || data.results || [])); if(songs && songs.length){ let mapped = songs.map(m=>{ let dl = m.downloadUrl || []; let fullUrl = ''; if(dl.length){ let best = dl[dl.length-1]; fullUrl = typeof best === 'string' ? best : best.url; } let img = ''; if(m.image && m.image.length) img = m.image[m.image.length-1].url || m.image[m.image.length-1].link || ''; let singer = 'Unknown'; if(m.artists && m.artists.primary) singer = m.artists.primary.map(a=>a.name).join(', '); else if(m.primaryArtists) singer = m.primaryArtists; return { name: m.name || m.title, singerName: singer, img: img, audioUrl: fullUrl, album: m.album ? (m.album.name || m.album) : '', duration: m.duration || 0, isFull: true }; }).filter(x=>x.audioUrl); if(mapped.length) return mapped; } }catch(e){ continue; }
+    }
+  }
+  // 3) Agar Singer na mile - Gaana Search karo, jo bhi Search kare wo aayega
+  let baseTries = [
+    'https://saavn.dev/api/search/songs?query=' + encodeURIComponent(q) + '&page=' + page + '&limit=50',
+    'https://corsproxy.io/?url=' + encodeURIComponent('https://saavn.dev/api/search/songs?query=' + encodeURIComponent(q) + '&page=' + page + '&limit=50'),
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent('https://saavn.dev/api/search/songs?query=' + encodeURIComponent(q) + '&page=' + page + '&limit=50')
+  ];
+  for(let url of baseTries){
+    try{ let res = await fetch(url); if(!res.ok) continue; let data = await res.json(); let songs = (data.data && data.data.results) ? data.data.results : (data.results || []); if(songs && songs.length){ let mapped = songs.map(m=>{ let dl = m.downloadUrl || []; let fullUrl = ''; if(dl.length){ let best = dl[dl.length-1]; fullUrl = typeof best === 'string' ? best : best.url; } let img = ''; if(m.image && m.image.length) img = m.image[m.image.length-1].url || m.image[m.image.length-1].link || ''; let singer = 'Unknown'; if(m.artists && m.artists.primary) singer = m.artists.primary.map(a=>a.name).join(', '); else if(m.primaryArtists) singer = m.primaryArtists; return { name: m.name || m.title, singerName: singer, img: img, audioUrl: fullUrl, album: m.album ? (m.album.name || m.album) : '', duration: m.duration || 0, isFull: true }; }).filter(x=>x.audioUrl); if(mapped.length) return mapped; } }catch(e){ continue; }
+  }
+  return [];
 }
 async function searchMusicByCat(q){
-  document.getElementById('musicStatus').innerText = "🔍 '" + q + "' dhoond rahe hain... Pura Gaana...";
-  document.getElementById('musicList').innerHTML = "";
-  let apis = [
-    'https://saavn.dev/api/search/songs?query=',
-    'https://saavn.dev/api/search/songs?query=',
-    'https://jiosaavn-api-privatecvc2.vercel.app/api/search/songs?query='
-  ];
-  for(let api of apis){
-    try{
-      let res = await fetch(api + encodeURIComponent(q));
-      let data = await res.json();
-      let songs = (data.data && data.data.results) ? data.data.results : (data.results || []);
-      if(songs && songs.length){
-        searchResults = songs.map(m => {
-          let dl = m.downloadUrl || [];
-          let fullUrl = '';
-          if(dl.length){
-            let best = dl[dl.length-1];
-            fullUrl = typeof best === 'string' ? best : best.url;
-          }
-          let img = '';
-          if(m.image && m.image.length) img = m.image[m.image.length-1].url || m.image[m.image.length-1].link || '';
-          let singer = 'Unknown';
-          if(m.artists && m.artists.primary) singer = m.artists.primary.map(a=>a.name).join(', ');
-          else if(m.primaryArtists) singer = m.primaryArtists;
-          return { name: m.name || m.title, singerName: singer, img: img, audioUrl: fullUrl, album: m.album ? (m.album.name || m.album) : '', duration: m.duration || 0, isFull: true };
-        }).filter(x=>x.audioUrl);
-        if(searchResults.length){
-          document.getElementById('musicStatus').innerText = "✅ " + searchResults.length + " PURE gaane mile!";
-          renderSearchMusic();
-          return;
-        }
-      }
-    }catch(e){ continue; }
-  }
-  try{
-    let res = await fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(q) + '&media=music&entity=song&limit=25');
-    let data = await res.json();
-    searchResults = (data.results||[]).map(s => ({ name: s.trackName, singerName: s.artistName, img: s.artworkUrl100 ? s.artworkUrl100.replace('100x100','300x300') : '', audioUrl: s.previewUrl, album: s.collectionName||'', duration: Math.floor(s.trackTimeMillis/1000)||0, isFull: false }));
-    if(searchResults.length){
-      document.getElementById('musicStatus').innerText = "⚠️ Pura gaana server busy hai, abhi 30 sec Preview bajega, thori der baad dobara try karo!";
-      renderSearchMusic(); return;
-    }
-  }catch(e){}
-  document.getElementById('musicStatus').innerText = "❌ Koi gaana nahi mila, dobara try karo!";
+  currentMusicQuery = q; currentMusicPage = 1;
+  document.getElementById('musicStatus').innerText = "🔍 '" + q + "' dhoond rahe hain... Singer ke SARE Film wale gaane... PURA Gaana...";
+  document.getElementById('musicList').innerHTML = ""; document.getElementById('musicLoadMoreBox').style.display='none';
+  let songs = await fetchSaavnSongs(q, 1);
+  if(songs.length){ searchResults = songs; document.getElementById('musicStatus').innerText = "✅ " + searchResults.length + " PURE gaane mile! Aur chahiye to neeche Aur Gaane dabao!"; renderSearchMusic(); document.getElementById('musicLoadMoreBox').style.display='block'; return; }
+  document.getElementById('musicStatus').innerText = "❌ Koi gaana nahi mila, dobara try karo! Internet check karo.";
+}
+async function loadMoreMusic(){
+  currentMusicPage++;
+  document.getElementById('musicStatus').innerText = "🔍 Aur gaane la rahe hain... Page " + currentMusicPage;
+  let more = await fetchSaavnSongs(currentMusicQuery, currentMusicPage);
+  if(more.length){ let ex = new Set(searchResults.map(x=>x.name + x.singerName)); let fresh = more.filter(x=>!ex.has(x.name + x.singerName)); searchResults = searchResults.concat(fresh); document.getElementById('musicStatus').innerText = "✅ Total " + searchResults.length + " PURE gaane! Aur chahiye to phir dabao!"; renderSearchMusic(); return; }
+  document.getElementById('musicStatus').innerText = "✅ Bas itne hi gaane hain! Total " + searchResults.length; document.getElementById('musicLoadMoreBox').style.display='none';
 }
 function renderSearchMusic(){
   document.getElementById('musicList').innerHTML = searchResults.map((m,i)=>{
-    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${m.img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${m.name}</b><br><small>🎤 ${m.singerName}</small><br><small style="color:${m.isFull ? '#00d26a' : '#ffaa00'}">${m.isFull ? '✅ PURA GAANA' : '⚠️ 30 Sec Preview'} • ${m.album} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
+    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${m.img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${m.name}</b><br><small>🎤 ${m.singerName}</small><br><small style="color:#00d26a">✅ PURA GAANA • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''} • ${m.album}</small></div><button class="musicDl" onclick="event.stopPropagation();downloadMusicInApp(${i})" title="App me Save">⬇</button><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
   }).join('');
 }
-function playMusic(idx){
-  let m = searchResults[idx]; if(!m) return;
-  currentMusicIdx = idx;
-  if(!m.audioUrl){ alert('Is gaane ka link nahi mila!'); return; }
-  document.getElementById('musicPlayerBox').style.display='block';
-  document.getElementById('musicPlayerImg').src = m.img;
-  document.getElementById('musicPlayerName').innerText = m.name;
-  document.getElementById('musicPlayerSinger').innerText = m.singerName + (m.isFull ? ' • ✅ PURA GAANA' : ' • ⚠️ Preview');
-  let a = document.getElementById('musicAudio'); a.src = m.audioUrl; a.play();
-  a.onended = function(){ nextMusic(); };
-}
-function nextMusic(){ if(searchResults.length===0) return; let next = currentMusicIdx + 1; if(next >= searchResults.length) next = 0; playMusic(next); }
-function prevMusic(){ if(searchResults.length===0) return; let prev = currentMusicIdx - 1; if(prev < 0) prev = searchResults.length - 1; playMusic(prev); }
+function playMusic(idx){ let m = searchResults[idx]; if(!m) return; currentMusicIdx = idx; if(!m.audioUrl){ alert('Is gaane ka link nahi mila!'); return; } document.getElementById('musicPlayerBox').style.display='block'; document.getElementById('musicPlayerImg').src = m.img; document.getElementById('musicPlayerName').innerText = m.name; document.getElementById('musicPlayerSinger').innerText = m.singerName + ' • ✅ PURA GAANA'; let a = document.getElementById('musicAudio'); a.src = m.audioUrl; a.play(); a.onended = function(){ nextMusic(); }; }
+function nextMusic(){ if(searchResults.length===0) return; let n = currentMusicIdx + 1; if(n >= searchResults.length) n = 0; playMusic(n); }
+function prevMusic(){ if(searchResults.length===0) return; let p = currentMusicIdx - 1; if(p < 0) p = searchResults.length - 1; playMusic(p); }
+// APP KE ANDAR DOWNLOAD - Chrome me nahi jayega
+function downloadMusicInApp(idx){ let m = searchResults[idx]; if(!m) return; let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); if(list.find(x=>x.name===m.name && x.singerName===m.singerName)){ alert('Ye gaana pehle se App me Save hai! Downloads me dekho.'); return; } list.push(m); localStorage.setItem('astflix_music_downloads', JSON.stringify(list)); updateProfileCounts(); alert('✅ "' + m.name + '" App ke andar Save ho gaya! Neeche Downloads me dekho. Chrome me nahi gaya!'); }
+function downloadCurrentMusic(){ if(currentMusicIdx>=0) downloadMusicInApp(currentMusicIdx); }
+function playSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); let m = list[i]; if(!m) return; closeAdmin('downloadsModal'); document.getElementById('musicModal').classList.add('open'); searchResults = list; currentMusicIdx = i; currentMusicQuery = m.singerName; document.getElementById('musicPlayerBox').style.display='block'; document.getElementById('musicPlayerImg').src = m.img; document.getElementById('musicPlayerName').innerText = m.name; document.getElementById('musicPlayerSinger').innerText = m.singerName + ' • ✅ PURA GAANA • Saved'; let a = document.getElementById('musicAudio'); a.src = m.audioUrl; a.play(); renderSearchMusic(); }
+function removeSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_music_downloads', JSON.stringify(list)); updateProfileCounts(); openDownloads(); }
 async function loadMusicFromDB(){}
-async function addMusicAdmin(){ alert('Ab gaana add karne ki zaroorat nahi! Music me Search karo, gaana khud aa jayega!'); }
+async function addMusicAdmin(){ alert('Ab gaana add karne ki zaroorat nahi!'); }
 async function loadMusicAdminList(){}
 async function deleteMusicAdmin(){}
 showMovies(allMovies);
 const ADMIN_EMAIL = "astkhanii15@gmail.com";
 var db = null; var auth = null;
-try{
-  var firebaseConfig = { apiKey: "AIzaSyDUbSELRxQolLC55kl75UVU9gtUuMHC4vs", authDomain: "my-drama-app-5036c.firebaseapp.com", projectId: "my-drama-app-5036c", storageBucket: "my-drama-app-5036c.firebasestorage.app", messagingSenderId: "547655779548", appId: "1:547655779548:web:762577b510dc6095bb6019", measurementId: "G-MLL3XWVC4G" };
-  firebase.initializeApp(firebaseConfig);
-  db = firebase.firestore(); auth = firebase.auth();
-  auth.onAuthStateChanged(function(user){ if(user && user.email === ADMIN_EMAIL){ document.getElementById('adminUserLabel').innerText = user.email; } });
-  db.collection("movies").get().then(function(snap){
-    if(!snap.empty){
-      var fbMovies = [];
-      snap.forEach(function(d){ var m = d.data(); m._id = d.id; if(!m.img) m.img = getImg(m.name, "111111"); if(!m.hero) m.hero = ""; if(!m.status) m.status = m.video ? "released" : "coming"; fbMovies.push(m); });
-      allMovies = fbMovies; showMovies(allMovies);
-    }
-  }).catch(function(e){});
-  loadMusicFromDB();
-}catch(e){}
+try{ var firebaseConfig = { apiKey: "AIzaSyDUbSELRxQolLC55kl75UVU9gtUuMHC4vs", authDomain: "my-drama-app-5036c.firebaseapp.com", projectId: "my-drama-app-5036c", storageBucket: "my-drama-app-5036c.firebasestorage.app", messagingSenderId: "547655779548", appId: "1:547655779548:web:762577b510dc6095bb6019", measurementId: "G-MLL3XWVC4G" }; firebase.initializeApp(firebaseConfig); db = firebase.firestore(); auth = firebase.auth(); auth.onAuthStateChanged(function(user){ if(user && user.email === ADMIN_EMAIL){ document.getElementById('adminUserLabel').innerText = user.email; } }); db.collection("movies").get().then(function(snap){ if(!snap.empty){ var fbMovies = []; snap.forEach(function(d){ var m = d.data(); m._id = d.id; if(!m.img) m.img = getImg(m.name, "111111"); if(!m.hero) m.hero = ""; if(!m.status) m.status = m.video ? "released" : "coming"; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); } }).catch(function(e){}); loadMusicFromDB(); }catch(e){}
 let tapCount = 0, tapTimer = null;
 document.getElementById('mainLogo').addEventListener('click', function(){ tapCount++; clearTimeout(tapTimer); tapTimer = setTimeout(function(){ tapCount=0; }, 1500); if(tapCount>=5){ tapCount=0; if(auth && auth.currentUser && auth.currentUser.email === ADMIN_EMAIL){ openAdminPanel(); } else { document.getElementById('loginModal').classList.add('open'); } } });
 function closeAdmin(id){ document.getElementById(id).classList.remove('open'); }
@@ -722,77 +533,12 @@ function openAdminPanel(){ document.getElementById('loginModal').classList.remov
 async function adminLogin(){ const email = document.getElementById('adminEmail').value.trim(); const pass = document.getElementById('adminPassword').value; const errBox = document.getElementById('loginError'); errBox.style.display='none'; if(email !== ADMIN_EMAIL){ errBox.innerText = "❌ Ye Gmail Admin nahi hai!"; errBox.style.display='block'; return; } if(!pass){ errBox.innerText="Password dalo!"; errBox.style.display='block'; return; } try{ const cred = await auth.signInWithEmailAndPassword(email, pass); if(cred.user.email !== ADMIN_EMAIL){ await auth.signOut(); throw new Error("Not Admin"); } document.getElementById('adminUserLabel').innerText = cred.user.email; document.getElementById('adminPassword').value=''; openAdminPanel(); }catch(e){ errBox.innerText = "❌ Login Fail: " + (e.message || "Galat Gmail / Password"); errBox.style.display='block'; } }
 async function adminLogout(){ try{ await auth.signOut(); }catch(e){} closeAdmin('adminModal'); alert('Logout ho gaya!'); }
 async function loadAdminList(){ if(!db) return; try{ const snap = await db.collection("movies").get(); const list = []; snap.forEach(d=>{ let m=d.data(); m._id=d.id; list.push(m); }); document.getElementById('adminCount').innerText = "Total: " + list.length + " movies"; document.getElementById('adminList').innerHTML = list.map(m=>`<div class="adminItem"><img src="${m.img||''}"><div><b>${m.name}</b><br><small>${m.cat} • ${m.year} • ${isComingSoon(m) ? '🔥 Coming Soon - '+ (m.releaseDate||'') : '✅ Released'} ${m.trailer ? ' • 🎬' : ''} ${m.season ? ' • 📺 '+m.season+' ('+(m.episodes?m.episodes.length:0)+' Episodes)' : ''}</small><br><div style="display:flex;gap:6px;margin-top:6px"><button class="editBtn" onclick="editMovieAdmin('${m._id}')">✏️ Edit</button><button style="background:#00d26a;color:#000" onclick="releaseMovieAdmin('${m._id}','${m.name}')">✅ Release</button></div></div><button onclick="deleteMovieAdmin('${m._id}','${m.name}')">Delete</button></div>`).join('') || '<p style="opacity:.6">Koi movie nahi.</p>'; }catch(e){ document.getElementById('adminList').innerHTML = '<p style="color:#ff5555">List nahi aayi: '+e.message+'</p>'; } }
-async function releaseMovieAdmin(id, name){
-  let link = prompt(name + ' ka Movie Video Link daalo (MP4):');
-  if(!link) return;
-  try{ await db.collection("movies").doc(id).update({video: link, status: "released", releaseDate: new Date().toISOString().split('T')[0]}); alert('✅ ' + name + ' Ab Released Ho Gayi! Sab dekh sakte hain!'); loadAdminList(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); }catch(e){ alert('Fail: '+e.message); }
-}
-function cancelEditMovie(){
-  editingMovieId = null;
-  document.getElementById('editBanner').style.display='none';
-  document.getElementById('cancelEditBtn').style.display='none';
-  document.getElementById('saveMovieBtn').innerText = '+ Add Movie';
-  ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f_heroShow').checked=false;
-  document.getElementById('f_status').value='released';
-}
-async function editMovieAdmin(id){
-  try{
-    const doc = await db.collection("movies").doc(id).get();
-    if(!doc.exists){ alert('Movie nahi mili!'); return; }
-    const m = doc.data();
-    editingMovieId = id;
-    document.getElementById('f_name').value = m.name || '';
-    document.getElementById('f_img').value = m.img || '';
-    document.getElementById('f_hero').value = m.hero || '';
-    document.getElementById('f_heroShow').checked = !!m.heroShow;
-    document.getElementById('f_year').value = m.year || '';
-    document.getElementById('f_type').value = m.type || 'Movie';
-    document.getElementById('f_cat').value = m.cat || 'Bollywood';
-    document.getElementById('f_trailer').value = m.trailer || '';
-    document.getElementById('f_release').value = m.releaseDate || '';
-    document.getElementById('f_status').value = m.status || 'released';
-    document.getElementById('f_video').value = m.video || '';
-    document.getElementById('f_season').value = m.season || '';
-    let epText = '';
-    if(m.episodes && m.episodes.length){ epText = m.episodes.map(e=> typeof e==='string' ? e : e.video).join('\n'); }
-    document.getElementById('f_episodes').value = epText;
-    document.getElementById('editBanner').style.display='block';
-    document.getElementById('editMovieName').innerText = m.name;
-    document.getElementById('saveMovieBtn').innerText = '✅ Update Movie - Save Karo';
-    document.getElementById('cancelEditBtn').style.display='block';
-    document.getElementById('adminMsg').innerText = '✏️ Edit Mode - Ab sirf jo badalna hai wo badlo aur Update dabao!';
-    document.getElementById('adminMsg').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
-  }catch(e){ alert('Edit Fail: '+e.message); }
-}
-async function refreshMoviesFromDB(){
-  const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=""; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList();
-}
-async function addMovieAdmin(){
-  if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; }
-  const episodesText = document.getElementById('f_episodes').value.trim();
-  const episodes = episodesText ? episodesText.split('\n').map(s=>s.trim()).filter(s=>s).map((link, idx)=>({title: 'Episode ' + (idx+1), video: link})) : [];
-  const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), heroShow: document.getElementById('f_heroShow').checked, year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value, season: document.getElementById('f_season').value.trim(), episodes: episodes };
-  if(!data.name){ alert('Naam zaroori hai!'); return; }
-  if(episodes.length && !data.video){ data.video = episodes[0].video; }
-  if(!data.img) data.img = getImg(data.name,"e50914");
-  if(!data.hero) data.hero = "";
-  if(editingMovieId){
-    try{
-      await db.collection("movies").doc(editingMovieId).update(data);
-      document.getElementById('adminMsg').innerText = '✅ Movie Update Ho Gayi! Delete nahi hui!';
-      document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000);
-      cancelEditMovie();
-      await refreshMoviesFromDB();
-    }catch(e){ alert('Update Fail: '+e.message); }
-    return;
-  }
-  if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai! Coming Soon ke liye khali chor sakte ho.'); return; }
-  if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; }
-  try{ await db.collection("movies").add(data); document.getElementById('adminMsg').innerText='✅ Movie Add Ho Gayi!'; document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); document.getElementById('f_heroShow').checked=false; await refreshMoviesFromDB(); }catch(e){ alert('Add Fail: '+e.message); }
-}
-async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai? Pehle Edit try karo!')) return; try{ await db.collection("movies").doc(id).delete(); await refreshMoviesFromDB(); }catch(e){ alert('Delete Fail: '+e.message); } }
+async function releaseMovieAdmin(id, name){ let link = prompt(name + ' ka Movie Video Link daalo (MP4):'); if(!link) return; try{ await db.collection("movies").doc(id).update({video: link, status: "released", releaseDate: new Date().toISOString().split('T')[0]}); alert('✅ ' + name + ' Ab Released Ho Gayi!'); loadAdminList(); const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); }catch(e){ alert('Fail: '+e.message); } }
+function cancelEditMovie(){ editingMovieId = null; document.getElementById('editBanner').style.display='none'; document.getElementById('cancelEditBtn').style.display='none'; document.getElementById('saveMovieBtn').innerText = '+ Add Movie'; ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); document.getElementById('f_heroShow').checked=false; document.getElementById('f_status').value='released'; }
+async function editMovieAdmin(id){ try{ const doc = await db.collection("movies").doc(id).get(); if(!doc.exists){ alert('Movie nahi mili!'); return; } const m = doc.data(); editingMovieId = id; document.getElementById('f_name').value = m.name || ''; document.getElementById('f_img').value = m.img || ''; document.getElementById('f_hero').value = m.hero || ''; document.getElementById('f_heroShow').checked = !!m.heroShow; document.getElementById('f_year').value = m.year || ''; document.getElementById('f_type').value = m.type || 'Movie'; document.getElementById('f_cat').value = m.cat || 'Bollywood'; document.getElementById('f_trailer').value = m.trailer || ''; document.getElementById('f_release').value = m.releaseDate || ''; document.getElementById('f_status').value = m.status || 'released'; document.getElementById('f_video').value = m.video || ''; document.getElementById('f_season').value = m.season || ''; let epText = ''; if(m.episodes && m.episodes.length){ epText = m.episodes.map(e=> typeof e==='string' ? e : e.video).join('\n'); } document.getElementById('f_episodes').value = epText; document.getElementById('editBanner').style.display='block'; document.getElementById('editMovieName').innerText = m.name; document.getElementById('saveMovieBtn').innerText = '✅ Update Movie - Save Karo'; document.getElementById('cancelEditBtn').style.display='block'; document.getElementById('adminMsg').innerText = '✏️ Edit Mode - Ab sirf jo badalna hai wo badlo aur Update dabao!'; document.getElementById('adminMsg').style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); }catch(e){ alert('Edit Fail: '+e.message); } }
+async function refreshMoviesFromDB(){ const snap = await db.collection("movies").get(); const fbMovies=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; if(!m.img) m.img=getImg(m.name,"111111"); if(!m.hero) m.hero=""; fbMovies.push(m); }); allMovies = fbMovies; showMovies(allMovies); loadAdminList(); }
+async function addMovieAdmin(){ if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; } const episodesText = document.getElementById('f_episodes').value.trim(); const episodes = episodesText ? episodesText.split('\n').map(s=>s.trim()).filter(s=>s).map((link, idx)=>({title: 'Episode ' + (idx+1), video: link})) : []; const data = { name: document.getElementById('f_name').value.trim(), img: document.getElementById('f_img').value.trim(), hero: document.getElementById('f_hero').value.trim(), heroShow: document.getElementById('f_heroShow').checked, year: document.getElementById('f_year').value.trim(), type: document.getElementById('f_type').value, cat: document.getElementById('f_cat').value, video: document.getElementById('f_video').value.trim(), trailer: document.getElementById('f_trailer').value.trim(), releaseDate: document.getElementById('f_release').value, status: document.getElementById('f_status').value, season: document.getElementById('f_season').value.trim(), episodes: episodes }; if(!data.name){ alert('Naam zaroori hai!'); return; } if(episodes.length && !data.video){ data.video = episodes[0].video; } if(!data.img) data.img = getImg(data.name,"e50914"); if(!data.hero) data.hero = ""; if(editingMovieId){ try{ await db.collection("movies").doc(editingMovieId).update(data); document.getElementById('adminMsg').innerText = '✅ Movie Update Ho Gayi!'; document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); cancelEditMovie(); await refreshMoviesFromDB(); }catch(e){ alert('Update Fail: '+e.message); } return; } if(data.status==='released' && !data.video){ alert('Released ke liye Video Link zaroori hai!'); return; } if(!data.trailer && data.status==='coming'){ if(!confirm('Trailer ke bagair Coming Soon dalna hai?')) return; } try{ await db.collection("movies").add(data); document.getElementById('adminMsg').innerText='✅ Movie Add Ho Gayi!'; document.getElementById('adminMsg').style.display='block'; setTimeout(()=>document.getElementById('adminMsg').style.display='none',3000); ['f_name','f_img','f_hero','f_year','f_video','f_trailer','f_release','f_season','f_episodes'].forEach(id=>document.getElementById(id).value=''); document.getElementById('f_heroShow').checked=false; await refreshMoviesFromDB(); }catch(e){ alert('Add Fail: '+e.message); } }
+async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai?')) return; try{ await db.collection("movies").doc(id).delete(); await refreshMoviesFromDB(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
   </html>
