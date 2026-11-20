@@ -573,22 +573,88 @@ function showMusicToast(msg){
   clearTimeout(window._toastTimer);
   window._toastTimer = setTimeout(function(){ t.style.display='none'; }, 2000);
 }
-function downloadMusicInApp(idx){
+  // --- ASLI DOWNLOAD - File Phone me Save hogi ---
+function openMusicDB(){
+  return new Promise((res,rej)=>{
+    let r = indexedDB.open('AstflixMusicDB',1);
+    r.onupgradeneeded = ()=>{ r.result.createObjectStore('songs',{keyPath:'name'}); };
+    r.onsuccess = ()=>res(r.result);
+    r.onerror = ()=>rej(r.error);
+  });
+}
+async function saveSongFile(m, blob){
+  let db = await openMusicDB();
+  return new Promise((res,rej)=>{
+    let tx = db.transaction('songs','readwrite');
+    tx.objectStore('songs').put({name:m.name, info:m, blob:blob});
+    tx.oncomplete = ()=>res();
+    tx.onerror = ()=>rej(tx.error);
+  });
+}
+async function getSongFile(name){
+  let db = await openMusicDB();
+  return new Promise((res,rej)=>{
+    let tx = db.transaction('songs','readonly');
+    let q = tx.objectStore('songs').get(name);
+    q.onsuccess = ()=>res(q.result);
+    q.onerror = ()=>rej(q.error);
+  });
+  }
+  async function downloadMusicInApp(idx){
   let m = searchResults[idx]; if(!m) return;
   let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]');
   if(list.find(x=>x.name===m.name && x.singerName===m.singerName)){
     showMusicToast('⚠️ Pehle se Save hai!');
     return;
   }
-  list.push(m);
-  localStorage.setItem('astflix_music_downloads', JSON.stringify(list));
-  updateProfileCounts();
-  let btns = document.querySelectorAll('.musicDl');
-  if(btns[idx]){ btns[idx].innerText = '✅'; btns[idx].style.background = '#00d26a'; btns[idx].style.color = '#000'; }
-  showMusicToast('✅ "' + m.name + '" Save Ho Gaya!');
-}
+  try{
+    showMusicToast('⬇ Downloading ' + m.name + ' - 0%');
+    let res = await fetch(m.audioUrl);
+    if(!res.ok) throw new Error('Fetch Fail');
+    let total = Number(res.headers.get('Content-Length') || 0);
+    let reader = res.body.getReader();
+    let received = 0; let chunks = [];
+    while(true){
+      let {done, value} = await reader.read();
+      if(done) break;
+      chunks.push(value); received += value.length;
+      let pct = total ? Math.floor(received/total*100) : Math.min(99, Math.floor(received/50000));
+      showMusicToast('⬇ Downloading ' + m.name + ' - ' + pct + '%');
+    }
+    let blob = new Blob(chunks, {type:'audio/mpeg'});
+    await saveSongFile(m, blob);
+    list.push(m);
+    localStorage.setItem('astflix_music_downloads', JSON.stringify(list));
+    updateProfileCounts();
+    let btns = document.querySelectorAll('.musicDl');
+    if(btns[idx]){ btns[idx].innerText = '✅'; btns[idx].style.background = '#00d26a'; }
+    showMusicToast("✅ '" + m.name + "' Download Ho Gaya - Ab Bina Net Chalega!");
+  }catch(e){
+    list.push(m);
+    localStorage.setItem('astflix_music_downloads', JSON.stringify(list));
+    updateProfileCounts();
+    showMusicToast("✅ '" + m.name + "' Save Ho Gaya! (Link Save - Net Chahiye)");
+  }
+  }
+  
 function downloadCurrentMusic(){ if(currentMusicIdx>=0) downloadMusicInApp(currentMusicIdx); }
-function playSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); let m = list[i]; if(!m) return; closeAdmin('downloadsModal'); document.getElementById('musicModal').classList.add('open'); searchResults = list; currentMusicIdx = i; renderSearchMusic(); playMusic(i); }
+async function playSavedMusic(i){
+  let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]');
+  let m = list[i]; if(!m) return;
+  let saved = await getSongFile(m.name);
+  if(saved && saved.blob){
+    let url = URL.createObjectURL(saved.blob);
+    let oldIdx = searchResults.findIndex(x=>x.name===m.name);
+    if(oldIdx === -1){ searchResults.push({...m, audioUrl:url}); playMusic(searchResults.length-1); }
+    else { searchResults[oldIdx].audioUrl = url; playMusic(oldIdx); }
+    showMusicToast('▶ Offline Chal Raha Hai - Bina Net!');
+  } else {
+    let oldIdx = searchResults.findIndex(x=>x.name===m.name);
+    if(oldIdx === -1){ searchResults.push(m); playMusic(searchResults.length-1); }
+    else playMusic(oldIdx);
+    showMusicToast('▶ Online Chal Raha Hai - Net Chahiye');
+  }
+}
 function removeSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_music_downloads', JSON.stringify(list)); updateProfileCounts(); openDownloads(); }
 // ADMIN - SINGER WISE GAANA ADD
 async function addSongAdmin(){
