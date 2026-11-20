@@ -537,8 +537,8 @@ async function searchMusicByCat(q){
   let freshSaavn = saavnSongs.filter(s=> !seen.has((s.name+'|'+s.singerName).toLowerCase()));
   searchResults = adminForThis.map(s=>({...s, fromAdmin:true, isFull:true})).concat(freshSaavn);
   if(searchResults.length){
-    let adminCount = adminForThis.length;
-    document.getElementById('musicStatus').innerText = adminCount ? "✅ " + searchResults.length + " PURE gaane mile! (Tumhare Add kiye: " + adminCount + " sab se upar)": "✅ " + searchResults.length + " PURE gaane mile!";
+    let adminCount = adminForThis.length
+    document.getElementById('musicStatus').innerText = "";
     renderSearchMusic(); return;
   }
   // Agar Saavn bhi fail ho gaya to sirf Admin wale dikhao, 30 sec wala kabhi nahi!
@@ -549,7 +549,7 @@ async function searchMusicByCat(q){
 function renderSearchMusic(){
   if(!searchResults.length){ document.getElementById('musicList').innerHTML = `<div style="background:#111;border:1px solid #333;padding:16px;border-radius:12px;text-align:center"><b>❌ Gaana nahi mila!</b><br><small style="color:#aaa">Admin me jaake is Singer me gaana Add karo: Logo pe 5 baar dabao > Admin > Music Panel > Singer Select karo > Gaana Add karo</small></div>`; return; }
   document.getElementById('musicList').innerHTML = searchResults.map((m,i)=>{
-    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${m.img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${m.name} ${m.fromAdmin ? '⭐' : ''}</b><br><small>🎤 ${m.singerName}</small><br><small style="color:#00d26a">✅ PURA GAANA ${m.fromAdmin ? '• ⭐ Tumhara Add Kiya' : ''} • ${m.album} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicDl" onclick="event.stopPropagation();downloadMusicInApp(${i})" title="App me Save">⬇</button><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
+return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${m.img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${m.name} ${m.fromAdmin ? '⭐' : ''}</b><br><small>🎤 ${m.singerName}</small><br><small style="color:#00d26a">${m.album} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicDl" onclick="event.stopPropagation();downloadMusicInApp(${i})" title="App me Save">⬇</button><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
   }).join('');
 }
 function playMusic(idx){
@@ -558,7 +558,7 @@ function playMusic(idx){
   document.getElementById('musicPlayerBox').style.display='block';
   document.getElementById('musicPlayerImg').src = m.img;
   document.getElementById('musicPlayerName').innerText = m.name;
-  document.getElementById('musicPlayerSinger').innerText = m.singerName + ' • ✅ PURA GAANA' + (m.fromAdmin ? ' • ⭐ Tumhara Add Kiya' : '');
+  document.getElementById('musicPlayerSinger').innerText = m.singerName;
   let a = document.getElementById('musicAudio'); a.src = m.audioUrl; a.play();
   a.onended = function(){ nextMusic(); };
   a.onerror = function(){ alert('Ye MP3 Link kharab hai! Admin me jaake naya MP3 Link daalo!'); };
