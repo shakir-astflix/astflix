@@ -202,8 +202,7 @@ nav button.active{color:#00d26a}
 <h2>⬇ My Downloads</h2>
 <p id="downloadsStatus">Yahan tumhari Download ki hui Movies ayengi.</p>
 <div id="downloadsList"></div>
-<h2 style="margin-top:18px">🎵 My Music Downloads - App Ke Andar</h2>
-<p style="font-size:12px;color:#aaa">Chrome me nahi, App ke andar hi Save hote hain.</p>
+<h2 style="margin-top:18px">🎵 My Music Downloads</h2>
 <div id="musicDownloadsList"></div>
 </div>
 </div>
@@ -471,7 +470,7 @@ function openDownloads(){
   let box = document.getElementById('downloadsList');
   if(!list.length){ box.innerHTML = "<p style='color:#888'>Abhi koi Movie Download nahi hai</p>"; document.getElementById('downloadsStatus').innerText = ""; } else { document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads"; box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''}</small><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join(''); }
   let mlist = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]');
-  document.getElementById('musicDownloadsList').innerHTML = !mlist.length ? "<p style='color:#888'>Abhi koi Gaana Save nahi hai. Gaane ke samne ⬇ dabao.</p>" : mlist.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>🎤 ${m.singerName} • ✅ PURA GAANA • ${m.album||''}</small><br><button style="background:#00d26a;color:#000;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playSavedMusic(${i})">▶ Play</button></div><button onclick="removeSavedMusic(${i})">Delete</button></div>`).join('');
+  document.getElementById('musicDownloadsList').innerHTML = !mlist.length ? "" : mlist.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>🎤 ${m.singerName} • ${m.album||''}</small><br><button style="background:#00d26a;color:#000;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playSavedMusic(${i})">▶ Play</button></div><button onclick="removeSavedMusic(${i})">Delete</button></div>`).join('');
 }
 function addToDownloads(idx){ let m = allMovies[idx]; if(!m) return; let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); if(list.find(x=>x.name===m.name)) return; m.progress = 0; m.downloading = true; list.push(m); localStorage.setItem('astflix_downloads', JSON.stringify(list)); let timer = setInterval(function(){ let l = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); let item = l.find(x=>x.name===m.name); if(!item){ clearInterval(timer); return; } item.progress = (item.progress || 0) + 10; if(item.progress >= 100){ item.progress = 100; item.downloading = false; clearInterval(timer); } localStorage.setItem('astflix_downloads', JSON.stringify(l)); if(document.getElementById('downloadsModal').classList.contains('open')){ openDownloads(); } }, 800); }
 function removeDownload(i){ let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_downloads', JSON.stringify(list)); openDownloads(); }
