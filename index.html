@@ -217,6 +217,7 @@ nav button.active{color:#00d26a}
 <input id="musicSearchInput" placeholder="Gaana / Singer search karo... Arijit Singh" onkeydown="if(event.key==='Enter') searchMusic()" style="flex:1;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;outline:none">
 <button onclick="searchMusic()" style="background:#00d26a;color:#000;border:none;padding:12px 16px;border-radius:10px;font-weight:900;cursor:pointer">🔍</button>
 </div>
+  <div id="musicToast" style="display:none;position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#00d26a;color:#000;padding:10px 20px;border-radius:20px;font-weight:900;font-size:14px;z-index:3000">✅ Save Ho Gaya!</div>
 <div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🔥 Trending</div>
 <div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
 <button class="singerBtn" style="background:#e50914" onclick="searchMusicByCat('Trending Hindi Songs')">🔥 Trending</button>
@@ -486,7 +487,7 @@ function saveProfile(){ let name = document.getElementById('p_name').value.trim(
 function logoutProfile(){ localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass'); document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value=''; var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = ''; document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; let ok = document.getElementById('profileSuccess'); if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; } updateAvatar(); updateProfileCounts(); }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
 
-// ===== MUSIC - SIRF PURA GAANA + ADMIN SINGER WISE + APP KE ANDAR DOWNLOAD =====
+// ===== MUSIC - 
 let searchResults = [];
 let currentMusicIdx = -1;
 let adminSongsCache = [];
@@ -565,7 +566,28 @@ function playMusic(idx){
 }
 function nextMusic(){ if(searchResults.length===0) return; let n = currentMusicIdx + 1; if(n >= searchResults.length) n = 0; playMusic(n); }
 function prevMusic(){ if(searchResults.length===0) return; let p = currentMusicIdx - 1; if(p < 0) p = searchResults.length - 1; playMusic(p); }
-function downloadMusicInApp(idx){ let m = searchResults[idx]; if(!m) return; let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); if(list.find(x=>x.name===m.name && x.singerName===m.singerName)){ alert('Ye gaana pehle se App me Save hai! Downloads me dekho.'); return; } list.push(m); localStorage.setItem('astflix_music_downloads', JSON.stringify(list)); updateProfileCounts(); alert('✅ "' + m.name + '" App ke andar Save ho gaya! Chrome me nahi gaya! Downloads me dekho.'); }
+function showMusicToast(msg){
+  let t = document.getElementById('musicToast');
+  if(!t) return;
+  t.innerText = msg;
+  t.style.display = 'block';
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(function(){ t.style.display='none'; }, 2000);
+}
+function downloadMusicInApp(idx){
+  let m = searchResults[idx]; if(!m) return;
+  let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]');
+  if(list.find(x=>x.name===m.name && x.singerName===m.singerName)){
+    showMusicToast('⚠️ Pehle se Save hai!');
+    return;
+  }
+  list.push(m);
+  localStorage.setItem('astflix_music_downloads', JSON.stringify(list));
+  updateProfileCounts();
+  let btns = document.querySelectorAll('.musicDl');
+  if(btns[idx]){ btns[idx].innerText = '✅'; btns[idx].style.background = '#00d26a'; btns[idx].style.color = '#000'; }
+  showMusicToast('✅ "' + m.name + '" Save Ho Gaya!');
+}
 function downloadCurrentMusic(){ if(currentMusicIdx>=0) downloadMusicInApp(currentMusicIdx); }
 function playSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); let m = list[i]; if(!m) return; closeAdmin('downloadsModal'); document.getElementById('musicModal').classList.add('open'); searchResults = list; currentMusicIdx = i; renderSearchMusic(); playMusic(i); }
 function removeSavedMusic(i){ let list = JSON.parse(localStorage.getItem('astflix_music_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_music_downloads', JSON.stringify(list)); updateProfileCounts(); openDownloads(); }
