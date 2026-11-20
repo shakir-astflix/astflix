@@ -95,6 +95,8 @@ nav button.active{color:#00d26a}
 .musicItem .singerPic{width:48px;height:48px;object-fit:cover;border-radius:50%;background:#333;border:2px solid #00d26a;flex-shrink:0}
 .musicItem div{flex:1;min-width:0}
 .musicPlay{background:#00d26a;color:#000;border:none;width:42px;height:42px;border-radius:50%;font-weight:900;font-size:16px;cursor:pointer;flex-shrink:0}
+.singerBtn{background:#222;color:#fff;border:1px solid #333;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer;white-space:nowrap;font-size:13px}
+.singerBtn:hover{background:#e50914}
 @media (max-width:768px){
   .top{flex-wrap:nowrap}
   .logo{font-size:19px}
@@ -210,24 +212,124 @@ nav button.active{color:#00d26a}
 </div>
 </div>
 
-<!-- ===== MUSIC MODAL - SIRF YE BADLA HAI ===== -->
+<!-- ===== MUSIC - SIRF SINGERS WALE BUTTON ===== -->
 <div class="adminModal" id="musicModal">
 <button class="adminClose" onclick="closeMusic()">✕</button>
 <div class="adminCard">
-<h2>🎵 Music</h2>
-<p style="font-size:13px;color:#aaa">Koi bhi gaana search karo - jaise Spotify!</p>
+<h2>🎵 Music - Pura Gaana</h2>
+<p style="font-size:13px;color:#aaa">Singer dabao ya Search karo - PURA gaana bajega!</p>
 <div style="display:flex;gap:8px;margin:12px 0">
-<input id="musicSearchInput" placeholder="Gaana search karo... Tum Hi Ho" onkeydown="if(event.key==='Enter') searchMusic()" style="flex:1;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;outline:none">
+<input id="musicSearchInput" placeholder="Gaana / Singer search karo... Arijit Singh" onkeydown="if(event.key==='Enter') searchMusic()" style="flex:1;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;outline:none">
 <button onclick="searchMusic()" style="background:#00d26a;color:#000;border:none;padding:12px 16px;border-radius:10px;font-weight:900;cursor:pointer">🔍</button>
 </div>
-<div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;white-space:nowrap">
-<button onclick="searchMusicByCat('Trending Hindi')" style="background:#e50914;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">🔥 Trending</button>
-<button onclick="searchMusicByCat('Punjabi Songs')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Punjabi</button>
-<button onclick="searchMusicByCat('Bollywood Hits')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Bollywood</button>
-<button onclick="searchMusicByCat('Pakistani Songs')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Pakistani</button>
-<button onclick="searchMusicByCat('Arijit Singh')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Arijit Singh</button>
-<button onclick="searchMusicByCat('Sidhu Moose Wala')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Sidhu Moose Wala</button>
+
+<div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🔥 Trending</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" style="background:#e50914" onclick="searchMusicByCat('Trending Hindi Songs')">🔥 Trending</button>
+<button class="singerBtn" onclick="searchMusicByCat('Top 50 Global')">🌍 Top 50 Global</button>
+<button class="singerBtn" onclick="searchMusicByCat('Viral Songs')">📈 Viral</button>
 </div>
+
+<div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🇮🇳 Bollywood - Boys</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Arijit Singh')">Arijit Singh</button>
+<button class="singerBtn" onclick="searchMusicByCat('Armaan Malik')">Armaan Malik</button>
+<button class="singerBtn" onclick="searchMusicByCat('Jubin Nautiyal')">Jubin Nautiyal</button>
+<button class="singerBtn" onclick="searchMusicByCat('Darshan Raval')">Darshan Raval</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sonu Nigam')">Sonu Nigam</button>
+<button class="singerBtn" onclick="searchMusicByCat('Kishore Kumar')">Kishore Kumar</button>
+<button class="singerBtn" onclick="searchMusicByCat('Mohammed Rafi')">Mohammed Rafi</button>
+<button class="singerBtn" onclick="searchMusicByCat('KK')">KK</button>
+<button class="singerBtn" onclick="searchMusicByCat('Badshah')">Badshah</button>
+<button class="singerBtn" onclick="searchMusicByCat('Yo Yo Honey Singh')">Honey Singh</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sachet Tandon')">Sachet Tandon</button>
+<button class="singerBtn" onclick="searchMusicByCat('Vishal Mishra')">Vishal Mishra</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#ff6b9d;margin:8px 0 6px">🇮🇳 Bollywood - Girls</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Shreya Ghoshal')">Shreya Ghoshal</button>
+<button class="singerBtn" onclick="searchMusicByCat('Neha Kakkar')">Neha Kakkar</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sunidhi Chauhan')">Sunidhi Chauhan</button>
+<button class="singerBtn" onclick="searchMusicByCat('Asees Kaur')">Asees Kaur</button>
+<button class="singerBtn" onclick="searchMusicByCat('Tulsi Kumar')">Tulsi Kumar</button>
+<button class="singerBtn" onclick="searchMusicByCat('Palak Muchhal')">Palak Muchhal</button>
+<button class="singerBtn" onclick="searchMusicByCat('Lata Mangeshkar')">Lata Mangeshkar</button>
+<button class="singerBtn" onclick="searchMusicByCat('Asha Bhosle')">Asha Bhosle</button>
+<button class="singerBtn" onclick="searchMusicByCat('Alka Yagnik')">Alka Yagnik</button>
+<button class="singerBtn" onclick="searchMusicByCat('Anuv Jain')">Anuv Jain</button>
+<button class="singerBtn" onclick="searchMusicByCat('Shilpa Rao')">Shilpa Rao</button>
+<button class="singerBtn" onclick="searchMusicByCat('Monali Thakur')">Monali Thakur</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#ffaa00;margin:8px 0 6px">🇵🇰 Pakistani - Famous</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Atif Aslam')">Atif Aslam</button>
+<button class="singerBtn" onclick="searchMusicByCat('Rahat Fateh Ali Khan')">Rahat Fateh Ali Khan</button>
+<button class="singerBtn" onclick="searchMusicByCat('Nusrat Fateh Ali Khan')">Nusrat Fateh Ali Khan</button>
+<button class="singerBtn" onclick="searchMusicByCat('Ali Zafar')">Ali Zafar</button>
+<button class="singerBtn" onclick="searchMusicByCat('Strings')">Strings</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sajjad Ali')">Sajjad Ali</button>
+<button class="singerBtn" onclick="searchMusicByCat('Abrar Ul Haq')">Abrar Ul Haq</button>
+<button class="singerBtn" onclick="searchMusicByCat('Abida Parveen')">Abida Parveen</button>
+<button class="singerBtn" onclick="searchMusicByCat('Hadiqa Kiani')">Hadiqa Kiani</button>
+<button class="singerBtn" onclick="searchMusicByCat('Aima Baig')">Aima Baig</button>
+<button class="singerBtn" onclick="searchMusicByCat('Momino')">Momino</button>
+<button class="singerBtn" onclick="searchMusicByCat('Kaifi Khalil')">Kaifi Khalil</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#00d26a;margin:8px 0 6px">🎤 Punjabi - Famous</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Sidhu Moose Wala')">Sidhu Moose Wala</button>
+<button class="singerBtn" onclick="searchMusicByCat('Diljit Dosanjh')">Diljit Dosanjh</button>
+<button class="singerBtn" onclick="searchMusicByCat('Amrinder Gill')">Amrinder Gill</button>
+<button class="singerBtn" onclick="searchMusicByCat('AP Dhillon')">AP Dhillon</button>
+<button class="singerBtn" onclick="searchMusicByCat('Karan Aujla')">Karan Aujla</button>
+<button class="singerBtn" onclick="searchMusicByCat('Shubh')">Shubh</button>
+<button class="singerBtn" onclick="searchMusicByCat('Guru Randhawa')">Guru Randhawa</button>
+<button class="singerBtn" onclick="searchMusicByCat('Hardy Sandhu')">Hardy Sandhu</button>
+<button class="singerBtn" onclick="searchMusicByCat('Ammy Virk')">Ammy Virk</button>
+<button class="singerBtn" onclick="searchMusicByCat('Gurdas Maan')">Gurdas Maan</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sunanda Sharma')">Sunanda Sharma</button>
+<button class="singerBtn" onclick="searchMusicByCat('Nimrat Khaira')">Nimrat Khaira</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#00aaff;margin:8px 0 6px">🌍 English - Famous</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Taylor Swift')">Taylor Swift</button>
+<button class="singerBtn" onclick="searchMusicByCat('Ed Sheeran')">Ed Sheeran</button>
+<button class="singerBtn" onclick="searchMusicByCat('Justin Bieber')">Justin Bieber</button>
+<button class="singerBtn" onclick="searchMusicByCat('Ariana Grande')">Ariana Grande</button>
+<button class="singerBtn" onclick="searchMusicByCat('Billie Eilish')">Billie Eilish</button>
+<button class="singerBtn" onclick="searchMusicByCat('Dua Lipa')">Dua Lipa</button>
+<button class="singerBtn" onclick="searchMusicByCat('The Weeknd')">The Weeknd</button>
+<button class="singerBtn" onclick="searchMusicByCat('Drake')">Drake</button>
+<button class="singerBtn" onclick="searchMusicByCat('Alan Walker')">Alan Walker</button>
+<button class="singerBtn" onclick="searchMusicByCat('Selena Gomez')">Selena Gomez</button>
+<button class="singerBtn" onclick="searchMusicByCat('Bruno Mars')">Bruno Mars</button>
+<button class="singerBtn" onclick="searchMusicByCat('Coldplay')">Coldplay</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#ff00aa;margin:8px 0 6px">🇰🇷 K-Pop / 🌍 World</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('BTS')">BTS</button>
+<button class="singerBtn" onclick="searchMusicByCat('Blackpink')">Blackpink</button>
+<button class="singerBtn" onclick="searchMusicByCat('Jung Kook')">Jung Kook</button>
+<button class="singerBtn" onclick="searchMusicByCat('Bad Bunny')">Bad Bunny</button>
+<button class="singerBtn" onclick="searchMusicByCat('Shakira')">Shakira</button>
+<button class="singerBtn" onclick="searchMusicByCat('Enrique Iglesias')">Enrique Iglesias</button>
+</div>
+
+<div style="font-size:13px;font-weight:900;color:#ffaa00;margin:8px 0 6px">🕌 Arabic / 🇹🇷 Turkish</div>
+<div style="display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;white-space:nowrap">
+<button class="singerBtn" onclick="searchMusicByCat('Amr Diab')">Amr Diab</button>
+<button class="singerBtn" onclick="searchMusicByCat('Nancy Ajram')">Nancy Ajram</button>
+<button class="singerBtn" onclick="searchMusicByCat('Elissa')">Elissa</button>
+<button class="singerBtn" onclick="searchMusicByCat('Tarkan')">Tarkan</button>
+<button class="singerBtn" onclick="searchMusicByCat('Sezen Aksu')">Sezen Aksu</button>
+<button class="singerBtn" onclick="searchMusicByCat('Maher Zain')">Maher Zain</button>
+</div>
+
 <div id="musicPlayerBox" style="display:none;background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center">
 <img id="musicPlayerImg" src="" style="width:90px;height:90px;object-fit:cover;border-radius:50%;background:#333">
 <div id="musicPlayerName" style="font-weight:900;margin-top:8px"></div>
@@ -513,56 +615,81 @@ function logoutProfile(){
   updateAvatar(); updateProfileCounts();
 }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
-
-// ===== NEW MUSIC SYSTEM - SIRF YAHAN CHANGE HAI =====
 let searchResults = [];
 let currentMusicIdx = -1;
 function openMusic(){
   document.getElementById('musicModal').classList.add('open');
-  if(searchResults.length===0) searchMusicByCat('Trending Hindi');
+  if(searchResults.length===0) searchMusicByCat('Trending Hindi Songs');
   else renderSearchMusic();
 }
 function closeMusic(){ let a = document.getElementById('musicAudio'); if(a) a.pause(); document.getElementById('musicModal').classList.remove('open'); }
 function filterMusic(cat){ searchMusicByCat(cat); }
 async function searchMusic(){
   let q = document.getElementById('musicSearchInput').value.trim();
-  if(!q) q = 'Trending Hindi';
+  if(!q) q = 'Trending Hindi Songs';
   searchMusicByCat(q);
 }
 async function searchMusicByCat(q){
-  document.getElementById('musicStatus').innerText = "🔍 '" + q + "' dhoond rahe hain...";
+  document.getElementById('musicStatus').innerText = "🔍 '" + q + "' dhoond rahe hain... Pura Gaana...";
   document.getElementById('musicList').innerHTML = "";
+  let apis = [
+    'https://saavn.dev/api/search/songs?query=',
+    'https://saavn.dev/api/search/songs?query=',
+    'https://jiosaavn-api-privatecvc2.vercel.app/api/search/songs?query='
+  ];
+  for(let api of apis){
+    try{
+      let res = await fetch(api + encodeURIComponent(q));
+      let data = await res.json();
+      let songs = (data.data && data.data.results) ? data.data.results : (data.results || []);
+      if(songs && songs.length){
+        searchResults = songs.map(m => {
+          let dl = m.downloadUrl || [];
+          let fullUrl = '';
+          if(dl.length){
+            let best = dl[dl.length-1];
+            fullUrl = typeof best === 'string' ? best : best.url;
+          }
+          let img = '';
+          if(m.image && m.image.length) img = m.image[m.image.length-1].url || m.image[m.image.length-1].link || '';
+          let singer = 'Unknown';
+          if(m.artists && m.artists.primary) singer = m.artists.primary.map(a=>a.name).join(', ');
+          else if(m.primaryArtists) singer = m.primaryArtists;
+          return { name: m.name || m.title, singerName: singer, img: img, audioUrl: fullUrl, album: m.album ? (m.album.name || m.album) : '', duration: m.duration || 0, isFull: true };
+        }).filter(x=>x.audioUrl);
+        if(searchResults.length){
+          document.getElementById('musicStatus').innerText = "✅ " + searchResults.length + " PURE gaane mile!";
+          renderSearchMusic();
+          return;
+        }
+      }
+    }catch(e){ continue; }
+  }
   try{
-    let res = await fetch('https://saavn.dev/api/search/songs?query=' + encodeURIComponent(q));
+    let res = await fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(q) + '&media=music&entity=song&limit=25');
     let data = await res.json();
-    let songs = data.data.results || [];
-    searchResults = songs;
-    if(!songs.length){ document.getElementById('musicStatus').innerText = "❌ Koi gaana nahi mila, doosra naam likho!"; return; }
-    document.getElementById('musicStatus').innerText = "✅ " + songs.length + " gaane mile!";
-    renderSearchMusic();
-  }catch(e){ document.getElementById('musicStatus').innerText = "❌ Net ka masla hai, dobara try karo!"; }
+    searchResults = (data.results||[]).map(s => ({ name: s.trackName, singerName: s.artistName, img: s.artworkUrl100 ? s.artworkUrl100.replace('100x100','300x300') : '', audioUrl: s.previewUrl, album: s.collectionName||'', duration: Math.floor(s.trackTimeMillis/1000)||0, isFull: false }));
+    if(searchResults.length){
+      document.getElementById('musicStatus').innerText = "⚠️ Pura gaana server busy hai, abhi 30 sec Preview bajega, thori der baad dobara try karo!";
+      renderSearchMusic(); return;
+    }
+  }catch(e){}
+  document.getElementById('musicStatus').innerText = "❌ Koi gaana nahi mila, dobara try karo!";
 }
 function renderSearchMusic(){
   document.getElementById('musicList').innerHTML = searchResults.map((m,i)=>{
-    let name = m.name || 'Unknown';
-    let singer = m.artists && m.artists.primary ? m.artists.primary.map(a=>a.name).join(', ') : 'Unknown';
-    let img = m.image && m.image[2] ? m.image[2].url : (m.image && m.image[1] ? m.image[1].url : '');
-    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${name}</b><br><small>🎤 ${singer}</small><br><small style="color:#00d26a">${m.album ? m.album.name : ''} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
+    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${m.img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${m.name}</b><br><small>🎤 ${m.singerName}</small><br><small style="color:${m.isFull ? '#00d26a' : '#ffaa00'}">${m.isFull ? '✅ PURA GAANA' : '⚠️ 30 Sec Preview'} • ${m.album} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
   }).join('');
 }
 function playMusic(idx){
   let m = searchResults[idx]; if(!m) return;
   currentMusicIdx = idx;
-  let url = m.downloadUrl && m.downloadUrl[4] ? m.downloadUrl[4].url : (m.downloadUrl[3] ? m.downloadUrl[3].url : '');
-  if(!url){ alert('Is gaane ka link nahi mila!'); return; }
-  let name = m.name || 'Unknown';
-  let singer = m.artists && m.artists.primary ? m.artists.primary.map(a=>a.name).join(', ') : '';
-  let img = m.image && m.image[2] ? m.image[2].url : '';
+  if(!m.audioUrl){ alert('Is gaane ka link nahi mila!'); return; }
   document.getElementById('musicPlayerBox').style.display='block';
-  document.getElementById('musicPlayerImg').src = img;
-  document.getElementById('musicPlayerName').innerText = name;
-  document.getElementById('musicPlayerSinger').innerText = singer;
-  let a = document.getElementById('musicAudio'); a.src = url; a.play();
+  document.getElementById('musicPlayerImg').src = m.img;
+  document.getElementById('musicPlayerName').innerText = m.name;
+  document.getElementById('musicPlayerSinger').innerText = m.singerName + (m.isFull ? ' • ✅ PURA GAANA' : ' • ⚠️ Preview');
+  let a = document.getElementById('musicAudio'); a.src = m.audioUrl; a.play();
   a.onended = function(){ nextMusic(); };
 }
 function nextMusic(){ if(searchResults.length===0) return; let next = currentMusicIdx + 1; if(next >= searchResults.length) next = 0; playMusic(next); }
@@ -571,7 +698,6 @@ async function loadMusicFromDB(){}
 async function addMusicAdmin(){ alert('Ab gaana add karne ki zaroorat nahi! Music me Search karo, gaana khud aa jayega!'); }
 async function loadMusicAdminList(){}
 async function deleteMusicAdmin(){}
-
 showMovies(allMovies);
 const ADMIN_EMAIL = "astkhanii15@gmail.com";
 var db = null; var auth = null;
