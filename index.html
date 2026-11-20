@@ -118,7 +118,6 @@ nav button.active{color:#00d26a}
 <script data-cfasync="false" src="https://bancadeltempoidea.org/14/995af07dee600512dab7cd3ff4abdac9"></script>
 </head>
 <body>
-
 <div class="top">
 <div class="logo" id="mainLogo"><img src="logo.png" onerror="this.style.display='none'"> Ast<span>Flix</span></div>
 <div class="searchBox">🔍 <input id="search" placeholder="Search Movie/Series/Audio" oninput="doSearch(this.value)"></div>
@@ -140,7 +139,6 @@ nav button.active{color:#00d26a}
 <button onclick="setTab(this,'Western')">Western</button>
 <button onclick="setTab(this,'Anime')">Anime</button>
 </div>
-
 <div class="hero" onclick="playMovie(0)">
 <img id="heroImg" src="" onerror="this.onerror=null; if(window._heroFallback){this.src=window._heroFallback;} else {this.style.display='none';}">
 <div class="heroText" id="heroName">ASTFLIX</div>
@@ -148,13 +146,10 @@ nav button.active{color:#00d26a}
 <div class="heroBtns" id="heroBtns"></div>
 <div class="heroBottom" id="heroMini"></div>
 </div>
-
 <h3>🔥 Coming Soon - </h3>
 <div class="row" id="comingSoon"></div>
-
 <h3 id="sectionTitle">All Movies <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
 <div class="row" id="nolly"></div>
-
 <h3>Categories</h3>
 <div class="catRow">
 <button class="cat active" onclick="setCat(this,'All')"><b>All</b></button>
@@ -165,17 +160,14 @@ nav button.active{color:#00d26a}
 <button class="cat" onclick="setCat(this,'Western')"><b>Western</b></button>
 <button class="cat" onclick="setCat(this,'Nollywood')"><b>Nollywood</b></button>
 </div>
-
 <h3>Trending Movies <span onclick="setTab(document.querySelectorAll('.tabs button')[0],'All')">All ></span></h3>
 <div class="row" id="movies"></div>
-
 <nav>
 <button class="active" onclick="goHome(this)">🏠<br>Home</button>
 <button onclick="openMusic()">🎵<span class="hot">HOT</span><br>Music</button>
 <button onclick="openDownloads()">⬇<br>Downloads</button>
 <button onclick="openProfile()">👤<br>Me</button>
 </nav>
-
 <div class="adminModal" id="profileModal">
 <button class="adminClose" onclick="closeAdmin('profileModal')">✕</button>
 <div class="adminCard" style="text-align:center">
@@ -186,21 +178,9 @@ nav button.active{color:#00d26a}
 <div id="profileDisplayName" style="font-size:20px;font-weight:900;margin:5px 0 10px"></div>
 <input type="file" id="avatarInput" accept="image/*" hidden onchange="changeAvatar(event)">
 <div style="display:flex;gap:10px;margin:15px 0;text-align:center">
-  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222">
-    <div style="font-size:22px">⬇️</div>
-    <div id="countDownloads" style="font-size:20px;font-weight:800">0</div>
-    <div style="font-size:12px;color:#aaa">My Downloads</div>
-  </div>
-  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222">
-    <div style="font-size:22px">🎬</div>
-    <div id="countMovies" style="font-size:20px;font-weight:800">0</div>
-    <div style="font-size:12px;color:#aaa">My Movies</div>
-  </div>
-  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222">
-    <div style="font-size:22px">🎵</div>
-    <div id="countMusic" style="font-size:20px;font-weight:800">0</div>
-    <div style="font-size:12px;color:#aaa">My Music</div>
-  </div>
+  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222"><div style="font-size:22px">⬇️</div><div id="countDownloads" style="font-size:20px;font-weight:800">0</div><div style="font-size:12px;color:#aaa">My Downloads</div></div>
+  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222"><div style="font-size:22px">🎬</div><div id="countMovies" style="font-size:20px;font-weight:800">0</div><div style="font-size:12px;color:#aaa">My Movies</div></div>
+  <div style="flex:1;background:#111;padding:12px;border-radius:12px;border:1px solid #222"><div style="font-size:22px">🎵</div><div id="countMusic" style="font-size:20px;font-weight:800">0</div><div style="font-size:12px;color:#aaa">My Music</div></div>
 </div>
 <div id="profileForm" style="text-align:left">
 <label style="font-size:13px;color:#fff;font-weight:700;margin-left:4px">Name</label>
@@ -221,7 +201,6 @@ nav button.active{color:#00d26a}
 </div>
 </div>
 </div>
-
 <div class="adminModal" id="downloadsModal">
 <button class="adminClose" onclick="closeAdmin('downloadsModal')">✕</button>
 <div class="adminCard">
@@ -231,24 +210,33 @@ nav button.active{color:#00d26a}
 </div>
 </div>
 
+<!-- ===== MUSIC MODAL - SIRF YE BADLA HAI ===== -->
 <div class="adminModal" id="musicModal">
 <button class="adminClose" onclick="closeMusic()">✕</button>
 <div class="adminCard">
 <h2>🎵 Music</h2>
+<p style="font-size:13px;color:#aaa">Koi bhi gaana search karo - jaise Spotify!</p>
+<div style="display:flex;gap:8px;margin:12px 0">
+<input id="musicSearchInput" placeholder="Gaana search karo... Tum Hi Ho" onkeydown="if(event.key==='Enter') searchMusic()" style="flex:1;padding:12px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;outline:none">
+<button onclick="searchMusic()" style="background:#00d26a;color:#000;border:none;padding:12px 16px;border-radius:10px;font-weight:900;cursor:pointer">🔍</button>
+</div>
 <div style="display:flex;gap:8px;margin-bottom:12px;overflow-x:auto;white-space:nowrap">
-<button onclick="filterMusic('All')" style="background:#e50914;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">All</button>
-<button onclick="filterMusic('Punjabi')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Punjabi</button>
-<button onclick="filterMusic('Bollywood')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Bollywood</button>
-<button onclick="filterMusic('Pakistani')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Pakistani</button>
-<button onclick="filterMusic('Hollywood')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Hollywood</button>
-<button onclick="filterMusic('Arabic')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Arabic</button>
-<button onclick="filterMusic('Turkish')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Turkish</button>
+<button onclick="searchMusicByCat('Trending Hindi')" style="background:#e50914;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">🔥 Trending</button>
+<button onclick="searchMusicByCat('Punjabi Songs')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Punjabi</button>
+<button onclick="searchMusicByCat('Bollywood Hits')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Bollywood</button>
+<button onclick="searchMusicByCat('Pakistani Songs')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Pakistani</button>
+<button onclick="searchMusicByCat('Arijit Singh')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Arijit Singh</button>
+<button onclick="searchMusicByCat('Sidhu Moose Wala')" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900;cursor:pointer">Sidhu Moose Wala</button>
 </div>
 <div id="musicPlayerBox" style="display:none;background:#111;border:1px solid #333;border-radius:12px;padding:12px;margin-bottom:12px;text-align:center">
-<img id="musicPlayerImg" src="" style="width:80px;height:80px;object-fit:cover;border-radius:50%;background:#333">
+<img id="musicPlayerImg" src="" style="width:90px;height:90px;object-fit:cover;border-radius:50%;background:#333">
 <div id="musicPlayerName" style="font-weight:900;margin-top:8px"></div>
 <div id="musicPlayerSinger" style="font-size:12px;color:#aaa"></div>
 <audio id="musicAudio" controls style="width:100%;margin-top:10px"></audio>
+<div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
+<button onclick="prevMusic()" style="background:#333;color:#fff;border:none;padding:8px 14px;border-radius:20px;font-weight:900">⏮ Prev</button>
+<button onclick="nextMusic()" style="background:#00d26a;color:#000;border:none;padding:8px 14px;border-radius:20px;font-weight:900">Next ⏭</button>
+</div>
 </div>
 <p id="musicStatus"></p>
 <div id="musicList"></div>
@@ -261,7 +249,6 @@ nav button.active{color:#00d26a}
 <video id="video" controls autoplay controlsList="nodownload" disablePictureInPicture oncontextmenu="return false" src=""></video>
 <iframe id="trailerFrame" allowfullscreen></iframe>
 </div>
-
 <div class="adminModal" id="loginModal">
 <button class="adminClose" onclick="closeAdmin('loginModal')">✕</button>
 <div class="adminCard">
@@ -276,7 +263,6 @@ nav button.active{color:#00d26a}
 <p style="text-align:center;margin-top:12px;color:#666">🔒 Secure Login - Firebase Auth</p>
 </div>
 </div>
-
 <div class="adminModal" id="adminModal">
 <button class="adminClose" onclick="closeAdmin('adminModal')">✕</button>
 <div class="adminCard">
@@ -321,34 +307,13 @@ nav button.active{color:#00d26a}
 <div id="adminList"></div>
 </div>
 <div class="adminCard">
-<h2>🎵 Music Panel - Gaana Add Karo</h2>
-<p>Yahan se Music Add / Delete karo. Bilkul Movie jaisa - MP3 Link se Gaana bajega.</p>
-<div class="adminSuccess" id="musicAdminMsg">✅ Gaana Add Ho Gaya!</div>
-<label>🎵 Gaane ka Naam *</label>
-<input id="m_name" placeholder="Dil Da Volume">
-<label>🎤 Kisne Gaaya - Singer ka Naam *</label>
-<input id="m_singer" placeholder="Amrinder Gill">
-<label>🖼️ Gaane ka Poster Link</label>
-<input id="m_poster" placeholder="https://... gaane ka poster link">
-<label>👤 Singer ki Picture Link</label>
-<input id="m_singerPic" placeholder="https://... singer ki photo link">
-<label>🎵 Gaane ka MP3 Link * - Movie ke MP4 jaisa</label>
-<input id="m_audio" placeholder="https://... .mp3">
-<label>Category</label>
-<select id="m_cat"><option>Punjabi</option><option>Pakistani</option><option>Bollywood</option><option>Hollywood</option><option>Arabic</option><option>Turkish</option></select>
-<button class="adminBtn green" onclick="addMusicAdmin()">+ Add Gaana</button>
-</div>
-<div class="adminCard">
-<h2 style="font-size:18px">All Music - Delete</h2>
-<p id="musicAdminCount">Loading...</p>
-<div id="musicAdminList"></div>
+<h2>🎵 Music Panel</h2>
+<p>Ab Music Search se aayega, yahan add karne ki zaroorat nahi!</p>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-
 <script>
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); deferredPrompt = e; var ib=document.getElementById('installBtn'); if(ib) ib.classList.remove('hidden'); var bar=document.getElementById('installBar'); if(bar) bar.style.display = 'flex'; });
@@ -469,11 +434,7 @@ function openDownloads(){
   document.getElementById('downloadsModal').classList.add('open');
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
   let box = document.getElementById('downloadsList');
-  if(!list.length){
-    box.innerHTML = "";
-    document.getElementById('downloadsStatus').innerText = "";
-    return;
-  }
+  if(!list.length){ box.innerHTML = ""; document.getElementById('downloadsStatus').innerText = ""; return; }
   document.getElementById('downloadsStatus').innerText = "Total: "+list.length+" Downloads";
   box.innerHTML = list.map((m,i)=>`<div class="adminItem"><img src="${m.img}"><div><b>${m.name}</b><br><small>${m.year || ''} • ${m.cat || ''} • ${m.downloading ? '⬇ ' + (m.progress || 0) + '%' : '✅ Downloaded'}</small><br><div style="background:#333;height:6px;border-radius:10px;margin-top:6px;overflow:hidden"><div style="background:${m.downloading ? '#ffaa00' : '#00d26a'};height:100%;width:${m.downloading ? (m.progress || 0) : 100}%"></div></div><br><button style="background:#e50914;color:#fff;border:none;padding:6px 12px;border-radius:7px;margin-top:4px" onclick="playMovieFromDownload(${i})">▶ Watch</button></div><button onclick="removeDownload(${i})">Delete</button></div>`).join('');
 }
@@ -481,9 +442,7 @@ function addToDownloads(idx){
   let m = allMovies[idx]; if(!m) return;
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
   if(list.find(x=>x.name===m.name)){ return; }
-  m.progress = 0;
-  m.downloading = true;
-  list.push(m);
+  m.progress = 0; m.downloading = true; list.push(m);
   localStorage.setItem('astflix_downloads', JSON.stringify(list));
   let timer = setInterval(function(){
     let l = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
@@ -495,12 +454,7 @@ function addToDownloads(idx){
     if(document.getElementById('downloadsModal').classList.contains('open')){ openDownloads(); }
   }, 800);
 }
-function removeDownload(i){
-  let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
-  list.splice(i,1);
-  localStorage.setItem('astflix_downloads', JSON.stringify(list));
-  openDownloads();
-}
+function removeDownload(i){ let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]'); list.splice(i,1); localStorage.setItem('astflix_downloads', JSON.stringify(list)); openDownloads(); }
 function playMovieFromDownload(i){
   let list = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
   let m = list[i]; if(!m) return;
@@ -510,24 +464,18 @@ function playMovieFromDownload(i){
   else if(m.video){ document.getElementById('playTitle').innerText="▶ "+m.name; let v=document.getElementById('video'); v.style.display='block'; v.src=m.video; document.getElementById('player').style.display='flex'; v.play(); }
 }
 function changeAvatar(e){
-  const file = e.target.files[0];
-  if(!file) return;
+  const file = e.target.files[0]; if(!file) return;
   const reader = new FileReader();
-  reader.onload = function(){
-    try{ localStorage.setItem('astflix_avatar', reader.result); }catch(err){ alert('Photo thori bari hai, choti photo lagao!'); return; }
-    updateAvatar();
-  };
+  reader.onload = function(){ try{ localStorage.setItem('astflix_avatar', reader.result); }catch(err){ alert('Photo thori bari hai, choti photo lagao!'); return; } updateAvatar(); };
   reader.readAsDataURL(file);
 }
 function updateAvatar(){
   const img = localStorage.getItem('astflix_avatar');
   const name = localStorage.getItem('astflix_name') || document.getElementById('p_name').value || 'S';
-  const av = document.getElementById('profileAvatar');
-  if(!av) return;
+  const av = document.getElementById('profileAvatar'); if(!av) return;
   if(img){ av.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover">`; }
   else { av.textContent = name.charAt(0).toUpperCase(); }
-  var dn = document.getElementById('profileDisplayName');
-  if(dn) dn.textContent = localStorage.getItem('astflix_name') || '';
+  var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = localStorage.getItem('astflix_name') || '';
 }
 function updateProfileCounts(){
   const dl = JSON.parse(localStorage.getItem('astflix_downloads') || '[]');
@@ -536,142 +484,94 @@ function updateProfileCounts(){
   if(document.getElementById('countMusic')) document.getElementById('countMusic').textContent = allMusic ? allMusic.length : 0;
   updateAvatar();
 }
-function showDownloadsFromProfile(){
-  closeAdmin('profileModal');
-  openDownloads();
-}
-function deleteAccount(){
-  if(confirm('Pakka Account Delete karna hai? Naam + Photo sab delete ho jayega!')){
-    localStorage.removeItem('astflix_name');
-    localStorage.removeItem('astflix_email');
-    localStorage.removeItem('astflix_pass');
-    localStorage.removeItem('astflix_avatar');
-    alert('Account Delete ho gaya!');
-    location.reload();
-  }
-}
-function editProfile(){
-  document.getElementById('profileForm').style.display='block';
-  document.getElementById('saveProfileBtn').style.display='block';
-  document.getElementById('editProfileBtn').style.display='none';
-  document.getElementById('profileSuccess').style.display='none';
-}
+function showDownloadsFromProfile(){ closeAdmin('profileModal'); openDownloads(); }
+function deleteAccount(){ if(confirm('Pakka Account Delete karna hai? Naam + Photo sab delete ho jayega!')){ localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass'); localStorage.removeItem('astflix_avatar'); alert('Account Delete ho gaya!'); location.reload(); } }
+function editProfile(){ document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; document.getElementById('profileSuccess').style.display='none'; }
 function openProfile(){
   document.getElementById('profileModal').classList.add('open');
-  let name = localStorage.getItem('astflix_name');
-  let email = localStorage.getItem('astflix_email');
-  let pass = localStorage.getItem('astflix_pass');
-  if(name){
-    document.getElementById('p_name').value = name;
-    document.getElementById('p_email').value = email || '';
-    if(pass) document.getElementById('p_pass').value = pass;
-    document.getElementById('profileForm').style.display='none';
-    document.getElementById('saveProfileBtn').style.display='none';
-    document.getElementById('editProfileBtn').style.display='block';
-  } else {
-    document.getElementById('profileForm').style.display='block';
-    document.getElementById('saveProfileBtn').style.display='block';
-    document.getElementById('editProfileBtn').style.display='none';
-  }
+  let name = localStorage.getItem('astflix_name'); let email = localStorage.getItem('astflix_email'); let pass = localStorage.getItem('astflix_pass');
+  if(name){ document.getElementById('p_name').value = name; document.getElementById('p_email').value = email || ''; if(pass) document.getElementById('p_pass').value = pass; document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block'; }
+  else { document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none'; }
   updateProfileCounts();
 }
 function saveProfile(){
-  let name = document.getElementById('p_name').value.trim();
-  let email = document.getElementById('p_email').value.trim();
-  let pass = document.getElementById('p_pass').value;
-  let err = document.getElementById('profileError');
-  let ok = document.getElementById('profileSuccess');
-  err.style.display='none'; ok.style.display='none';
+  let name = document.getElementById('p_name').value.trim(); let email = document.getElementById('p_email').value.trim(); let pass = document.getElementById('p_pass').value;
+  let err = document.getElementById('profileError'); let ok = document.getElementById('profileSuccess'); err.style.display='none'; ok.style.display='none';
   if(!name || !email || !pass){ err.innerText="❌ Name + Gmail + Password teeno likho!"; err.style.display='block'; return; }
   if(pass.length < 6){ err.innerText="❌ Password kam se kam 6 letters ka rakho!"; err.style.display='block'; return; }
-  localStorage.setItem('astflix_name', name);
-  localStorage.setItem('astflix_email', email);
-  localStorage.setItem('astflix_pass', pass);
+  localStorage.setItem('astflix_name', name); localStorage.setItem('astflix_email', email); localStorage.setItem('astflix_pass', pass);
   ok.innerText="✅ Profile Save Ho Gaya! "+name; ok.style.display='block';
-  document.getElementById('profileForm').style.display='none';
-  document.getElementById('saveProfileBtn').style.display='none';
-  document.getElementById('editProfileBtn').style.display='block';
-  updateAvatar();
-  updateProfileCounts();
+  document.getElementById('profileForm').style.display='none'; document.getElementById('saveProfileBtn').style.display='none'; document.getElementById('editProfileBtn').style.display='block';
+  updateAvatar(); updateProfileCounts();
 }
 function logoutProfile(){
-  localStorage.removeItem('astflix_name');
-  localStorage.removeItem('astflix_email');
-  localStorage.removeItem('astflix_pass');
+  localStorage.removeItem('astflix_name'); localStorage.removeItem('astflix_email'); localStorage.removeItem('astflix_pass');
   document.getElementById('p_name').value=''; document.getElementById('p_email').value=''; document.getElementById('p_pass').value='';
-  var dn = document.getElementById('profileDisplayName');
-  if(dn) dn.textContent = '';
-  document.getElementById('profileForm').style.display='block';
-  document.getElementById('saveProfileBtn').style.display='block';
-  document.getElementById('editProfileBtn').style.display='none';
-  let ok = document.getElementById('profileSuccess');
-  if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
-  updateAvatar();
-  updateProfileCounts();
+  var dn = document.getElementById('profileDisplayName'); if(dn) dn.textContent = '';
+  document.getElementById('profileForm').style.display='block'; document.getElementById('saveProfileBtn').style.display='block'; document.getElementById('editProfileBtn').style.display='none';
+  let ok = document.getElementById('profileSuccess'); if(ok){ ok.innerText="Logout ho gaya!"; ok.style.display='block'; }
+  updateAvatar(); updateProfileCounts();
 }
 function goHome(btn){ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); document.getElementById('search').value=""; showMovies(allMovies); window.scrollTo({top:0,behavior:'smooth'}); }
+
+// ===== NEW MUSIC SYSTEM - SIRF YAHAN CHANGE HAI =====
+let searchResults = [];
+let currentMusicIdx = -1;
 function openMusic(){
   document.getElementById('musicModal').classList.add('open');
-  renderMusic();
+  if(searchResults.length===0) searchMusicByCat('Trending Hindi');
+  else renderSearchMusic();
 }
-function closeMusic(){
-  let a = document.getElementById('musicAudio'); if(a) a.pause();
-  document.getElementById('musicModal').classList.remove('open');
+function closeMusic(){ let a = document.getElementById('musicAudio'); if(a) a.pause(); document.getElementById('musicModal').classList.remove('open'); }
+function filterMusic(cat){ searchMusicByCat(cat); }
+async function searchMusic(){
+  let q = document.getElementById('musicSearchInput').value.trim();
+  if(!q) q = 'Trending Hindi';
+  searchMusicByCat(q);
 }
-function filterMusic(cat){ musicFilter = cat; renderMusic(); }
-function renderMusic(){
-  let list = musicFilter === 'All' ? allMusic : allMusic.filter(x=>x.cat===musicFilter);
-  document.getElementById('musicStatus').innerText = "";
-  document.getElementById('musicList').innerHTML = list.map((m)=>{
-    let idx = allMusic.indexOf(m);
-    return `<div class="musicItem" onclick="playMusic(${idx})"><img class="poster" src="${m.poster || m.img || ''}"><div><b>${m.name}</b><br><small>🎤 ${m.singer || ''}</small><br><small style="color:#00d26a">${m.cat || ''}</small></div><img class="singerPic" src="${m.singerPic || ''}"><button class="musicPlay" onclick="event.stopPropagation();playMusic(${idx})">▶</button></div>`;
+async function searchMusicByCat(q){
+  document.getElementById('musicStatus').innerText = "🔍 '" + q + "' dhoond rahe hain...";
+  document.getElementById('musicList').innerHTML = "";
+  try{
+    let res = await fetch('https://saavn.dev/api/search/songs?query=' + encodeURIComponent(q));
+    let data = await res.json();
+    let songs = data.data.results || [];
+    searchResults = songs;
+    if(!songs.length){ document.getElementById('musicStatus').innerText = "❌ Koi gaana nahi mila, doosra naam likho!"; return; }
+    document.getElementById('musicStatus').innerText = "✅ " + songs.length + " gaane mile!";
+    renderSearchMusic();
+  }catch(e){ document.getElementById('musicStatus').innerText = "❌ Net ka masla hai, dobara try karo!"; }
+}
+function renderSearchMusic(){
+  document.getElementById('musicList').innerHTML = searchResults.map((m,i)=>{
+    let name = m.name || 'Unknown';
+    let singer = m.artists && m.artists.primary ? m.artists.primary.map(a=>a.name).join(', ') : 'Unknown';
+    let img = m.image && m.image[2] ? m.image[2].url : (m.image && m.image[1] ? m.image[1].url : '');
+    return `<div class="musicItem" onclick="playMusic(${i})"><img class="poster" src="${img}" onerror="this.src='https://placehold.co/70x70/00d26a/000?text=🎵'"><div><b>${name}</b><br><small>🎤 ${singer}</small><br><small style="color:#00d26a">${m.album ? m.album.name : ''} • ${m.duration ? Math.floor(m.duration/60)+':'+String(m.duration%60).padStart(2,'0') : ''}</small></div><button class="musicPlay" onclick="event.stopPropagation();playMusic(${i})">▶</button></div>`;
   }).join('');
 }
 function playMusic(idx){
-  let m = allMusic[idx]; if(!m) return;
-  if(!m.audio){ alert('Is gaane ka MP3 Link nahi hai! Admin se MP3 Link dalwao!'); return; }
+  let m = searchResults[idx]; if(!m) return;
+  currentMusicIdx = idx;
+  let url = m.downloadUrl && m.downloadUrl[4] ? m.downloadUrl[4].url : (m.downloadUrl[3] ? m.downloadUrl[3].url : '');
+  if(!url){ alert('Is gaane ka link nahi mila!'); return; }
+  let name = m.name || 'Unknown';
+  let singer = m.artists && m.artists.primary ? m.artists.primary.map(a=>a.name).join(', ') : '';
+  let img = m.image && m.image[2] ? m.image[2].url : '';
   document.getElementById('musicPlayerBox').style.display='block';
-  document.getElementById('musicPlayerImg').src = m.singerPic || m.poster || '';
-  document.getElementById('musicPlayerName').innerText = m.name;
-  document.getElementById('musicPlayerSinger').innerText = m.singer + " • " + m.cat;
-  let a = document.getElementById('musicAudio'); a.src = m.audio; a.play();
+  document.getElementById('musicPlayerImg').src = img;
+  document.getElementById('musicPlayerName').innerText = name;
+  document.getElementById('musicPlayerSinger').innerText = singer;
+  let a = document.getElementById('musicAudio'); a.src = url; a.play();
+  a.onended = function(){ nextMusic(); };
 }
-async function loadMusicFromDB(){
-  if(!db) return;
-  try{
-    const snap = await db.collection("music").get();
-    let arr=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; arr.push(m); });
-    allMusic = arr;
-    if(document.getElementById('musicModal').classList.contains('open')) renderMusic();
-    loadMusicAdminList(arr);
-  }catch(e){}
-}
-async function addMusicAdmin(){
-  if(!auth.currentUser || auth.currentUser.email !== ADMIN_EMAIL){ alert('Pehle Admin Login karo!'); return; }
-  const data = { name: document.getElementById('m_name').value.trim(), singer: document.getElementById('m_singer').value.trim(), poster: document.getElementById('m_poster').value.trim(), singerPic: document.getElementById('m_singerPic').value.trim(), audio: document.getElementById('m_audio').value.trim(), cat: document.getElementById('m_cat').value };
-  if(!data.name || !data.singer || !data.audio){ alert('Gaane ka Naam + Singer ka Naam + MP3 Link zaroori hai!'); return; }
-  if(!data.poster) data.poster = getImg(data.name,"00d26a");
-  if(!data.singerPic) data.singerPic = getImg(data.singer,"111111");
-  try{
-    await db.collection("music").add(data);
-    document.getElementById('musicAdminMsg').style.display='block'; setTimeout(()=>document.getElementById('musicAdminMsg').style.display='none',3000);
-    ['m_name','m_singer','m_poster','m_singerPic','m_audio'].forEach(id=>document.getElementById(id).value='');
-    await loadMusicFromDB();
-  }catch(e){ alert('Add Fail: '+e.message); }
-}
-async function loadMusicAdminList(preloaded){
-  let list = preloaded;
-  if(!list && db){
-    try{ const snap = await db.collection("music").get(); list=[]; snap.forEach(d=>{ let m=d.data(); m._id=d.id; list.push(m); }); }catch(e){ list=[]; }
-  }
-  if(!list) list=[];
-  document.getElementById('musicAdminCount').innerText = "Total: " + list.length + " gaane";
-  document.getElementById('musicAdminList').innerHTML = list.map(m=>`<div class="adminItem"><img src="${m.poster||''}"><div><b>${m.name}</b><br><small>🎤 ${m.singer} • ${m.cat} ${m.audio ? ' • 🎵 MP3' : ' • ❌ No MP3'}</small></div><img src="${m.singerPic||''}" style="width:38px;height:38px;border-radius:50%;object-fit:cover"><button onclick="deleteMusicAdmin('${m._id}','${m.name}')">Delete</button></div>`).join('') || '<p style="opacity:.6">Koi gaana nahi.</p>';
-}
-async function deleteMusicAdmin(id, name){
-  if(!confirm(name + ' - Pakka Delete karna hai?')) return;
-  try{ await db.collection("music").doc(id).delete(); await loadMusicFromDB(); }catch(e){ alert('Delete Fail: '+e.message); }
-}
+function nextMusic(){ if(searchResults.length===0) return; let next = currentMusicIdx + 1; if(next >= searchResults.length) next = 0; playMusic(next); }
+function prevMusic(){ if(searchResults.length===0) return; let prev = currentMusicIdx - 1; if(prev < 0) prev = searchResults.length - 1; playMusic(prev); }
+async function loadMusicFromDB(){}
+async function addMusicAdmin(){ alert('Ab gaana add karne ki zaroorat nahi! Music me Search karo, gaana khud aa jayega!'); }
+async function loadMusicAdminList(){}
+async function deleteMusicAdmin(){}
+
 showMovies(allMovies);
 const ADMIN_EMAIL = "astkhanii15@gmail.com";
 var db = null; var auth = null;
@@ -769,4 +669,4 @@ async function addMovieAdmin(){
 async function deleteMovieAdmin(id, name){ if(!confirm(name + ' - Pakka Delete karni hai? Pehle Edit try karo!')) return; try{ await db.collection("movies").doc(id).delete(); await refreshMoviesFromDB(); }catch(e){ alert('Delete Fail: '+e.message); } }
 </script>
 </body>
-</html>
+  </html>
